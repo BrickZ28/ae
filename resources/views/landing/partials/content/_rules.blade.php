@@ -17,36 +17,34 @@
         <!--begin::Row-->
         <div class="row w-100 gy-10 mb-md-20">
             <!--begin::Col-->
+            @foreach($rules as $rule)
             <div class="col-md-4 px-5">
                 <!--begin::Story-->
-
-                @foreach($rules as $rule)
-                    <div class="text-center mb-10 mb-md-0">
-                        <!--begin::Illustration-->
-                        <img src="assets/media/illustrations/dozzy-1/2.png" class="mh-125px mb-9" alt=""/>
-                        <!--end::Illustration-->
-                        <!--begin::Heading-->
-                        <div class="d-flex flex-center mb-5">
-                            <!--begin::Badge-->
-                            <span class="badge badge-circle badge-light-success fw-bold p-5 me-3
-                            fs-3">{{$loop->count}}</span>
-                            <!--end::Badge-->
-                            <!--begin::Title-->
-                            <div class="fs-5 fs-lg-3 fw-bold text-gray-900">{{$rule->rule}}</div>
-                            <!--end::Title-->
-                        </div>
-                        <!--end::Heading-->
-                        <!--begin::Description-->
-                        <div class="fw-semibold fs-6 fs-lg-4 text-muted">updated <x-display-date-formatted
-                                :date="$rule->updated_at" format="D M j, Y @ g:i:sa" />
-                        </div>
-                        <!--end::Description-->
+                <div class="text-center mb-10 mb-md-0">
+                    <!--begin::Illustration-->
+                    <img src="assets/media/illustrations/dozzy-1/2.png" class="mh-125px mb-9" alt=""/>
+                    <!--end::Illustration-->
+                    <!--begin::Heading-->
+                    <div class="d-flex flex-center mb-5">
+                        <!--begin::Badge-->
+                        <span class="badge badge-circle badge-light-success fw-bold p-5 me-3 fs-3">1</span>
+                        <!--end::Badge-->
+                        <!--begin::Title-->
+                        <div class="fs-5 fs-lg-3 fw-bold text-gray-900">{{$rule->rule}}</div>
+                        <!--end::Title-->
                     </div>
-                @endforeach
-
+                    <!--end::Heading-->
+                    <!--begin::Description-->
+                    <div class="fw-semibold fs-6 fs-lg-4 text-muted">created on:<x-display-date-formatted
+                            :date="$rule->created_at" format="D M j, Y " />
+                    </div>
+                    <!--end::Description-->
+                </div>
                 <!--end::Story-->
             </div>
+            @endforeach
             <!--end::Col-->
+
 
         </div>
         <!--end::Row-->
@@ -84,14 +82,14 @@
             </div>
             <!--end::Slider-->
             <!--begin::Slider button-->
-{{--            <button class="btn btn-icon btn-active-color-primary" id="kt_team_slider_prev1">--}}
-{{--                <i class="ki-outline ki-left fs-2x"></i>--}}
-{{--            </button>--}}
-{{--            <!--end::Slider button-->--}}
-{{--            <!--begin::Slider button-->--}}
-{{--            <button class="btn btn-icon btn-active-color-primary" id="kt_team_slider_next1">--}}
-{{--                <i class="ki-outline ki-right fs-2x"></i>--}}
-{{--            </button>--}}
+            <button class="btn btn-icon btn-active-color-primary" id="kt_team_slider_prev1">
+                <i class="ki-outline ki-left fs-2x"></i>
+            </button>
+            <!--end::Slider button-->
+            <!--begin::Slider button-->
+            <button class="btn btn-icon btn-active-color-primary" id="kt_team_slider_next1">
+                <i class="ki-outline ki-right fs-2x"></i>
+            </button>
             <!--end::Slider button-->
         </div>
         <!--end::Product slider-->

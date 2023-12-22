@@ -466,7 +466,7 @@
                                         <!--end::Menu item-->
                                     </div>
                                     <!--end::Menu-->
-                                </td>A
+                                </td>
                             </tr>
                         @endforeach
 

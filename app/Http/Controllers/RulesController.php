@@ -14,7 +14,9 @@ class RulesController extends Controller
 {
 	public function index()
 	{
-        return view('dashboard.rules.index');
+        return view('dashboard.rules.index')->with([
+            'rules' => Rule::all(),
+        ]);
 	}
     public function create()
     {
@@ -35,12 +37,11 @@ class RulesController extends Controller
         ]);
 
         return view('dashboard.index');
-
-
 	}
 
 	public function show($id)
 	{
+
 	}
 
 	public function edit($id)
