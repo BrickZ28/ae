@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.10",
         "laravel/tinker": "^2.8",
+        "realrashid/sweet-alert": "^7.1",
         "socialiteproviders/discord": "^4.2"
     },
     "require-dev": {

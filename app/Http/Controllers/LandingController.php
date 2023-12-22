@@ -4,13 +4,15 @@ namespace App\Http\Controllers;
 
 use App\DataTables\UsersAssignedRoleDataTable;
 use App\Models\User;
+use App\Models\Rule;
 
 class LandingController extends Controller
 {
 	public function index()
 	{
-        $users = User::all();
-
-		return view('landing.master')->with('users', $users);
+        return view('landing.index')->with([
+            'users' => User::all(),
+            'rules' => Rule::where('priority', 1)->limit(3),
+        ]);
 	}
 }

@@ -27,7 +27,8 @@ class SideMenu extends Component
     {
         return $this->admin_submenu = [
             'users' => ['View Users' => '/users'],
-            'forms' => ['View Forms' => '/forms'],
+            'rules' => ['New Rule' => '/rules/create',
+                'View Rules' => '/rules'],
         ];
     }
 

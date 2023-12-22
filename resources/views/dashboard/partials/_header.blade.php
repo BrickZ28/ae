@@ -20,7 +20,7 @@
         <!--begin::Mobile logo-->
         <div class="d-flex align-items-center flex-grow-1 flex-lg-grow-0">
             <a href="{{route('landing.index')}}" class="d-lg-none">
-                <img alt="Logo" src="assets/media/logos/rocky.gif" class="h-30px" />
+                <img alt="Logo" src="{{asset('assets/media/logos/rocky.gif')}}" class="h-30px" />
             </a>
         </div>
         <!--end::Mobile logo-->

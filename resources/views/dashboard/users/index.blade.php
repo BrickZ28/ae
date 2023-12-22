@@ -1,6 +1,5 @@
-@php use Carbon\Carbon; @endphp
 <x-dashboard.layout>
-<div class="d-flex flex-column flex-column-fluid">
+
 <x-breadcrumbs title="Users List" parent="User Management" child="Users"/>
 
     <!--begin::Content-->
@@ -483,7 +482,7 @@
         <!--end::Content container-->
     </div>
     <!--end::Content-->
-</div>
+
 
     <!--begin::Javascript-->
     <script>var hostUrl = "assets/";</script>
