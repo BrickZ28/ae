@@ -12,7 +12,7 @@ class LandingController extends Controller
 	{
         return view('landing.index')->with([
             'users' => User::all(),
-            'rules' => Rule::where('priority', 1)->limit(3),
+            'rules' => Rule::where('priority', 1)->limit(3)->get(),
         ]);
 	}
 }
