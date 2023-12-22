@@ -11,6 +11,7 @@ class UsersController extends Controller
     {
         return view('dashboard.users.index')->with([
             'users' => User::all(),
+            'filters' => ['username', 'role', 'last login', 'registered on']
         ]);
     }
 }

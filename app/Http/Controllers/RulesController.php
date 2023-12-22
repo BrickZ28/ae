@@ -16,6 +16,7 @@ class RulesController extends Controller
 	{
         return view('dashboard.rules.index')->with([
             'rules' => Rule::all(),
+            'filters' => ['priority', 'rule', 'created'],
         ]);
 	}
     public function create()
