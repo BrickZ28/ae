@@ -47,10 +47,14 @@ class RulesController extends Controller
 
 	public function edit($id)
 	{
+        return view('dashboard.rules.edit')->with([
+            'rule' => Rule::find($id),
+        ]);
 	}
 
 	public function update(Request $request, $id)
 	{
+        dd($request);
 	}
 
 	public function destroy($id)

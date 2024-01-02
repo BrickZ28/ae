@@ -10,8 +10,8 @@
 
                    <x-form-select label="Priority" name="priority" required="required" >
                        <option value="">Select One</option>
-                       <option value=1>One</option>
-                       <option value=2>Two</option>
+                       <option value=1>1</option>
+                       <option value=2>2</option>
                    </x-form-select>
 
                </div>
