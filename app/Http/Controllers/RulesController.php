@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Rule;
 use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
@@ -16,7 +17,7 @@ class RulesController extends Controller
 	{
         return view('dashboard.rules.index')->with([
             'rules' => Rule::all(),
-            'filters' => ['priority', 'rule', 'created'],
+            'filters' => ['id', 'priority', 'rule', 'last updated', 'created on', 'created by', 'actions']
         ]);
 	}
     public function create()
@@ -35,6 +36,7 @@ class RulesController extends Controller
         Rule::create([
            'rule' => $request->rule,
            'priority' => $request->priority,
+           'user_id' => Auth::id(),
         ]);
 
         return view('dashboard.index');

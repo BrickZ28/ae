@@ -9,10 +9,9 @@ class UsersController extends Controller
 {
     public function index(Request $request)
     {
-
         return view('dashboard.users.index')->with([
             'users' => User::all(),
-            'filters' => ['username', 'role', 'Tribe', 'Last Login', 'Joined', 'actions']
+            'filters' => ['id','username', 'role', 'Tribe', 'Last Login', 'Joined', 'actions']
         ]);
     }
 }

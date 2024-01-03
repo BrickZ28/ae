@@ -88,15 +88,9 @@
                     <table class="table align-middle table-row-dashed fs-6 gy-5" id="kt_table_users">
                         <thead>
                         <tr class="text-start text-muted fw-bold fs-7 text-uppercase gs-0">
-                            <th>
 
-                                    <input type="hidden" data-kt-check="true"
-                                           data-kt-check-target="#kt_table_users .form-check-input"  /> ID
-
-                            </th>
                             @foreach($filters as $filter)
-
-                                <th class="min-w-125px">{{ $filter }}</th>
+                                <th class="min-w-125px">{!! $filter !!}</th>
                             @endforeach
                         </tr>
                         </thead>
