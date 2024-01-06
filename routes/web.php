@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\RulesController;
+use App\Http\Controllers\ScreenshotController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::resource('/users', UsersController::class, ['names' => 'users']);
     Route::resource('/rules', RulesController::class, ['names' => 'rules']);
+    Route::resource('/screenshots', ScreenshotController::class, ['names' => 'screenshots']);
 });
 
 Route::get('/error', function () {

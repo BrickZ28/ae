@@ -29,6 +29,7 @@ class SideMenu extends Component
             'users' => ['View Users' => '/users'],
             'rules' => ['New Rule' => '/rules/create',
                 'View Rules' => '/rules'],
+            'screenshots' => ['Upload Screenshot' => '/screenshots/create']
         ];
     }
 
@@ -45,7 +46,7 @@ class SideMenu extends Component
         return $this->header =
             [
                'admin' => $this->createAdminSubmenu(),
-                'users' => $this->createUserSubmenu()
+               'users' => $this->createUserSubmenu(),
             ];
     }
 

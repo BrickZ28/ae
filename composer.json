@@ -11,6 +11,7 @@
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.10",
         "laravel/tinker": "^2.8",
+        "league/flysystem-aws-s3-v3": "^3.22",
         "realrashid/sweet-alert": "^7.1",
         "socialiteproviders/discord": "^4.2"
     },
@@ -28,7 +29,11 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/"
-        }
+        },
+        "files": [
+
+            "app/Helpers/landingHelpers.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

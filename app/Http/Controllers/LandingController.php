@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\UsersAssignedRoleDataTable;
+use App\Models\Screenshot;
 use App\Models\User;
 use App\Models\Rule;
 

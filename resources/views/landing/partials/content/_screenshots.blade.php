@@ -9,7 +9,7 @@
                 <div class="text-center mb-5 mb-lg-10">
                     <!--begin::Title-->
                     <h3 class="fs-2hx text-gray-900 mb-5" id="portfolio"
-                        data-kt-scroll-offset="{default: 100, lg: 250}">Our Projects</h3>
+                        data-kt-scroll-offset="{default: 100, lg: 250}">Screenshots</h3>
                     <!--end::Title-->
                 </div>
                 <!--end::Heading-->

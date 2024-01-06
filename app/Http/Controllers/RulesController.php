@@ -26,18 +26,18 @@ class RulesController extends Controller
     }
 	public function store(Request $request)
 	{
-        if($request->validate([
+        $request->validate([
              'rule' => 'required',
              'priority' => 'required|min:1|max:2|numeric',
-         ])) {
-            Alert::success('Rule Created', 'New rule created successfully');
-        }
+         ]);
 
-        Rule::create([
+        if(Rule::create([
            'rule' => $request->rule,
            'priority' => $request->priority,
            'user_id' => Auth::id(),
-        ]);
+        ])) {
+        Alert::success('Rule Created', 'New rule created successfully');
+    }
 
         return view('dashboard.index');
 	}
