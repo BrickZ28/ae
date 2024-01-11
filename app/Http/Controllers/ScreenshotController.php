@@ -29,6 +29,7 @@ class ScreenshotController extends Controller
 
         $name = $file->getClientOriginalName();
         $filePath = $parent_folder.'/'.$name.'_'.time();
+        dd(Storage::disk('digitalocean')->put($filePath, file_get_contents($file), 'public'));
         Storage::disk('digitalocean')->put($filePath, file_get_contents($file), 'public');
 
         return $filePath;
@@ -37,8 +38,8 @@ class ScreenshotController extends Controller
 
 	public function store(Request $request)
 	{
-
-        if(Storage::disk('digitalocean')->putFile('', request()->file, 'public')){
+dd(Storage::disk('vultr')->putFile('images', request()->file, 'public'));
+        if(Storage::disk('digitalocean')->putFile('images', request()->file, 'public')){
             dd(123);
         }
 
