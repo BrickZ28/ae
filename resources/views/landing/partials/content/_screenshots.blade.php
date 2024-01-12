@@ -16,11 +16,11 @@
                 <!--begin::Tabs wrapper-->
                 <div class="d-flex flex-center mb-5 mb-lg-15">
                     <!--begin::Tabs-->
-                    <ul class="nav border-transparent flex-center fs-5 fw-bold">
-                        <li class="nav-item">
-                            <a class="nav-link text-gray-500 text-active-primary px-3 px-lg-6 active" href="#"
-                               data-bs-toggle="tab" data-bs-target="#kt_landing_projects_latest">Latest</a>
-                        </li>
+{{--                    <ul class="nav border-transparent flex-center fs-5 fw-bold">--}}
+{{--                        <li class="nav-item">--}}
+{{--                            <a class="nav-link text-gray-500 text-active-primary px-3 px-lg-6 active" href="#"--}}
+{{--                               data-bs-toggle="tab" data-bs-target="#kt_landing_projects_latest">Latest</a>--}}
+{{--                        </li>--}}
 {{--                        <li class="nav-item">--}}
 {{--                            <a class="nav-link text-gray-500 text-active-primary px-3 px-lg-6" href="#"--}}
 {{--                               data-bs-toggle="tab" data-bs-target="#kt_landing_projects_web_design">Web Design</a>--}}
@@ -35,7 +35,7 @@
 {{--                               data-bs-toggle="tab"--}}
 {{--                               data-bs-target="#kt_landing_projects_development">Development</a>--}}
 {{--                        </li>--}}
-                    </ul>
+{{--                    </ul>--}}
                     <!--end::Tabs-->
                 </div>
                 <!--end::Tabs wrapper-->
@@ -45,29 +45,29 @@
                     <div class="tab-pane fade show active" id="kt_landing_projects_latest">
                         <!--begin::Row-->
                         <div class="row g-10">
-                            <!--begin::Col-->
-                            <div class="col-lg-6">
-                                <!--begin::Item-->
-                                <a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects"
-                                   href="{{ getRandomScreenshot() }}">
+{{--                            <!--begin::Col-->--}}
+{{--                            <div class="col-lg-6">--}}
+{{--                                <!--begin::Item-->--}}
+{{--                                <a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects"--}}
+{{--                                   href="{{ getRandomScreenshot() }}">--}}
 
 
-                                    <!--begin::Image-->
-                                    <div
-                                        class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px"
-                                        style="background-image:url({{ getRandomScreenshot() }})"></div>
-                                    <!--end::Image-->
-                                    <!--begin::Action-->
-                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
-                                        <i class="ki-outline ki-eye fs-3x text-white"></i>
-                                    </div>
-                                    <!--end::Action-->
-                                </a>
-                                <!--end::Item-->
-                            </div>
-                            <!--end::Col-->
+{{--                                    <!--begin::Image-->--}}
+{{--                                    <div--}}
+{{--                                        class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px"--}}
+{{--                                        style="background-image:url('{{ getRandomScreenshot() }}')"></div>--}}
+{{--                                    <!--end::Image-->--}}
+{{--                                    <!--begin::Action-->--}}
+{{--                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25">--}}
+{{--                                        <i class="ki-outline ki-eye fs-3x text-white"></i>--}}
+{{--                                    </div>--}}
+{{--                                    <!--end::Action-->--}}
+{{--                                </a>--}}
+{{--                                <!--end::Item-->--}}
+{{--                            </div>--}}
+{{--                            <!--end::Col-->--}}
                             <!--begin::Col-->
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <!--begin::Row-->
                                 <div class="row g-10 mb-10">
                                     <!--begin::Col-->
