@@ -15,7 +15,7 @@
                     @endforeach
                 </x-form-select>
 
-                <x-file-upload label="Select Screenshot" />
+                <x-file-upload label="Select Screenshot" file="file" />
             </div>
 
             <!--end::Col-->

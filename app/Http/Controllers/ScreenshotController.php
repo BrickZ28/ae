@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Screenshot;
 use App\Models\User;
+use App\Traits\FileTrait;
 use Auth;
+use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
@@ -12,6 +14,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ScreenshotController extends Controller
 {
+    use FileTrait;
 	public function index()
 	{
 		return Screenshot::all();
@@ -24,24 +27,25 @@ class ScreenshotController extends Controller
         ]);
     }
 
-    function uploadFileToS3($file, $parent_folder): string
-    {
-
-        $name = $file->getClientOriginalName();
-        $filePath = $parent_folder.'/'.$name.'_'.time();
-        dd(Storage::disk('digitalocean')->put($filePath, file_get_contents($file), 'public'));
-        Storage::disk('digitalocean')->put($filePath, file_get_contents($file), 'public');
-
-        return $filePath;
-    }
-
-
 	public function store(Request $request)
 	{
-dd(Storage::disk('do')->putFile('images', request()->file, 'public'));
-        if(Storage::disk('digitalocean')->putFile('images', request()->file, 'public')){
-            dd(123);
+        $request->validate([
+            'title' => 'required',
+            'created_by' => 'sometimes|integer|nullable',
+            'file' => 'required|image',
+            ]);
+
+        $path = $this->uploadFile('do','images', $request->file, 'public');
+
+        if ($path) {
+            Screenshot::create([
+                'title' => $request->title,
+                'created_by' => $request->created_by ?? Auth::id(),
+                'path' => config('constants.buckets.DO_BUCKET_CDN') . $path,
+                'uploaded_by' => Auth::id()
+            ]);
         }
+        return redirect(route('dashboard.index'));
 
 	}
 
