@@ -45,40 +45,41 @@
                     <div class="tab-pane fade show active" id="kt_landing_projects_latest">
                         <!--begin::Row-->
                         <div class="row g-10">
-{{--                            <!--begin::Col-->--}}
-{{--                            <div class="col-lg-6">--}}
-{{--                                <!--begin::Item-->--}}
-{{--                                <a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects"--}}
-{{--                                   href="{{ getRandomScreenshot() }}">--}}
-
-
-{{--                                    <!--begin::Image-->--}}
-{{--                                    <div--}}
-{{--                                        class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px"--}}
-{{--                                        style="background-image:url('{{ getRandomScreenshot() }}')"></div>--}}
-{{--                                    <!--end::Image-->--}}
-{{--                                    <!--begin::Action-->--}}
-{{--                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25">--}}
-{{--                                        <i class="ki-outline ki-eye fs-3x text-white"></i>--}}
-{{--                                    </div>--}}
-{{--                                    <!--end::Action-->--}}
-{{--                                </a>--}}
-{{--                                <!--end::Item-->--}}
-{{--                            </div>--}}
-{{--                            <!--end::Col-->--}}
                             <!--begin::Col-->
-                            <div class="col-lg-12">
+                            <div class="col-lg-6">
+                                <!--begin::Item-->
+                                <a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects"
+                                   href="{{ (getRandomScreenshot()->get(0)->path) }}">
+
+
+                                    <!--begin::Image-->
+                                    <div
+                                        class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px"
+                                        style="background-image:url('{{ (getRandomScreenshot()->get(0)->path) }}')"></div>
+                                    <!--end::Image-->
+                                    <!--begin::Action-->
+                                    <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
+                                        <i class="ki-outline ki-eye fs-3x text-white"></i>
+                                    </div>
+                                    <!--end::Action-->
+                                </a>
+                                <!--end::Item-->
+                            </div>
+                            <!--end::Col-->
+                            <!--begin::Col-->
+                            <div class="col-lg-6">
                                 <!--begin::Row-->
                                 <div class="row g-10 mb-10">
                                     <!--begin::Col-->
                                     <div class="col-lg-6">
                                         <!--begin::Item-->
                                         <a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects"
-                                           href="{{ getRandomScreenshot() }}">
+                                           href="{{ (getRandomScreenshot()->get(1)->path) }}">
                                             <!--begin::Image-->
                                             <div
                                                 class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px"
-                                                style="background-image:url('{{ getRandomScreenshot() }}')"></div>
+                                                style="background-image:url('{{ (getRandomScreenshot()->get(1)->path)
+                                                 }}')"></div>
                                             <!--end::Image-->
                                             <!--begin::Action-->
                                             <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -93,11 +94,12 @@
                                     <div class="col-lg-6">
                                         <!--begin::Item-->
                                         <a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects"
-                                           href="{{ getRandomScreenshot() }}">
+                                           href="{{ (getRandomScreenshot()->get(2)->path) }}">
                                             <!--begin::Image-->
                                             <div
                                                 class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px"
-                                                style="background-image:url('{{ getRandomScreenshot() }}')"></div>
+                                                style="background-image:url('{{ (getRandomScreenshot()->get(2)->path)
+                                                 }}')"></div>
                                             <!--end::Image-->
                                             <!--begin::Action-->
                                             <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
@@ -112,11 +114,12 @@
                                 <!--end::Row-->
                                 <!--begin::Item-->
                                 <a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects"
-                                   href="{{ getRandomScreenshot() }}">
+                                   href="{{ (getRandomScreenshot()->get(3)->path) }}">
                                     <!--begin::Image-->
                                     <div
                                         class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px"
-                                        style="background-image:url('{{ getRandomScreenshot() }}')"></div>
+                                        style="background-image:url('{{ (getRandomScreenshot()->get(3)->path) }}')
+                                        "></div>
                                     <!--end::Image-->
                                     <!--begin::Action-->
                                     <div class="overlay-layer card-rounded bg-dark bg-opacity-25">
