@@ -3,8 +3,10 @@
 use App\Models\Screenshot;
 
 if (! function_exists('getRandomScreenshot')) {
-    function getRandomScreenshot(): Screenshot
+    function getRandomScreenshot()
     {
-        return Screenshot::inRandomOrder()->first();
+        $image = Screenshot::inRandomOrder()->first();
+
+        return $image->path;
     }
 }
