@@ -38,7 +38,7 @@ class ScreenshotController extends Controller
 
 	public function store(Request $request)
 	{
-dd(Storage::disk('vultr')->putFile('images', request()->file, 'public'));
+dd(Storage::disk('do')->putFile('images', request()->file, 'public'));
         if(Storage::disk('digitalocean')->putFile('images', request()->file, 'public')){
             dd(123);
         }
