@@ -49,13 +49,14 @@
                             <div class="col-lg-6">
                                 <!--begin::Item-->
                                 <a class="d-block card-rounded overlay h-lg-100" data-fslightbox="lightbox-projects"
-                                   href="{{ ($random_screen_shots->get(0)->path) }}">
+                                   href="{{ urldecode($random_screen_shots->get(0)->path) }}">
 
 
                                     <!--begin::Image-->
                                     <div
                                         class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-lg-100 min-h-250px"
-                                        style="background-image:url('{{ ($random_screen_shots->get(0)->path) }}')
+                                        style="background-image:url('{{ urldecode($random_screen_shots->get(0)->path)
+                                        }}')
                                         "></div>
                                     <!--end::Image-->
                                     <!--begin::Action-->
@@ -75,11 +76,12 @@
                                     <div class="col-lg-6">
                                         <!--begin::Item-->
                                         <a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects"
-                                           href="{{ ($random_screen_shots->get(1)->path) }}">
+                                           href="{{ urldecode($random_screen_shots->get(1)->path) }}">
                                             <!--begin::Image-->
                                             <div
                                                 class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px"
-                                                style="background-image:url('{{ ($random_screen_shots->get(1)->path)
+                                                style="background-image:url('{{ urldecode($random_screen_shots->get(1)
+                                                ->path)
                                                  }}')"></div>
                                             <!--end::Image-->
                                             <!--begin::Action-->
@@ -95,11 +97,12 @@
                                     <div class="col-lg-6">
                                         <!--begin::Item-->
                                         <a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects"
-                                           href="{{ ($random_screen_shots->get(2)->path) }}">
+                                           href="{{ urldecode($random_screen_shots->get(2)->path )}}">
                                             <!--begin::Image-->
                                             <div
                                                 class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px"
-                                                style="background-image:url('{{ ($random_screen_shots->get(2)->path)
+                                                style="background-image:url('{{ urldecode($random_screen_shots->get(2)
+                                                ->path)
                                                  }}')"></div>
                                             <!--end::Image-->
                                             <!--begin::Action-->
@@ -115,11 +118,12 @@
                                 <!--end::Row-->
                                 <!--begin::Item-->
                                 <a class="d-block card-rounded overlay" data-fslightbox="lightbox-projects"
-                                   href="{{ ($random_screen_shots->get(3)->path) }}">
+                                   href="{{ urldecode($random_screen_shots->get(3)->path) }}">
                                     <!--begin::Image-->
                                     <div
                                         class="overlay-wrapper bgi-no-repeat bgi-position-center bgi-size-cover card-rounded h-250px"
-                                        style="background-image:url('{{ ($random_screen_shots->get(3)->path) }}')
+                                        style="background-image:url('{{ urldecode($random_screen_shots->get(3)->path)
+                                        }}')
                                         "></div>
                                     <!--end::Image-->
                                     <!--begin::Action-->
