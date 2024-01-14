@@ -23,7 +23,7 @@ class TestNotification extends Notification implements DiscordNotificationContra
         $embedBuilder->addAuthor('Me!');
 
         $componentBuilder = new ComponentBuilder();
-        $componentBuilder->addActionButton('My Button', 'customId');
+        $componentBuilder->addLinkButton('Tickle My Ass', 'ae.test/interactions');
 
         return [
             'contentType' => 'rich',
