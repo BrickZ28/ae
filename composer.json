@@ -5,13 +5,14 @@
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
-        "php": "^8.1",
+        "php": "^8.3",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/socialite": "^5.10",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.22",
+        "nwilging/laravel-discord-bot": "^1.1",
         "realrashid/sweet-alert": "^7.1",
         "socialiteproviders/discord": "^4.2"
     },

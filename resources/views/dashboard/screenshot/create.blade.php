@@ -8,7 +8,8 @@
                 <x-form-input label="Title" name="title" placeholder="{{old('title' ?? 'Insert Title')}}"
                               required="required" />
 
-                <x-form-select label="Who took Screenshot" name="created_by" required="" >
+                <x-form-select label="Who took Screenshot ( May leave blank if you took screen shot)" name="created_by"
+                               required="" >
                     <option value="">Select One</option>
                     @foreach($users as $user)
                         <option value={{$user->id}}>{{$user->username}}</option>

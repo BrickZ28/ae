@@ -3,6 +3,7 @@
 use App\Http\Controllers\Apps\UserManagementController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DiscordController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotController;
@@ -20,7 +21,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
+Route::get('/discord', [DiscordController::class, 'index']);
+Route::get('/discord/interaction', [DiscordController::class, 'handleDiscordInteraction']);
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 
 
