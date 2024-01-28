@@ -28,9 +28,28 @@ class DiscordController extends Controller
         return response()->json($response->toArray(), $response->getStatus());
     }
 
-    public function fromDiscord()
+    public function fromDiscord(Request $request)
     {
-        return 'Worked';
+        // Access headers
+        $authorizationHeader = $request->header('Authorization');
+        $customHeader = $request->header('Custom-Header');
+
+        $headers = getallheaders();
+        $userID = $headers['User-ID'];
+        $userName = $headers['User-Name'];
+        $userDiscriminator = $headers['User-Discriminator'];
+
+// Process the information as needed
+        echo "Received user information:\n";
+        echo "User ID: $userID\n";
+        echo "Username: $userName\n";
+        echo "Discriminator: $userDiscriminator\n";
+
+        // Add your logic here to process the request
+        dd($request->headers->all());
+
+        return response()->json(['status' => 'success']);
+
     }
 
     public function index()
