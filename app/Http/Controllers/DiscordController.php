@@ -30,6 +30,8 @@ class DiscordController extends Controller
 
     public function fromDiscord(Request $request)
     {
+
+        dd($request);
         // Access headers
         $authorizationHeader = $request->header('Authorization');
         $customHeader = $request->header('Custom-Header');
