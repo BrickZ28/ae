@@ -7,6 +7,7 @@ use App\Http\Controllers\DiscordController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotController;
+use App\Http\Controllers\ServerSettingsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/discord', [DiscordController::class, 'index']);
-Route::get('/interactions', [DiscordController::class, 'handleDiscordInteraction']);
+Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 
 
@@ -45,6 +46,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/users', UsersController::class, ['names' => 'users']);
     Route::resource('/rules', RulesController::class, ['names' => 'rules']);
     Route::resource('/screenshots', ScreenshotController::class, ['names' => 'screenshots']);
+    Route::resource('/screenshots', ServerSettingsController::class, ['name' => 'server-settings']);
 });
 
 Route::get('/error', function () {

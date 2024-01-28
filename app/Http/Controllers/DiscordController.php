@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\DiscordTestEvent;
 use App\Models\User;
 use App\Notifications\TestNotification;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Notifications\Notifiable;
 use Nwilging\LaravelDiscordBot\Contracts\Services\DiscordInteractionServiceContract;
+use Illuminate\Http\Request;
 
 class DiscordController extends Controller
 {
@@ -21,9 +22,15 @@ class DiscordController extends Controller
 
     public function handleDiscordInteraction(Request $request)
     {
-        dd(24);
+
         $response = $this->interactionService->handleInteractionRequest($request);
+
         return response()->json($response->toArray(), $response->getStatus());
+    }
+
+    public function fromDiscord()
+    {
+        return 'Worked';
     }
 
     public function index()
