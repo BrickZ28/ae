@@ -30,8 +30,9 @@ class DiscordController extends Controller
 
     public function fromDiscord(Request $request)
     {
+        $user = User::where('username', $request->user)->first();
 
-        dd($request);
+        dd($user);
         // Access headers
         $authorizationHeader = $request->header('Authorization');
         $customHeader = $request->header('Custom-Header');
