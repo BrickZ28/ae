@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events\DiscordTestEvent;
 use App\Models\User;
 use App\Notifications\TestNotification;
+use Auth;
 use Illuminate\Notifications\Notifiable;
 use Nwilging\LaravelDiscordBot\Contracts\Services\DiscordInteractionServiceContract;
 use Illuminate\Http\Request;
@@ -30,7 +31,13 @@ class DiscordController extends Controller
 
     public function fromDiscord(Request $request)
     {
+        $currentUser = auth()->user()->id;
+
         $user = User::where('discord_id', $request->user)->first();
+
+        if($currentUser !== $user->id){
+            dd('DENIED');
+        }
 
         dd($user);
         // Access headers
