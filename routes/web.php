@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/discord', [DiscordController::class, 'index']);
 Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
+Route::post('/discord/receive-info', [DiscordController::class, 'receiveInfo']);
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 
 

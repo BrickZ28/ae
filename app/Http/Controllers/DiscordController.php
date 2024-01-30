@@ -70,4 +70,23 @@ class DiscordController extends Controller
 
         $user->notify(new TestNotification());
     }
+
+    public function receiveInfo(Request $request)
+    {
+        // Retrieve data sent from the Discord bot
+        $userId = $request->input('user_id');
+        $userName = $request->input('user_name');
+        $userDiscriminator = $request->input('user_discriminator');
+
+        // Process the information as needed
+        $response = [
+            'status' => 'success',
+            'message' => 'Received user information',
+            'user_id' => $userId,
+            'user_name' => $userName,
+            'user_discriminator' => $userDiscriminator,
+        ];
+
+        return response()->json($response);
+    }
 }
