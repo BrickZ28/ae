@@ -25,6 +25,7 @@ class SocialiteController extends Controller
             // get user info from social site
             $user = Socialite::driver($provider)->stateless()->user();
 
+
             // check for existing user
             $existingUser = User::where('email', $user->getEmail())->first();
 
@@ -51,6 +52,7 @@ class SocialiteController extends Controller
 
 
         return User::updateOrCreate([
+            'discord_id' => $user->id,
             'username' => $user->user['username'],
             'global_name' => $user->user['global_name'],
             'discriminator' => $user->user['discriminator'],
