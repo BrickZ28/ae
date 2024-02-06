@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RuleResource;
 use App\Models\Rule;
 use App\Models\User;
 use Auth;
@@ -62,4 +63,9 @@ class RulesController extends Controller
 	public function destroy($id)
 	{
 	}
+
+    public function testing()
+    {
+        return RuleResource::collection(Rule::all());
+    }
 }
