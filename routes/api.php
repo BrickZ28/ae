@@ -22,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['middleware' => ['auth:sanctum']],function (){
     Route::post('/logout', [ApiAuthController::class, 'logout']);
-    Route::get('/apirules', [RulesController::class, 'testing']);;
+    Route::get('/apirules', [RulesController::class, 'testing']);
 });
 
 Route::post('/login', [ApiAuthController::class, 'login']);

@@ -21,6 +21,7 @@ class UserFactory extends Factory
     public function definition(): array
     {
         return [
+            'discord_id' => fake()->uuid,
             'username' => fake()->userName(),
             'global_name' => fake()->userName(),
             'discriminator' => fake()->randomDigit(),

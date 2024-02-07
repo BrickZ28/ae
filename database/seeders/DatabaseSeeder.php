@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Rule;
+use App\Models\Screenshot;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -13,11 +15,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-//         User::factory(10)->create();
+         User::factory(10)
+             ->has(Screenshot::factory(5), 'uploadedscreenshots')
+             ->has(Screenshot::factory(2), 'createdscreenshots')
+             ->create();
+         Rule::factory(5)->create();
 
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+
+
+
     }
 }

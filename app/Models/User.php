@@ -45,4 +45,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Rule::class);
     }
+
+    public function createdscreenshots(): HasMany
+    {
+        return $this->hasMany(Screenshot::class, 'created_by');
+    }
+
+    public function uploadedscreenshots(): HasMany
+    {
+        return $this->hasMany(Screenshot::class, 'uploaded_by');
+    }
 }
