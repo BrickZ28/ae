@@ -10,13 +10,13 @@ class LoginUserRequest extends FormRequest
     {
         return [
 
-//            'email' => ['required', 'email', 'string'],
+            'email' => ['required', 'email', 'string'],
 
         ];
     }
 
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 }
