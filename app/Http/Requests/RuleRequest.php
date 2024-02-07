@@ -11,7 +11,7 @@ class RuleRequest extends FormRequest
 		return [
 			'rule' => ['required'],
 			'priority' => ['required', 'integer'],
-			'user_id' => ['nullable', 'exists:users'],
+//			'user_id' => ['nullable', 'exists:users'],
 		];
 	}
 
