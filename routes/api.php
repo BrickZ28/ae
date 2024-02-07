@@ -21,4 +21,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::get('/apirules', [RulesController::class, 'testing']);
-Route::get('/register', [ApiAuthController::class, 'register']);
+Route::post('/register', [ApiAuthController::class, 'register']);
