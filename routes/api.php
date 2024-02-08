@@ -1,8 +1,7 @@
 <?php
 
-use App\Http\Controllers\ApiAuthController;
-use App\Http\Controllers\RulesController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Api\v1\ApiAuthController;
+use App\Http\Controllers\Api\v1\RuleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,9 +19,9 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::group(['middleware' => ['auth:sanctum']],function (){
+Route::group(['prefix' => '/v1','middleware' => ['auth:sanctum']],function (){
     Route::post('/logout', [ApiAuthController::class, 'logout']);
-    Route::get('/apirules', [RulesController::class, 'apiRulesIndex']);
+    Route::resource('/rules', RuleController::class);
 });
 
 Route::post('/login', [ApiAuthController::class, 'login']);

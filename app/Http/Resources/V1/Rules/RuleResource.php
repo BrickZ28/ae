@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Http\Resources;
+namespace App\Http\Resources\V1\Rules;
 
+use App\Models\Rule;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-/** @mixin \App\Models\Rule */
+/** @mixin Rule */
 class RuleResource extends JsonResource
 {
 	public function toArray(Request $request): array

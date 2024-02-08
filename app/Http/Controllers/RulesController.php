@@ -2,14 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\RuleResource;
+use App\Http\Resources\V1\Rules\RuleResource;
 use App\Models\Rule;
-use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
-
-
 
 
 class RulesController extends Controller

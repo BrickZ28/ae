@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
-use App\Http\Requests\LoginUserRequest;
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\V1\LoginUserRequest;
+use App\Http\Requests\V1\StoreUserRequest;
 use App\Models\User;
 use App\Traits\Responses\HttpResponses;
 use Hash;
@@ -24,7 +25,6 @@ class ApiAuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         return $this->success([
-            'user' => $user,
             'user' => $user,
             'token' => $user->createToken('API Token of' . $user->name)->plainTextToken
         ]);
