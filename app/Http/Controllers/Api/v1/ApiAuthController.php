@@ -17,7 +17,7 @@ class ApiAuthController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-        $check_login = DB::table('personal_access_tokes')->where('name', $request->discord_id)->first()
+        $check_login = DB::table('personal_access_tokes')->where('name', $request->discord_id)->first();
         if ($check_login){
             return $this->success([
                 'token' => $check_login->token
