@@ -17,7 +17,7 @@ class ApiAuthController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-        $check_login = DB::table('personal_access_tokens')->where('token', $request->token)->find();
+        $check_login = DB::table('personal_access_tokens')->where('token', $request->token)->first();
         if ($check_login){
             return $this->success([
                 'token' => $check_login->token
