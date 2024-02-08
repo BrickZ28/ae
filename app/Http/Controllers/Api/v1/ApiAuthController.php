@@ -7,6 +7,7 @@ use App\Http\Requests\V1\LoginUserRequest;
 use App\Http\Requests\V1\StoreUserRequest;
 use App\Models\User;
 use App\Traits\Responses\HttpResponses;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,17 +17,19 @@ class ApiAuthController extends Controller
 
     public function login(LoginUserRequest $request)
     {
+        $check_login = DB::table('personal_access_tokes')->where('name', $request->discord_id)->first()
+        if ($check_login){
+            return $this->success([
+                'token' => $check_login->token
+            ]);
+        }
         $request->validated($request->all());
-
-//        if (!Auth::attempt($request->only('discord_id'))){
-//            return $this->error('', 'Credentials Invalid', '401');
-//        }
 
         $user = User::where('discord_id', $request->discord_id)->first();
 
         return $this->success([
             'user' => $user,
-            'token' => $user->createToken('API Token of' . $user->name)->plainTextToken
+            'token' => $user->createToken('API Token of' . $user->discord_id)->plainTextToken
         ]);
     }
 
