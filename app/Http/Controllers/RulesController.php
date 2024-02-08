@@ -14,12 +14,20 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class RulesController extends Controller
 {
-	public function index()
+	public function index(Request $request)
 	{
-        return view('dashboard.rules.index')->with([
-            'rules' => Rule::all(),
-            'filters' => ['id', 'priority', 'rule', 'last updated', 'created on', 'created by', 'actions']
-        ]);
+        if ($request){
+            $this->testing();
+        } else {
+            return view('dashboard.rules.index')->with([
+                'rules' => Rule::all(),
+                'filters' => ['id', 'priority', 'rule', 'last updated', 'created on', 'created by', 'actions']
+            ]);
+        }
+//        return view('dashboard.rules.index')->with([
+//            'rules' => Rule::all(),
+//            'filters' => ['id', 'priority', 'rule', 'last updated', 'created on', 'created by', 'actions']
+//        ]);
 	}
     public function create()
     {
