@@ -16,7 +16,7 @@ class ApiAuthController extends Controller
 
     public function login(LoginUserRequest $request)
     {
-        $request->validated($request->all());
+//        $request->validated($request->all());
 
         if (!Auth::attempt($request->only('discord_id'))){
             return $this->error('', 'Credentials Invalid', '401');
