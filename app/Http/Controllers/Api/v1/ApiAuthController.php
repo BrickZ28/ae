@@ -7,7 +7,7 @@ use App\Http\Requests\V1\LoginUserRequest;
 use App\Http\Requests\V1\StoreUserRequest;
 use App\Models\User;
 use App\Traits\Responses\HttpResponses;
-use Hash;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class ApiAuthController extends Controller
@@ -22,7 +22,7 @@ class ApiAuthController extends Controller
 //            return $this->error('', 'Credentials Invalid', '401');
 //        }
 
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('discord_id', $request->discord_id)->first();
 
         return $this->success([
             'user' => $user,

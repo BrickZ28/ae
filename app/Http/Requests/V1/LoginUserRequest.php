@@ -10,7 +10,7 @@ class LoginUserRequest extends FormRequest
     {
         return [
 
-            'email' => ['required', 'email', 'string'],
+            'discord_id' => ['required', 'string'],
 
         ];
     }
