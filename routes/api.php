@@ -21,7 +21,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => '/v1','middleware' => ['auth:sanctum']],function (){
     Route::post('/logout', [ApiAuthController::class, 'logout']);
-    Route::resource('/rules', RuleController::class);
+    Route::resource('/rule', RuleController::class);
 });
 
 Route::post('/login', [ApiAuthController::class, 'login']);
