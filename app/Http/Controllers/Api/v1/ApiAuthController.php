@@ -29,7 +29,7 @@ class ApiAuthController extends Controller
 
         return $this->success([
             'user' => $user,
-            'token' => $user->createToken('API Token of' . $user->discord_id)->plainTextToken
+            'token' => $user->createToken($user->discord_id)->plainTextToken
         ]);
     }
 
