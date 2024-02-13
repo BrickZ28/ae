@@ -29,7 +29,8 @@ class SideMenu extends Component
             'users' => ['View Users' => '/users'],
             'rules' => ['New Rule' => '/rules/create',
                 'View Rules' => '/rules'],
-            'screenshots' => ['Upload Screenshot' => '/screenshots/create']
+            'screenshots' => ['Upload Screenshot' => '/screenshots/create'],
+            'servers' => ['Create Server' => '/servers/create'],
         ];
     }
 

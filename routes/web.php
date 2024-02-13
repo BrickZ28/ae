@@ -7,6 +7,7 @@ use App\Http\Controllers\DiscordController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotController;
+use App\Http\Controllers\ServerController;
 use App\Http\Controllers\ServerSettingsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -33,11 +34,10 @@ Route::get('/discord/callback', [SocialiteController::class, 'redirect']);
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::resource('/users', UsersController::class, ['names' => 'users']);
     Route::resource('/rules', RulesController::class, ['names' => 'rules']);
     Route::resource('/screenshots', ScreenshotController::class, ['names' => 'screenshots']);
-    Route::resource('/screenshots', ServerSettingsController::class, ['name' => 'server-settings']);
+    Route::resource('/servers', ServerController::class, ['names' => 'servers']);
 });
 
 Route::get('/error', function () {
