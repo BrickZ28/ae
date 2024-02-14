@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\Apps\UserManagementController;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiscordController;
@@ -8,11 +7,10 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotController;
 use App\Http\Controllers\ServerController;
-use App\Http\Controllers\ServerSettingsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
-
+Route::get('/nitrado/servers', [ServerController::class, 'getNitradoServers']);
 Route::get('/discord', [DiscordController::class, 'index']);
 Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
 Route::post('/discord/receive-info', [DiscordController::class, 'receiveInfo']);

@@ -10,7 +10,7 @@ class Server extends Model
 {
 	use HasFactory;
 
-    protected $fillable = ['name', 'ip'];
+    protected $guarded = [];
 
     public function settings(): HasMany
     {

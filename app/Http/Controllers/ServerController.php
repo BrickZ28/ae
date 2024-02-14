@@ -4,13 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Models\Server;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ServerController extends Controller
 {
 	public function index()
 	{
-
+        return view('dashboard.server.index')->with([
+            'servers' => Server::all(),
+            'filters' => ['serverhost_id', 'name', 'slots', 'end_date', 'status', ]
+        ]);
 	}
 
 	public function create()
@@ -50,4 +54,35 @@ class ServerController extends Controller
 	public function destroy(Server $server)
 	{
 	}
+
+    public function getNitradoServers()
+    {
+        $response = Http::withToken(config('constants.nitrado.api_token'))
+            ->accept('application/json')
+            ->get('https://api.nitrado.net/services');
+
+        $data = $response->json();
+
+        if ($data['status'] === 'success') {
+            foreach ($data['data']['services'] as $service) {
+
+
+                Server::create([
+                    'name' => $service['details']['name'],
+                    'ip' => $service['details']['address'],
+                    'serverhost_id' => $service['id'] ,
+                    'comments' => $service['comment'],
+                    'slots' => $service['details']['slots'],
+                    'status' => $service['status'],
+                    'start_date' => $service['start_date'],
+                    'end_date' => $service['suspend_date'],
+                    'crossplay' => (bool)$service['is_xcross'],
+                    'game' => $service['details']['game'],
+                ]);
+            }
+        } else {
+            // Handle error status
+            echo "Error: " . $data['message'];
+        }
+    }
 }

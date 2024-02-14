@@ -30,7 +30,8 @@ class SideMenu extends Component
             'rules' => ['New Rule' => '/rules/create',
                 'View Rules' => '/rules'],
             'screenshots' => ['Upload Screenshot' => '/screenshots/create'],
-            'servers' => ['Create Server' => '/servers/create'],
+            'servers' => ['Create Server' => '/servers/create',
+                'View Servers' => '/servers'],
         ];
     }
 
