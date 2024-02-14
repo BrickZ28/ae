@@ -9,6 +9,15 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ServerController extends Controller
 {
+
+    protected $apiService;
+
+    public function __construct(ApiService $apiService)
+    {
+        $this->apiService = $apiService;
+    }
+
+
 	public function index()
 	{
         return view('dashboard.server.index')->with([
@@ -55,6 +64,16 @@ class ServerController extends Controller
 	{
 	}
 
+
+    public function fetchApiData()
+    {
+        // Call the fetchData method from the ApiService
+        $data = $this->apiService->fetchData('https://api.example.com/data');
+
+        // Process the data or return it as needed
+        return response()->json($data);
+    }
+
     public function getNitradoServers()
     {
         $response = Http::withToken(config('constants.nitrado.api_token'))
@@ -82,7 +101,7 @@ class ServerController extends Controller
             }
         } else {
             // Handle error status
-            echo "Error: " . $data['message'];
+            return  null;
         }
     }
 }
