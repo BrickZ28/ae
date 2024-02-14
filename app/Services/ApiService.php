@@ -9,20 +9,22 @@ use Illuminate\Support\Facades\Http;
 class ApiService
 {
     use HttpResponses;
-    public function fetchData($token, $url, $headers = ['application/json'])
+    public function fetchJsonDataArray($token, $url, $headers = ['application/json'])
     {
         // Make API request
         $response = Http::withToken($token)
             ->accept($headers)
             ->get($url);
 
-        $data = $response->json();
+        $data = json_decode($response, true);
+
+
 
         // Check if request was successful
         if ($data['status'] === 'success') {
-                return $response->json();
+                return $data;
             } else {
-            return $this->error($data, $data['status'], 401);
+            return $this->error($data, $data['message'], 503);
         }
 
     }

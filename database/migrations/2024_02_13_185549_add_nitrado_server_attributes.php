@@ -13,8 +13,8 @@ return new class extends Migration
             $table->string('comments')->nullable();
             $table->string('slots');
             $table->string('game');
-            $table->dateTime('start_date');
-            $table->dateTime('end_date');
+            $table->dateTime('start_date')->nullable();
+            $table->dateTime('end_date')->nullable();
             $table->boolean('crossplay');
             $table->string('status');
 		});

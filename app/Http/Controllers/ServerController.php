@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Server;
+use App\Services\ApiService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -65,22 +66,11 @@ class ServerController extends Controller
 	}
 
 
-    public function fetchApiData()
-    {
-        // Call the fetchData method from the ApiService
-        $data = $this->apiService->fetchData('https://api.example.com/data');
 
-        // Process the data or return it as needed
-        return response()->json($data);
-    }
 
     public function getNitradoServers()
     {
-        $response = Http::withToken(config('constants.nitrado.api_token'))
-            ->accept('application/json')
-            ->get('https://api.nitrado.net/services');
-
-        $data = $response->json();
+        $data = $this->apiService->fetchJsonDataArray(config('constants.nitrado.api_token'),'https://api.nitrado.net/services');
 
         if ($data['status'] === 'success') {
             foreach ($data['data']['services'] as $service) {
