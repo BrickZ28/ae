@@ -2,21 +2,41 @@
     <x-datatable_shell breadcrumb-title="Servers" breadcrumb-parent="server management" breadcrumb-child="servers"
                        :$filters>
 
-        @foreach($servers as $server)
+        @foreach($servers['data']['services'] as $server)
 
             <tr>
-                <td>{{$server->serverhost_id}}</td>
-                <td class="d-flex align-items-center">
-                    {{$server->name}}
+                <td>{{$server['id']}}</td>
+                <td>
+                    {{$server['details']['name']}}
                 </td>
-                <td>{{$server->slots}}</td>
+                <td>{{$server['details']['slots']}}</td>
                 <td>
                     <x-display-date-formatted
-                        :date="$server->end_date" format="D M j, Y @ g:i:sa" />
+                        :date="$server['suspend_date']" format="D M j, Y @ g:i:sa" />
                 </td>
-                <td>{{$server->status}}</td>
-
-
+                <td>{{$server['status']}}</td>
+                <td>{{$server['details']['slots']}}</td>
+                <td class="text-end">
+                    <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"
+                       data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
+                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
+                    <!--begin::Menu-->
+                    <div
+                        class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
+                        data-kt-menu="true">
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="" class="menu-link px-3">Edit</a>
+                        </div>
+                        <!--end::Menu item-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
+                        </div>
+                        <!--end::Menu item-->
+                    </div>
+                    <!--end::Menu-->
+                </td>
             </tr>
         @endforeach
 

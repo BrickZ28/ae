@@ -11,6 +11,8 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
-        "datatables.net-dt": "^1.13.8"
+        "@sweetalert2/themes": "^5.0.16",
+        "datatables.net-dt": "^1.13.8",
+        "sweetalert2": "^11.6.13"
     }
 }
