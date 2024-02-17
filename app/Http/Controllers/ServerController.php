@@ -45,7 +45,7 @@ class ServerController extends Controller
     public function dj()
     {
         $server = $this->getApiRequest(null,null,"services/2877144/gameservers");
-        $settings = $server['data']['gameserver'];
+        $settings = $server;
         dd($settings);
     }
 
