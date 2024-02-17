@@ -54,7 +54,22 @@ class RulesController extends Controller
 
 	public function update(Request $request, $id)
 	{
-        dd($request);
+        $request->validate([
+            'rule' => 'required',
+            'priority' => 'required|min:1|max:2|numeric',
+        ]);
+
+        $rule = Rule::find($id);
+        $rule->rule = $request->rule;
+        $rule->priority = $request->priority;
+
+        if ($rule->save()){
+            Alert::success('UPdated', 'Rule Updated');
+        } else {
+            Alert::error('Failed', 'Rule failed to update');
+        }
+
+        return view('dashboard.index');
 	}
 
 	public function destroy($id)

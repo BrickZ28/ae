@@ -2,6 +2,7 @@
 <!--begin::Input group-->
 <div class="input-group mb-5 ">
     <input name="{{$name}}"
+           value="{{$value}}"
            type="text"
            class="form-control"
            placeholder="{{$placeholder}}"

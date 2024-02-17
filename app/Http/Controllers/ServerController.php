@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Server;
 use App\Services\ApiService;
+use App\Traits\ApiRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -11,6 +12,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ServerController extends Controller
 {
+    use ApiRequests;
 	public function index()
 	{
         return view('dashboard.server.index')->with([
@@ -40,10 +42,25 @@ class ServerController extends Controller
         return view('dashboard.index');
     }
 
-	public function show(Server $server)
-	{
-
+    public function dj()
+    {
+        $server = $this->getApiRequest(null,null,"services/2877144/gameservers");
+        dd($server);
     }
+
+	public function show($id)
+	{
+        $server = $this->getApiRequest(null,null,"services/{$id}/gameservers");
+        $settings = $server['data']['gameserver'];
+
+        // Debugging statements
+//        dd($settings); // Dump the contents of $settings
+//        dd(is_array($settings)); // Check if $settings is an array
+
+
+        return view('dashboard.server.show', compact('settings'));
+    }
+
 
 	public function edit(Server $server)
 	{

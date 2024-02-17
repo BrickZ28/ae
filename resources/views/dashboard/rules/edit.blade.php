@@ -5,7 +5,7 @@
         <div class="row gx-10 mb-5">
 
             <div class="col-lg-12">
-                <x-form-input label="Rule" name="rule" placeholder="{{$rule->rule}}"
+                <x-form-input label="Rule" value="{{$rule->rule}}" name="rule" placeholder=""
                               required="required" />
 
                 <x-form-select label="Priority" name="priority" required="required" >

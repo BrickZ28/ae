@@ -8,6 +8,7 @@ use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotController;
 use App\Http\Controllers\ServerController;
 use App\Http\Controllers\UsersController;
+use App\Models\Server;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/nitrado/servers', [ServerController::class, 'getNitradoServers']);
@@ -28,8 +29,10 @@ Route::get('/discord/callback', [SocialiteController::class, 'redirect']);
 //    Route::resource('/user-management/permissions', PermissionManagementController::class);
 //});
 
-Route::resource('/servers', ServerController::class, ['names' => 'servers']);
 
+Route::get('/servers', [ServerController::class, 'index'])->name('servers.index');
+Route::get('/servers/{id}', [ServerController::class, 'show'])->name('servers.show');
+Route::get('/dj/test/section', [ServerController::class, 'dj'])->name('servers.dj');
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');

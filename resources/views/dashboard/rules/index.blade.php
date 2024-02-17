@@ -31,10 +31,23 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
+                            <a href="{{route('rules.show', $rule->id)}}" class="menu-link px-3">View</a>
                         </div>
                         <!--end::Menu item-->
                     </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
                     <!--end::Menu-->
                 </td>
             </tr>
