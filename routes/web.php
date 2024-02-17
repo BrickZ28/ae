@@ -28,6 +28,7 @@ Route::get('/discord/callback', [SocialiteController::class, 'redirect']);
 //    Route::resource('/user-management/permissions', PermissionManagementController::class);
 //});
 
+Route::resource('/servers', ServerController::class, ['names' => 'servers']);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -35,7 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/users', UsersController::class, ['names' => 'users']);
     Route::resource('/rules', RulesController::class, ['names' => 'rules']);
     Route::resource('/screenshots', ScreenshotController::class, ['names' => 'screenshots']);
-    Route::resource('/servers', ServerController::class, ['names' => 'servers']);
+
 });
 
 Route::get('/error', function () {

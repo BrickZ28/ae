@@ -14,6 +14,7 @@
                         method="{{ strtoupper($method) === 'GET' ? 'GET' : 'POST' }}"
                             @method(strtoupper($method))
                             @csrf
+                        >
                             <!--begin::Wrapper-->
                             <div class="mb-0">
                                 <!--begin::Row-->

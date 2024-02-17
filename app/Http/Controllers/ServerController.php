@@ -42,11 +42,8 @@ class ServerController extends Controller
 
 	public function show(Server $server)
 	{
-        $route = Route::current(); // Illuminate\Routing\Route
-        $name = Route::currentRouteName(); // string
-        $action = Route::currentRouteAction(); // string
-        dd(53, $route, $name, $action);
-	}
+
+    }
 
 	public function edit(Server $server)
 	{

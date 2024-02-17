@@ -26,7 +26,7 @@
                         data-kt-menu="true">
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
-                            <a href="apps/user-management/users/view.html" class="menu-link px-3">Edit</a>
+                            <a href="{{route('rules.edit', $rule->id)}}" class="menu-link px-3">Edit</a>
                         </div>
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
