@@ -11,10 +11,9 @@
                     <div class="card-body p-12">
                         <!--begin::Form-->
                         <form action="{{$route}}" id="kt_invoice_form" {{$file === 'yes' ? 'enctype=multipart/form-data' : "''" }}
-                        method="{{ strtoupper($method) === 'GET' ? 'GET' : 'POST' }}"
+                        method="{{ strtoupper($method) === 'GET' ? 'GET' : 'POST' }}">
                             @method(strtoupper($method))
-                            @csrf
-                        >
+                            @csrf>
                             <!--begin::Wrapper-->
                             <div class="mb-0">
                                 <!--begin::Row-->
