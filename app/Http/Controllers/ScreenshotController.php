@@ -35,7 +35,10 @@ class ScreenshotController extends Controller
             'file' => 'required|image',
             ]);
 
+
+
         $path = $this->uploadFile('do','images', $request->file, 'public');
+
 
         if ($path) {
             Screenshot::create([

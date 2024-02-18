@@ -95,13 +95,13 @@
         <!--end::Statistics-->
         <!--begin::Testimonial-->
         <div class="fs-2 fw-semibold text-muted text-center mb-3">
-            <span class="fs-1 lh-1 text-gray-700"></span>Come join and play on one of our multiple servers today
+            <span class="fs-1 lh-1 text-gray-700">Come join and play on one of our multiple servers today
             </span></div>
         <!--end::Testimonial-->
         <!--begin::Author-->
         <div class="fs-2 fw-semibold text-muted text-center">
 
-            <span class="fs-4 fw-bold text-gray-600">YOur bound to find everything you need</span>
+            <span class="fs-4 fw-bold text-gray-600">You're bound to find everything you need</span>
         </div>
         <!--end::Author-->
     </div>
