@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Screenshot;
+use App\Models\Server;
+use App\Traits\ApiRequests;
 
 if (! function_exists('getRandomScreenshot')) {
     function getRandomScreenshot()
@@ -8,4 +10,6 @@ if (! function_exists('getRandomScreenshot')) {
         $image = Screenshot::inRandomOrder()->limit(4)->get();
         return $image;
     }
+
 }
+

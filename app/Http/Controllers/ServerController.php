@@ -60,13 +60,6 @@ class ServerController extends Controller
         $baby_cuddle_multiplier = StringHelper::extractValue($server['data']['gameserver']['settings']['gameini']['BabyCuddleIntervalMultiplier']);
         $baby_imprint_multiplier = StringHelper::extractValue($server['data']['gameserver']['settings']['gameini']['BabyImprintAmountMultiplier']);
 
-
-
-
-//        dd($server); // Dump the contents of $settings
-////        dd(is_array($settings)); // Check if $settings is an array
-////
-
         return view('dashboard.server.show',
             compact('settings',
                 'mating_interval_multiplier',
