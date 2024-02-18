@@ -54,10 +54,10 @@ class ServerController extends Controller
         $server = $this->getApiRequest(null,null,"services/{$id}/gameservers");
         $settings = $server['data']['gameserver'];
 
-        // Debugging statements
-//        dd($settings); // Dump the contents of $settings
-//        dd(is_array($settings)); // Check if $settings is an array
 
+        dd($server); // Dump the contents of $settings
+//        dd(is_array($settings)); // Check if $settings is an array
+//
 
         return view('dashboard.server.show', compact('settings'));
     }
