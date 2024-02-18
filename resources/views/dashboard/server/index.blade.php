@@ -29,11 +29,6 @@
                             <a href="{{route('servers.show', $server['id'])}}" class="menu-link px-3">View</a>
                         </div>
                         <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
-                        </div>
-                        <!--end::Menu item-->
                     </div>
                     <!--end::Menu-->
                 </td>
