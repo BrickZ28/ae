@@ -12,7 +12,8 @@
                         <div class="mb-13 text-center">
                             <h1 class="fs-2hx fw-bold mb-5">{{$settings['query']['server_name']}}</h1>
                             <div class="text-gray-600 fw-semibold fs-5">Current Status
-                                <h1  class="fw-bold text-bg-success">{{strtoupper($settings['status'])}}</h1></div>
+                                <h1  class="fw-bold {{ $settings['status'] == 'started' ? 'text-bg-success' : 'text-bg-danger' }}">
+                                    {{strtoupper($settings['status'])}}</h1></div>
                         </div>
                         <!--end::Heading-->
 
@@ -58,9 +59,9 @@
                                                                             :setting="$mating_interval_multiplier"/>
                                             <x-dashboard-product-card-items label="Hatch speed multiplier"
                                                                             :setting="$hatch_speed_multiplier"/>
-                                            <x-dashboard-product-card-items label="Hatch speed multiplier"
+                                            <x-dashboard-product-card-items label="Baby cuddle multiplier"
                                                                             :setting="$baby_cuddle_multiplier"/>
-                                            <x-dashboard-product-card-items label="Hatch speed multiplier"
+                                            <x-dashboard-product-card-items label="Baby imprint multiplier"
                                                                             :setting="$baby_imprint_multiplier"/>
 
                                             <!--end::Item-->
