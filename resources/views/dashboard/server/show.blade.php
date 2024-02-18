@@ -10,7 +10,7 @@
                     <div class="d-flex flex-column">
                         <!--begin::Heading-->
                         <div class="mb-13 text-center">
-                            <h1 class="fs-2hx fw-bold mb-5">{{$settings['settings']['config']['server-name']}}</h1>
+                            <h1 class="fs-2hx fw-bold mb-5">{{$settings['query']['server_name']}}</h1>
                             <div class="text-gray-600 fw-semibold fs-5">Current Status
                                 <h1  class="fw-bold text-bg-success">{{strtoupper($settings['status'])}}</h1></div>
                         </div>
@@ -35,9 +35,9 @@
                                             <!--end::Description-->
                                             <!--begin::Price-->
                                             <div>
-                                                <span class="mb-2 text-primary">$</span>
+
                                                 <span class="fs-3x fw-bold
-                                                text-primary">{{$settings['settings']['query']['game_current']}}</span>
+                                                text-primary">{{$settings['query']['player_current']}}</span>
                                                 <span class="fs-7 fw-semibold opacity-50">/
                             <span data-kt-element="period">players online</span>
                         </span>
@@ -48,20 +48,26 @@
                                         <!--begin::Features-->
                                         <div class="w-100 mb-10 text-center">
                                             <!--begin::Item-->
-                                            <div class="d-flex align-items-center mb-5">
-                                                <span class="fw-semibold fs-6 text-gray-800 flex-grow-1 pe-3">Up to 10 Active Users</span>
-                                                <i class="ki-duotone ki-check-circle fs-1 text-success">
-                                                    <span class="path1"></span>
-                                                    <span class="path2"></span>
-                                                </i>
-                                            </div>
+                                            <x-dashboard-product-card-items label="Taming multiplier"
+                                                                            :setting="$settings['settings']['config']['TamingSpeedMultiplier']"/>
+                                            <x-dashboard-product-card-items label="Harvest multiplier"
+                                                                            :setting="$settings['settings']['config']['HarvestAmountMultiplier']"/>
+                                            <x-dashboard-product-card-items label="XP multiplier"
+                                                                            :setting="$settings['settings']['config']['XPMultiplier']"/>
+                                            <x-dashboard-product-card-items label="Mating multiplier"
+                                                                            :setting="$mating_interval_multiplier"/>
+                                            <x-dashboard-product-card-items label="Hatch speed multiplier"
+                                                                            :setting="$hatch_speed_multiplier"/>
+                                            <x-dashboard-product-card-items label="Hatch speed multiplier"
+                                                                            :setting="$baby_cuddle_multiplier"/>
+                                            <x-dashboard-product-card-items label="Hatch speed multiplier"
+                                                                            :setting="$baby_imprint_multiplier"/>
+
                                             <!--end::Item-->
-                                            <!-- Add more feature items here -->
+
                                         </div>
                                         <!--end::Features-->
-                                        <!--begin::Select-->
-                                        <a href="#" class="btn btn-sm btn-primary">Select</a>
-                                        <!--end::Select-->
+
                                     </div>
                                     <!--end::Option-->
                                 </div>

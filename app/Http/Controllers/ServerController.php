@@ -6,9 +6,10 @@ use App\Models\Server;
 use App\Services\ApiService;
 use App\Traits\ApiRequests;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
+use App\Helpers\StringHelper;
 use Illuminate\Support\Facades\Route;
 use RealRashid\SweetAlert\Facades\Alert;
+
 
 class ServerController extends Controller
 {
@@ -53,13 +54,25 @@ class ServerController extends Controller
 	{
         $server = $this->getApiRequest(null,null,"services/{$id}/gameservers");
         $settings = $server['data']['gameserver'];
+        $mating_interval_multiplier = StringHelper::extractValue
+        ($server['data']['gameserver']['settings']['gameini']['MatingIntervalMultiplier']);
+        $hatch_speed_multiplier = StringHelper::extractValue($server['data']['gameserver']['settings']['gameini']['EggHatchSpeedMultiplier']);
+        $baby_cuddle_multiplier = StringHelper::extractValue($server['data']['gameserver']['settings']['gameini']['BabyCuddleIntervalMultiplier']);
+        $baby_imprint_multiplier = StringHelper::extractValue($server['data']['gameserver']['settings']['gameini']['BabyImprintAmountMultiplier']);
 
 
-        dd($server); // Dump the contents of $settings
-//        dd(is_array($settings)); // Check if $settings is an array
-//
 
-        return view('dashboard.server.show', compact('settings'));
+
+//        dd($server); // Dump the contents of $settings
+////        dd(is_array($settings)); // Check if $settings is an array
+////
+
+        return view('dashboard.server.show',
+            compact('settings',
+                'mating_interval_multiplier',
+            'hatch_speed_multiplier',
+            'baby_cuddle_multiplier',
+            'baby_imprint_multiplier'));
     }
 
 
@@ -113,4 +126,12 @@ class ServerController extends Controller
         }
         return view('dashboard.index');
     }
+
+    private function extractMultiplier($key, $path)
+    {
+        $parts = explode("=", $path[$key]);
+        return $parts[1];
+    }
 }
+
+
