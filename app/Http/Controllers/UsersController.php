@@ -13,4 +13,12 @@ class UsersController extends Controller
             'filters' => ['id','username', 'role', 'Tribe', 'Last Login', 'Joined', 'actions']
         ]);
     }
+
+    public function edit($id)
+    {
+        $user = User::find($id);
+        return view('dashboard.users.edit', compact('user'));
+    }
 }
+
+
