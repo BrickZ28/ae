@@ -93,7 +93,8 @@ class ServersController extends Controller
 	public function destroy(Server $server)
 	{
 	}
-    public function getNitradoServers()
+
+    public function getServers()
     {
         $api_data = $this->getApiRequest(null, [], 'services');
 
@@ -128,11 +129,7 @@ class ServersController extends Controller
         return view('dashboard.index');
     }
 
-    private function extractMultiplier($key, $path)
-    {
-        $parts = explode("=", $path[$key]);
-        return $parts[1];
-    }
+
 }
 
 
