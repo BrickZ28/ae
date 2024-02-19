@@ -99,7 +99,7 @@ class ServersController extends Controller
 
         if ($data['status'] === 'success') {
             foreach ($data['data']['services'] as $service) {
-                $game = Game::where('api_name', $service['details']['game'])->first();
+
                 if (
                 Server::firstOrCreate([
                     'name' => $service['details']['name'],
