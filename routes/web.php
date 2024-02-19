@@ -12,7 +12,7 @@ use App\Http\Controllers\UsersController;
 use App\Models\Server;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/nitrado/servers', [ServersController::class, 'getNitradoServers']);
+Route::get('/nitrado/servers', [ServersController::class, 'getServers']);
 Route::get('/discord', [DiscordController::class, 'index']);
 Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
 Route::post('/discord/receive-info', [DiscordController::class, 'receiveInfo']);

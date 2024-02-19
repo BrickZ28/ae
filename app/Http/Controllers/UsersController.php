@@ -19,6 +19,20 @@ class UsersController extends Controller
         $user = User::find($id);
         return view('dashboard.users.edit', compact('user'));
     }
+
+    public function update(Request $request, User $user)
+    {
+        //check validation
+        $request->validate([
+            'ae_credits' => 'required_if:ae_credits,>0|numeric',
+        ]);
+
+        $user->update([
+            'ae_credits' => $request->ae_credits,
+        ]);
+
+        return redirect()->route('users.index')->with('success', 'User updated successfully');
+    }
 }
 
 
