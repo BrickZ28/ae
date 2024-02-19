@@ -13,14 +13,14 @@ class RulesController extends Controller
 {
 	public function index()
 	{
-        return view('dashboard.rules.index')->with([
+        return view('dashboard.rule.index')->with([
             'rules' => Rule::all(),
             'filters' => ['id', 'priority', 'rule', 'last updated', 'created on', 'created by', 'actions']
         ]);
 	}
     public function create()
     {
-        return view('dashboard.rules.create');
+        return view('dashboard.rule.create');
     }
 	public function store(Request $request)
 	{
@@ -47,7 +47,7 @@ class RulesController extends Controller
 
 	public function edit($id)
 	{
-        return view('dashboard.rules.edit')->with([
+        return view('dashboard.rule.edit')->with([
             'rule' => Rule::find($id),
         ]);
 	}

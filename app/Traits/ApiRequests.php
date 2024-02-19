@@ -7,11 +7,12 @@ use Illuminate\Support\Facades\Http;
 
 trait ApiRequests
 {
-    public function getApiRequest($token = null, $headers = null, $endpoint = null)
+    public function getApiRequest($token = null, $headers = [], $endpoint = null)
     {
         $token = config('constants.nitrado.api_token');
         $endpointurl = 'https://api.nitrado.net/' . $endpoint;
         $heads = ['application/json'];
+
 
         $response = Http::withToken($token)
             ->accept($heads)
@@ -25,7 +26,7 @@ trait ApiRequests
         }
     }
 
-    public function getOnlinePlayerCOunt()
+    public function getOnlinePlayerCount()
     {
         $servers = Server::getFromAPI();
 
@@ -36,6 +37,7 @@ trait ApiRequests
         foreach ($servers['data']['services'] as $server) {
             // Get game server data for the current server ID
             $serverData = $this->getApiRequest(null,null,"services/{$server['id']}/gameservers");
+
             $totalPlayers = $totalPlayers + $serverData['data']['gameserver']['query']['player_current'];
 
         }

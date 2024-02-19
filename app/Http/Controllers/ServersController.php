@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 use RealRashid\SweetAlert\Facades\Alert;
 
 
-class ServerController extends Controller
+class ServersController extends Controller
 {
     use ApiRequests;
 	public function index()
@@ -94,7 +94,7 @@ class ServerController extends Controller
 	}
     public function getNitradoServers()
     {
-        $data = $this->apiService->fetchJsonDataArray(config('constants.nitrado.api_token'),'https://api.nitrado.net/services');
+        $data = $this->getApiRequest(null,[],'services');
 
         if ($data['status'] === 'success') {
             foreach ($data['data']['services'] as $service) {

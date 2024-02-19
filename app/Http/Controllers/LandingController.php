@@ -17,12 +17,13 @@ class LandingController extends Controller
 
 	public function index()
 	{
+
         return view('landing.index')->with([
             'users' => User::all(),
             'rules' => Rule::where('priority', 1)->limit(3)->get(),
-            'servers' => Server::getFromAPI(),
-            'random_screen_shots' => getRandomScreenshot(),
-            'online_players' => $this->getOnlinePlayerCOunt()
+            'servers' => Server::all(),
+            'random_screen_shots' => getRandomScreenshot()
+//            'online_players' => $this->getOnlinePlayerCount()
 ,        ]);
 	}
 

@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rules\File;
 use RealRashid\SweetAlert\Facades\Alert;
 
-class ScreenshotController extends Controller
+class ScreenshotsController extends Controller
 {
     use FileTrait;
 	public function index()

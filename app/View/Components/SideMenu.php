@@ -26,12 +26,14 @@ class SideMenu extends Component
     private function createAdminSubmenu()
     {
         return $this->admin_submenu = [
-            'users' => ['View Users' => '/users'],
-            'rules' => ['New Rule' => '/rules/create',
-                'View Rules' => '/rules'],
-            'screenshots' => ['Upload Screenshot' => '/screenshots/create'],
-            'servers' => ['Create Server' => '/servers/create',
-                'View Servers' => '/servers'],
+            'users' => ['View Users' => route('users.index')],
+            'rules' => ['New Rule' => route('rule.create'),
+                'View Rules' => route('rules.index')],
+            'screenshots' => ['Upload Screenshot' => route('screenshots.create')],
+            'servers' => ['Create Server' => route('servers.create'),
+                'View Servers' => route('servers.index')],
+            'games' => ['Create Game' => route('games.create'),
+                'View Games' => route('games.index')],
         ];
     }
 

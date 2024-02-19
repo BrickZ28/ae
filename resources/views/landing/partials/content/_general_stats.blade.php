@@ -54,7 +54,7 @@
                     <div class="mb-0">
                         <!--begin::Value-->
                         <div class="fs-lg-2hx fs-2x fw-bold text-white d-flex flex-center">
-                            <div class="min-w-70px" data-kt-countup="true" data-kt-countup-value="{{count($servers['data']['services'])}}"
+                            <div class="min-w-70px" data-kt-countup="true" data-kt-countup-value=""
                                  data-kt-countup-suffix=" active">0
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                     <div class="mb-0">
                         <!--begin::Value-->
                         <div class="fs-lg-2hx fs-2x fw-bold text-white d-flex flex-center">
-                            <div class="min-w-70px" data-kt-countup="true" data-kt-countup-value="{{$online_players}}"
+                            <div class="min-w-70px" data-kt-countup="true" data-kt-countup-value=""
                                  data-kt-countup-suffix=" players">0
                             </div>
                         </div>
