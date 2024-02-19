@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Game;
 use App\Models\Server;
 use App\Services\ApiService;
 use App\Traits\ApiRequests;
@@ -98,8 +99,9 @@ class ServersController extends Controller
 
         if ($data['status'] === 'success') {
             foreach ($data['data']['services'] as $service) {
+                $game = Game::where('api_name', $service['details']['game'])->first();
                 if (
-                Server::create([
+                Server::firstOrCreate([
                     'name' => $service['details']['name'],
                     'ip' => $service['details']['address'],
                     'serverhost_id' => $service['id'] ,
@@ -109,7 +111,7 @@ class ServersController extends Controller
                     'start_date' => $service['start_date'],
                     'end_date' => $service['suspend_date'],
                     'crossplay' => (bool)$service['is_xcross'],
-                    'game' => $service['details']['game'],
+                    'game_id' => $game->id,
                 ])) {
                     Alert::success('Servers stored', 'Servers stored successfully');
                 }
