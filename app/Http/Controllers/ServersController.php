@@ -95,16 +95,19 @@ class ServersController extends Controller
 	}
     public function getNitradoServers()
     {
-        $data = $this->getApiRequest(null,[],'services');
+        $api_data = $this->getApiRequest(null, [], 'services');
 
-        if ($data['status'] === 'success') {
-            foreach ($data['data']['services'] as $service) {
+        if ($api_data['status'] === 'success') {
+            foreach ($api_data['data']['services'] as $service) {
+                $server_info = $this->getApiRequest(null, null, "services/{$service['id']}/gameservers");
+                $game_human = $server_info['data']['gameserver']['game_human'];
 
-                if (
-                Server::firstOrCreate([
+                $game = Game::where('api_name', $game_human)->first();
+
+                $server_data = [
                     'name' => $service['details']['name'],
                     'ip' => $service['details']['address'],
-                    'serverhost_id' => $service['id'] ,
+                    'serverhost_id' => $service['id'],
                     'comments' => $service['comment'],
                     'slots' => $service['details']['slots'],
                     'status' => $service['status'],
@@ -112,13 +115,16 @@ class ServersController extends Controller
                     'end_date' => $service['suspend_date'],
                     'crossplay' => (bool)$service['is_xcross'],
                     'game_id' => $game->id,
-                ])) {
-                    Alert::success('Servers stored', 'Servers stored successfully');
+                ];
+
+                if (Server::firstOrCreate($server_data)) {
+                    Alert::success('servers_stored', 'Servers stored successfully');
                 }
             }
         } else {
-            Alert::error('Error', 'Servers did not store successfully');
+            Alert::error('error', 'Servers did not store successfully');
         }
+
         return view('dashboard.index');
     }
 
