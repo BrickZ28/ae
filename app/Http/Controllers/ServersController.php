@@ -55,11 +55,15 @@ class ServersController extends Controller
 	{
         $server = $this->getApiRequest(null,null,"services/{$id}/gameservers");
         $settings = $server['data']['gameserver'];
+        dd($server['data']['gameserver']);
         $mating_interval_multiplier = StringHelper::extractValue
         ($server['data']['gameserver']['settings']['gameini']['MatingIntervalMultiplier']);
-        $hatch_speed_multiplier = StringHelper::extractValue($server['data']['gameserver']['settings']['gameini']['EggHatchSpeedMultiplier']);
-        $baby_cuddle_multiplier = StringHelper::extractValue($server['data']['gameserver']['settings']['gameini']['BabyCuddleIntervalMultiplier']);
-        $baby_imprint_multiplier = StringHelper::extractValue($server['data']['gameserver']['settings']['gameini']['BabyImprintAmountMultiplier']);
+        $hatch_speed_multiplier = StringHelper::extractValue
+        ($server['data']['gameserver']['settings']['gameini']['EggHatchSpeedMultiplier']);
+        $baby_cuddle_multiplier = StringHelper::extractValue
+        ($server['data']['gameserver']['settings']['gameini']['BabyCuddleIntervalMultiplier']);
+        $baby_imprint_multiplier = StringHelper::extractValue
+        ($server['data']['gameserver']['settings']['gameini']['BabyImprintAmountMultiplier']);
 
         return view('dashboard.server.show',
             compact('settings',

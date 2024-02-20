@@ -1,7 +1,9 @@
 <?php
 namespace App\Http\Controllers;
+use Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Jobs\ProcessTransactionJob;
 
 
 class UsersController extends Controller
@@ -25,11 +27,16 @@ class UsersController extends Controller
         //check validation
         $request->validate([
             'ae_credits' => 'required_if:ae_credits,>0|numeric',
+            'reason' => 'required_if:ae_credits,>0|string|max:255'
         ]);
 
         $user->update([
             'ae_credits' => $request->ae_credits,
         ]);
+
+        if($request->ae_credits > 0){
+            ProcessTransactionJob::dispatch(Auth::id(), $user->id, $request->ae_credits, $request->reason);
+        }
 
         return redirect()->route('users.index')->with('success', 'User updated successfully');
     }

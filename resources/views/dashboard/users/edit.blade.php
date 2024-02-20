@@ -11,9 +11,20 @@
                              placeholder=""
                              value=""
                              info-text=""
-                             info-text-color="text-info"
+                             info-text-color=""
                              required=""
                />
+
+                <x-form-input label="Reason for adding AE Credits"
+                              name="reason"
+                              placeholder=""
+                              value=""
+                              info-text=""
+                              info-text-color=""
+                              required=""
+                />
+
+
 
             </div>
 
