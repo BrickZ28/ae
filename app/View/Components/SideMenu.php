@@ -34,6 +34,8 @@ class SideMenu extends Component
                 'View Servers' => route('servers.index')],
             'games' => ['Create Game' => route('games.create'),
                 'View Games' => route('games.index')],
+            'specials' => ['Create Special' => route('specials.create'),
+                'View Specials' => route('specials.index')],
         ];
     }
 

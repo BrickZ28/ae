@@ -8,6 +8,7 @@ use App\Http\Controllers\LandingController;
 use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotsController;
 use App\Http\Controllers\ServersController;
+use App\Http\Controllers\SpecialsController;
 use App\Http\Controllers\UsersController;
 use App\Models\Server;
 use Illuminate\Support\Facades\Route;
@@ -41,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dj/test/section', [ServersController::class, 'dj'])->name('servers.dj');
     Route::resource('/games', GamesController::class, ['names' => 'games']);
     Route::resource('/servers', ServersController::class, ['names' => 'servers']);
+    Route::resource('/specials', SpecialsController::class, ['names' => 'specials']);
 });
 
 Route::get('/error', function () {
