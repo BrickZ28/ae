@@ -16,7 +16,7 @@ return new class extends Migration
             $table->dateTime('start_date');
             $table->dateTime('end_date');
             $table->integer('usage_limit')->nullable();
-            $table->boolean('active')->default(true);
+            $table->boolean('active')->default(false);
 			$table->timestamps();
 		});
 	}

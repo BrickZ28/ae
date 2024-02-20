@@ -1,7 +1,7 @@
 <div class="mb-5">
     <label class="form-label">{{$label}}</label>
     <input class="form-control form-control-solid" placeholder="Pick date range" id="kt_daterangepicker_{{$name}}"
-           name="{{$name}}"/>
+           name="{{$name}}" value="{{$value}}"/>
 </div>
 
 

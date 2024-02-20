@@ -8,14 +8,17 @@ class DateRangeParser
 {
     public function parse($dateRange)
     {
-        // Extract start and end dates from the range
-        [$startDateStr, $endDateStr] = explode(' - ', $dateRange);
+        // Split the date range string by the delimiter (assuming it's '-')
+        $dates = explode('-', $dateRange);
 
-        // Convert start and end date strings to Carbon objects
-        $startDate = Carbon::createFromFormat(config('constants.date.form_format'), $startDateStr);
-        $endDate = Carbon::createFromFormat(config('constants.date.form_format'), $endDateStr);
+        // Trim whitespace from each date
+        $startDateStr = trim($dates[0]);
+        $endDateStr = trim($dates[1]);
 
-        // Return the Carbon objects
+        // Parse start and end dates using Carbon
+        $startDate = Carbon::parse($startDateStr);
+        $endDate = Carbon::parse($endDateStr);
+
         return [$startDate, $endDate];
     }
 

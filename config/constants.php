@@ -10,6 +10,6 @@ return [
         'api_url' => 'https://api.nitrado.net/'
     ],
     'date' => [
-        'form_format' => 'm/d/Y h:i A'
+        'form_format' => 'M/d/Y h:mm A',
     ],
 ];
