@@ -26,15 +26,18 @@ class UsersController extends Controller
     {
         //check validation
         $request->validate([
-            'ae_credits' => 'required_if:ae_credits,>0|numeric',
-            'reason' => 'required_if:ae_credits,>0|string|max:255'
+            'ae_credits' => 'nullable|numeric',
+            'reason' => 'nullable|string|max:255',
+        ], [
+            'ae_credits.required_if' => 'The credits field is required when ae_credits is not 0 or blank.',
+            'reason.required_if' => 'The reason field is required when credits is not 0 or blank.',
         ]);
 
-        $user->update([
-            'ae_credits' => $request->ae_credits,
-        ]);
 
-        if($request->ae_credits > 0){
+        if($request->ae_credits > 0 || $request->ae_credits < 0) {
+            $user->update([
+                'ae_credits' => $user->ae_credits + $request->ae_credits,
+            ]);
             ProcessTransactionJob::dispatch(Auth::id(), $user->id, $request->ae_credits, $request->reason);
         }
 

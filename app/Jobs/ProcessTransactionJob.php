@@ -28,6 +28,7 @@ class ProcessTransactionJob implements ShouldQueue
 
     public function handle()
     {
+
         // Create a new transaction
         Transaction::create([
             'payer_id' => $this->payerId,

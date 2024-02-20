@@ -6,12 +6,12 @@
         <div class="row gx-10 mb-5">
 
             <div class="col-lg-12">
-               <x-form-input label="Give AE Credits Current Credits - {{$user->ae_credits}}"
+               <x-form-input label="Add/Remove AE Credits   {{$user->username}} Current Credits - {{$user->ae_credits}}"
                              name="ae_credits"
                              placeholder=""
                              value=""
-                             info-text=""
-                             info-text-color=""
+                             info-text="use - to remove credits"
+                             info-text-color="text-info"
                              required=""
                />
 
