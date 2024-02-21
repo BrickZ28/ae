@@ -10,7 +10,6 @@ use App\Http\Controllers\ScreenshotsController;
 use App\Http\Controllers\ServersController;
 use App\Http\Controllers\SpecialsController;
 use App\Http\Controllers\UsersController;
-use App\Models\Server;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/discord/user-info', [DiscordController::class, 'getUserInfo'])->name('discord.user_info');
@@ -26,13 +25,6 @@ Route::get('/discord/callback', [SocialiteController::class, 'redirect']);
 
 
 
-//Route::name('user-management.')->group(function () {
-//    Route::resource('/user-management/users', UserManagementController::class);
-//    Route::resource('/user-management/roles', RoleManagementController::class);
-//    Route::resource('/user-management/permissions', PermissionManagementController::class);
-//});
-
-
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
@@ -44,6 +36,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/games', GamesController::class, ['names' => 'games']);
     Route::resource('/servers', ServersController::class, ['names' => 'servers']);
     Route::resource('/specials', SpecialsController::class, ['names' => 'specials']);
+    Route::get('/logout', [SocialiteController::class, 'logout'])->name('logout');
 });
 
 Route::get('/error', function () {

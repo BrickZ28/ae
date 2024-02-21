@@ -4,101 +4,78 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use http\Env\Request;
-use Illuminate\Auth\Events\Verified;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialiteController extends Controller
 {
-
     public function authenticate()
     {
         return Socialite::driver('discord')->redirect();
     }
-//    public function redirect(\Illuminate\Http\Request $request)
-//    {
-//        $provider = 'discord';
-//        // redirect from social site
-//        if (request()->input('state')) {
-//            // already logged in
-//            // get user info from social site
-//            $user = Socialite::driver($provider)->stateless()->user();
-//            $accessToken = $user->token;
-//
-//
-//
-//            // check for existing user
-//            $existingUser = User::where('email', $user->getEmail())->first();
-//
-//            if ($existingUser) {
-//                auth()->login($existingUser, true);
-//
-//                return redirect()->to('/dashboard');
-//            }
-//
-//            $newUser = $this->createUser($user, $request);
-//            auth()->login($newUser, true);
-//        }
-//
-//        // request login from social site
-//        return redirect()->to('/dashboard');
-//    }
 
-    public function redirect(\Illuminate\Http\Request $request)
+    public function redirect(Request $request)
     {
         $provider = 'discord';
 
-        // Check if the request contains the authorization code
-        if ($request->input('code')) {
+// Redirect from social site
+        if (request()->input('state')) {
             // Get user info from social site
             $user = Socialite::driver($provider)->stateless()->user();
-
-            // Access the access token
             $accessToken = $user->token;
+            // Check for existing user
+            $existingUser = User::where('email', $user->getEmail())->first();
 
-            // Create a personal access token
-            $sanctumToken = $this->createPersonalAccessToken($user);
+            $guildsResponse = Http::withHeaders([
+                'Authorization' => "Bearer {$accessToken}"
+            ])->get('https://discord.com/api/users/@me/guilds');
 
-            // Redirect to your desired route
-            return redirect()->to('/dashboard');
+            $guilds = json_decode($guildsResponse->body());
+
+
+
+            foreach ($guilds as $guild) {
+                dd($guild);
+                // Skip guilds where the bot isn't a member
+                if ($guild->id !== '499839691370135552') {
+
+                }
+
+                $memberResponse = Http::withHeaders([
+                    'Authorization' => 'Bot ' . 'MTE5NTgzODE1OTA3MDcxMTk2MQ.G7xgPN.2vn8LiIsn90a9ASuXxnpCJlFY8lwMH7jSFuzpU'
+                ])->get("https://discord.com/api/guilds/{$guild->id}/members/{$user->discord_id}");
+
+                $member = json_decode($memberResponse->body());
+
+                dd($member->roles);
+
+                foreach ($member->roles as $roleId) {
+                    // Sync this role with your database
+                }
+            }
+
+            if ($existingUser) {
+                auth()->login($existingUser, true);
+                $existingUser->update([
+                    'discord_access_token' => $accessToken
+                ]);
+                return redirect()->to('/dashboard');
+            }
+
+            $newUser = $this->createUser($user, $request);
+            $newUser->update([
+                'discord_access_token' => $accessToken
+            ]);
+            auth()->login($newUser, true);
         }
 
-        // Redirect to a default route if the code is not present
-        return redirect()->to('/login');
     }
-
-    protected function createPersonalAccessToken($user)
-    {
-        // Retrieve the user instance
-        $userInstance = User::updateOrCreate([
-            'discord_id' => $user->id,
-            // Add other user data as needed
-        ]);
-
-        // Create a personal access token for the user
-        $tokenName = 'Discord Access Token';
-        $sanctumToken = $userInstance->createToken($tokenName, ['*']);
-
-        // Access the access token and token ID
-        $accessToken = $sanctumToken->plainTextToken;
-        $tokenId = $sanctumToken->token->id;
-
-        // Optionally, you can store the access token details in your database
-        // Insert the token ID and access token into your personal_access_tokens table
-        // Here you would typically save this data to your database if needed
-
-        return $sanctumToken;
-    }
-
 
     function createUser($user, $request)
     {
-        //        if ($user->markEmailAsVerified()) {
-//            event(new Verified($user));
-//        }
-
-
         return User::updateOrCreate([
             'discord_id' => $user->id,
             'username' => $user->user['username'],
@@ -118,5 +95,24 @@ class SocialiteController extends Controller
             'last_login_at' => Carbon::now()->toDateTimeString(),
             'last_login_ip' => $request->getClientIp()
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        return redirect('/');
+    }
+
+    protected function createPersonalAccessToken($user)
+    {
+        $userInstance = User::updateOrCreate([
+            'discord_id' => $user->id,
+            // Add other user data as needed
+        ]);
+
+        $tokenName = 'Discord Access Token';
+        $sanctumToken = $userInstance->createToken($tokenName, ['*']);
+
+        return $sanctumToken;
     }
 }
