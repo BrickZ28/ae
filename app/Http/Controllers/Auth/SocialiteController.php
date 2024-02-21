@@ -45,7 +45,7 @@ class SocialiteController extends Controller
                 }
 
                 $memberResponse = Http::withHeaders([
-                    'Authorization' => 'Bot ' . 'MTE5NTgzODE1OTA3MDcxMTk2MQ.G7xgPN.2vn8LiIsn90a9ASuXxnpCJlFY8lwMH7jSFuzpU'
+                    'Authorization' => 'Bot ' . ''
                 ])->get("https://discord.com/api/guilds/{$guild->id}/members/{$user->discord_id}");
 
                 $member = json_decode($memberResponse->body());
