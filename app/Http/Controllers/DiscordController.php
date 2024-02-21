@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Notifications\TestNotification;
 use Auth;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Http;
 use Nwilging\LaravelDiscordBot\Contracts\Services\DiscordInteractionServiceContract;
 use Illuminate\Http\Request;
 
@@ -88,5 +89,39 @@ class DiscordController extends Controller
         ];
 
         return response()->json($response);
+    }
+
+    public function getUserInfo(Request $request)
+    {
+        // Access token obtained through OAuth2
+        $accessToken = $request->session()->get('tH4FN2cVBnKiexW1QOWQBdU63Pj8oPTPK5nmC1r7OUgOuYCWREDEhGQHXYn8');
+
+        // Discord API endpoint for fetching user information
+        $endpoint = "https://discord.com/api/users/@me";
+
+        // Make a GET request to Discord API with the access token
+        $response = Http::withToken($accessToken)->get($endpoint);
+
+        // Check if the request was successful
+        if ($response->successful()) {
+            // Decode the JSON response
+            $userData = $response->json();
+
+            // Extract user information
+            $userId = $userData['id'];
+            $username = $userData['username'];
+            $avatarUrl = "https://cdn.discordapp.com/avatars/{$userId}/{$userData['avatar']}.png";
+
+            // Return user information
+            return view('discord.user_info', [
+                'userId' => $userId,
+                'username' => $username,
+                'avatarUrl' => $avatarUrl,
+                // Add more user information here as needed
+            ]);
+        } else {
+            // Handle the error response
+            return "Failed to fetch user data from Discord API.";
+        }
     }
 }
