@@ -42,7 +42,7 @@
     </div>
     <!--end::Statistics Section-->
     <!--begin::Team Section-->
-    @include('landing.partials.content._serverstats')
+    @include('landing.partials.content._specials')
     <!--end::Team Section-->
     <!--begin::Projects Section-->
     @include('landing.partials.content._screenshots')
@@ -59,7 +59,7 @@
         </div>
         <!--end::Curve top-->
         <!--begin::Wrapper-->
-        @include('landing.partials.content._specials')
+        @include('landing.partials.content._deals')
         <!--end::Wrapper-->
         <!--begin::Curve bottom-->
         <div class="landing-curve landing-dark-color">
