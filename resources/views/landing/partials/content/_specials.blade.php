@@ -4,13 +4,12 @@
         <!--begin::Heading-->
         <div class="text-center mb-12">
             <!--begin::Title-->
-            <h3 class="fs-2hx text-gray-900 mb-5" id="team" data-kt-scroll-offset="{default: 100, lg: 150}">Server
-                Stats</h3>
+            <h3 class="fs-2hx text-gray-900 mb-5" id="team" data-kt-scroll-offset="{default: 100, lg:
+            150}">Specials</h3>
             <!--end::Title-->
             <!--begin::Sub-title-->
-            <div class="fs-5 text-muted fw-bold">It’s no doubt that when a development takes longer to complete,
-                additional costs to
-                <br/>integrate and test each extra feature creeps up and haunts most of us.
+            <div class="fs-5 text-muted fw-bold">Whether its a deal for our online store or a an event we are hosting,
+                <br/>we strive to give you the best gaming experience.
             </div>
             <!--end::Sub-title=-->
         </div>

@@ -42,7 +42,7 @@ class SideMenu extends Component
     private function createUserSubmenu()
     {
         return $this->user_submenu = [
-            'My Tribe' => ['View Users' => '/users'],
+            'Specials' => ['View Specials' => '/specials'],
             'Donations' => ['View Users' => '/users'],
         ];
     }
