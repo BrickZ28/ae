@@ -37,23 +37,7 @@ class SpecialsController extends Controller
 	public function store(Request $request)
 	{
 
-        $data = $request->validate([
-            'title' => ['required'],
-            'description' => ['required'],
-            'discount' => ['nullable', 'numeric'],
-            'dates' => ['required', 'string'], // Ensure dates field is a string
-            'usage_limit' => ['nullable', 'integer'],
-            'active' => ['boolean'],
-        ]);
-
-        [$startDate, $endDate] = $this->dateRangeParser->parse($data['dates']);
-
-        // Add the start and end dates to the validated data
-        $data['start_date'] = $startDate;
-        $data['end_date'] = $endDate;
-
-        // Unset the original dates field
-        unset($data['dates']);
+        $data = $this->getArr($request);
 
         // Create a new record in the Specials model
         Specials::create($data);
@@ -62,30 +46,10 @@ class SpecialsController extends Controller
         return redirect()->route('dashboard.index')->with('success', 'Special created successfully');
 	}
 
-	public function show(Specials $specials)
-	{
-		return $specials;
-	}
 
 	public function update(Request $request, $id)
 	{
-        $data = $request->validate([
-            'title' => ['required'],
-            'description' => ['required'],
-            'discount' => ['nullable', 'numeric'],
-            'dates' => ['required', 'string'], // Ensure dates field is a string
-            'usage_limit' => ['nullable', 'integer'],
-            'active' => ['boolean'],
-        ]);
-
-        [$startDate, $endDate] = $this->dateRangeParser->parse($data['dates']);
-
-        // Add the start and end dates to the validated data
-        $data['start_date'] = $startDate;
-        $data['end_date'] = $endDate;
-
-        // Unset the original dates field
-        unset($data['dates']);
+        $data = $this->getArr($request);
 
         $special = Specials::find($id);
         $special->update($data);
@@ -95,10 +59,43 @@ class SpecialsController extends Controller
 		return redirect()->route('dashboard.index')->with('success', 'Special updated successfully');
 	}
 
+    public function show(Specials $specials)
+    {
+        return $specials;
+    }
 	public function destroy(Specials $specials)
 	{
 		$specials->delete();
 
 		return response()->json();
 	}
+
+    /**
+     * @param Request $request
+     * @return array
+     */
+    public function getArr(Request $request): array
+    {
+        $data = $request->validate([
+            'title' => ['required'],
+            'description' => ['required'],
+            'discount' => ['nullable', 'numeric'],
+            'dates' => ['required', 'string'], // Ensure dates field is a string
+            'usage_limit' => ['nullable', 'integer'],
+            'active' => ['boolean'],
+        ]);
+
+        [$startDate, $endDate] = $this->dateRangeParser->parse($data['dates']);
+
+        // Add the start and end dates to the validated data
+        $data['start_date'] = $startDate;
+        $data['end_date'] = $endDate;
+
+        // Handle the case when the 'active' checkbox is unchecked
+        $data['active'] = $data['active'] ?? 0;
+
+        // Unset the original dates field
+        unset($data['dates']);
+        return $data;
+    }
 }
