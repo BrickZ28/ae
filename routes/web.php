@@ -12,7 +12,7 @@ use App\Http\Controllers\SpecialsController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/discord/user-info', [DiscordController::class, 'getUserInfo'])->name('discord.user_info');
+Route::get('/discord/roles', [DiscordController::class, 'syncRolesAndRedirect'])->name('discord.user_info');
 Route::get('/nitrado/servers', [ServersController::class, 'getServers']);
 Route::get('/discord', [DiscordController::class, 'index']);
 Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
@@ -21,7 +21,7 @@ Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 
 
 Route::get('/discord/register', [SocialiteController::class, 'authenticate'])->name('discord.register');
-Route::get('/discord/callback', [SocialiteController::class, 'redirect']);
+Route::get('/discord/callback', [SocialiteController::class, 'handleOAuthCallback']);
 
 
 

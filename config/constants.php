@@ -12,4 +12,5 @@ return [
     'date' => [
         'form_format' => 'M/d/Y h:mm A',
     ],
+
 ];

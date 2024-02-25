@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -55,4 +56,16 @@ class User extends Authenticatable
     {
         return $this->hasMany(Screenshot::class, 'uploaded_by');
     }
+
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class)->withTimestamps(); // Assuming you have this relation setup in your User model
+    }
+
+    public function hasAnyRole($roles)
+    {
+        return $this->roles()->whereIn('role_name', $roles)->exists();
+    }
+
+
 }

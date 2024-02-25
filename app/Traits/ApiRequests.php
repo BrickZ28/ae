@@ -7,23 +7,24 @@ use Illuminate\Support\Facades\Http;
 
 trait ApiRequests
 {
-    public function getApiRequest($token = null, $headers = [], $endpoint = null)
+    /**
+     * Make an API request.
+     *
+     * @param string $endpoint
+     * @param array|null $headers
+     * @param string|null $token
+     * @return mixed
+     */
+    public function getApiRequest(string $endpoint, ?string $token = null, ?array $headers = [])
     {
-        $token = config('constants.nitrado.api_token');
-        $endpointurl = 'https://api.nitrado.net/' . $endpoint;
-        $heads = ['application/json'];
+        // Initialize the HTTP client and optionally add the Authorization header for the token
+        $request = Http::withHeaders(array_merge($headers, $token ? ['Authorization' => 'Bearer ' . $token] : []));
 
+        // Execute the GET request to the endpoint
+        $response = $request->get($endpoint);
 
-        $response = Http::withToken($token)
-            ->accept($heads)
-            ->get($endpointurl);
-
-        if ($response->successful()) {
-            return $response->json();
-        } else {
-            // Handle the case when the API request fails
-            return null;
-        }
+        // Return the entire HTTP response
+        return $response;
     }
 
     public function getOnlinePlayerCount()
