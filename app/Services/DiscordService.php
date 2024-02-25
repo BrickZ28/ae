@@ -10,22 +10,25 @@ use Illuminate\Support\Facades\Http;
 class DiscordService {
     protected $botToken;
     protected $guildId;
+    protected $api_base;
 
     public function __construct() {
         $this->botToken = env('DISCORD_API_BOT_TOKEN');
         $this->guildId = env('DISCORD_GUILD_ID');
+        $this->api_base = 'https://discord.com/api/v10/';
+
     }
 
     public function fetchUserRoles($userId) {
         $headers = ['Authorization' => 'Bot ' . $this->botToken];
-        $endpoint = "https://discord.com/api/v10/guilds/{$this->guildId}/members/{$userId}";
+        $endpoint = $this->api_base.$this->guildId."/members/{$userId}";
         $response = Http::withHeaders($headers)->get($endpoint);
 
         if ($response->successful()) {
             $userData = $response->json();
             return $userData['roles'] ?? [];
         }
-        return [];
+        return $response->json();
     }
 
     public function syncUserRoles($userId, $roles) {
@@ -40,5 +43,19 @@ class DiscordService {
 
         // Sync the user's roles
         $user->roles()->sync($existingRoles->pluck('id')->toArray());
+    }
+
+    public function syncDiscordRoles()
+    {
+        $headers = ['Authorization' => 'Bot ' . $this->botToken];
+        $endpoint = $this->api_base."guilds/{$this->guildId}roles";
+
+        $response = Http::withHeaders($headers)->get($endpoint);
+
+        if ($response->successful()) {
+            $userData = $response->json();
+            return $userData['roles'] ?? [];
+        }
+        return $response->json();
     }
 }
