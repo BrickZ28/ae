@@ -1,5 +1,4 @@
 <?php
-// DiscordService.php
 
 namespace App\Services;
 
@@ -10,52 +9,47 @@ use Illuminate\Support\Facades\Http;
 class DiscordService {
     protected $botToken;
     protected $guildId;
-    protected $api_base;
+    protected $apiBase;
 
     public function __construct() {
         $this->botToken = env('DISCORD_API_BOT_TOKEN');
         $this->guildId = env('DISCORD_GUILD_ID');
-        $this->api_base = 'https://discord.com/api/v10/';
-
+        $this->apiBase = 'https://discord.com/api/v10/';
     }
 
     public function fetchUserRoles($userId) {
-        $headers = ['Authorization' => 'Bot ' . $this->botToken];
-        $endpoint = $this->api_base.$this->guildId."/members/{$userId}";
-        $response = Http::withHeaders($headers)->get($endpoint);
+        $endpoint = "{$this->apiBase}guilds/{$this->guildId}/members/{$userId}";
+        $response = $this->makeRequest($endpoint);
 
-        if ($response->successful()) {
-            $userData = $response->json();
-            return $userData['roles'] ?? [];
-        }
-        return $response->json();
+        return $response->successful() ? $response->json()['roles'] ?? [] : [];
     }
 
     public function syncUserRoles($userId, $roles) {
-        // Assuming $roles is an array of role IDs fetched from Discord for the user
         $user = User::where('discord_id', $userId)->first();
         if (!$user) {
-            return; // User not found, handle as appropriate
+            return; // Consider logging this situation or throwing an exception
         }
 
-        // Fetch all roles that exist in your database
         $existingRoles = Role::whereIn('role_id', $roles)->get();
-
-        // Sync the user's roles
         $user->roles()->sync($existingRoles->pluck('id')->toArray());
     }
 
-    public function syncDiscordRoles()
-    {
-        $headers = ['Authorization' => 'Bot ' . $this->botToken];
-        $endpoint = $this->api_base."guilds/{$this->guildId}roles";
-
-        $response = Http::withHeaders($headers)->get($endpoint);
+    public function syncDiscordRoles() {
+        $endpoint = "{$this->apiBase}guilds/{$this->guildId}/roles";
+        $response = $this->makeRequest($endpoint);
 
         if ($response->successful()) {
-            $userData = $response->json();
-            return $userData['roles'] ?? [];
+            $roles = $response->json();
+            foreach ($roles as $role) {
+                Role::updateOrCreate(['role_id' => $role['id']], ['role_name' => $role['name']]);
+            }
         }
-        return $response->json();
+
+        return redirect()->route('dashboard.index')->with('success', 'Roles added successfully');
+    }
+
+    protected function makeRequest($endpoint) {
+        $headers = ['Authorization' => 'Bot ' . $this->botToken];
+        return Http::withHeaders($headers)->get($endpoint);
     }
 }
