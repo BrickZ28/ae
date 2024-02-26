@@ -1,5 +1,7 @@
 <!--begin:Menu item-->
+
 @foreach($header as $section=>$menu)
+
     <div class="menu-item pt-5">
         <!--begin:Menu content-->
         <div class="menu-content">
@@ -9,7 +11,6 @@
     </div>
 
     @foreach($menu as $submenu=>$path)
-
         <div data-kt-menu-trigger="click" class="menu-item menu-accordion">
             <!--begin:Menu link-->
             <span class="menu-link">

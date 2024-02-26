@@ -7,6 +7,7 @@ use Illuminate\View\Component;
 
 class SideMenu extends Component
 {
+    private $adminRoles = ['In the Shadows', 'Owners'];
     public $admin_menu;
     public $admin_submenu;
     public $user_menu;
@@ -14,13 +15,14 @@ class SideMenu extends Component
     public $header;
 
     public function __construct($admin_menu = 'Admin', $admin_submenu = [], $user_menu = 'User', $user_submenu = [],
-                                $header = [])
+                                $header = [], $roles = [])
     {
 
         $this->admin_menu = $admin_menu;
         $this->admin_submenu = $admin_submenu;
         $this->user_menu = $user_menu;
         $this->user_submenu = $user_submenu;
+        $this->roles = $roles;
     }
 
     private function createAdminSubmenu()
@@ -49,11 +51,17 @@ class SideMenu extends Component
 
     private function buildMenu()
     {
-        return $this->header =
-            [
-               'admin' => $this->createAdminSubmenu(),
-               'users' => $this->createUserSubmenu(),
-            ];
+
+        $this->header = []; // Explicit initialization
+
+
+        if (count(array_intersect($this->roles, $this->adminRoles)) > 0) {
+            $this->header['Admin'] = $this->createAdminSubmenu();
+        }
+
+        $this->header['User'] = $this->createUserSubmenu();
+
+
     }
 
     public function render(): View
