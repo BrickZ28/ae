@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
+use App\Models\userProfile;
 use Carbon\Carbon;
 
 class UserService {
@@ -16,27 +17,40 @@ class UserService {
         // Attempt to find the user by email or create a new one
         $user = User::firstOrNew(['email' => $socialiteUser->email]);
 
-        // Update or set user attributes
+        // Update or set user authentication-related attributes
         $user->fill([
             'discord_id' => $socialiteUser->id,
-            'username' => $socialiteUser->user['username'],
+
             'global_name' => $socialiteUser->user['global_name'],
             'discriminator' => $socialiteUser->user['discriminator'],
-            'profile_photo_path' => $socialiteUser->avatar,
-            'avatar' => $socialiteUser->user['avatar'],
+
+
             'verified' => $socialiteUser->user['verified'],
-            'banner' => $socialiteUser->user['banner'],
-            'banner_color' => $socialiteUser->user['banner_color'],
-            'accent_color' => $socialiteUser->user['accent_color'],
-            'locale' => $socialiteUser->user['locale'],
+
             'mfa_enabled' => $socialiteUser->user['mfa_enabled'],
             'premium_type' => $socialiteUser->user['premium_type'],
-            'public_flags' => $socialiteUser->user['public_flags'],
+
             'last_login_at' => Carbon::now(),
             'last_login_ip' => $clientIp,
             'discord_access_token' => $accessToken,
             'ae_credits' => $user->exists ? $user->ae_credits : 500, // Preserve credits if user exists, else set default
         ])->save();
+
+        // Now, handle the UserProfile data
+        $userProfile = UserProfile::updateOrCreate(
+            ['user_id' => $user->id], // Unique identifier for the profile
+            [
+                'username' => $socialiteUser->user['username'],
+                'profile_photo_path' => $socialiteUser->avatar,
+                'avatar' => $socialiteUser->user['avatar'],
+                'banner' => $socialiteUser->user['banner'],
+                'banner_color' => $socialiteUser->user['banner_color'],
+                'accent_color' => $socialiteUser->user['accent_color'],
+                'locale' => $socialiteUser->user['locale'],
+                'public_flags' => $socialiteUser->user['public_flags'],
+                // Any other public profile-related fields
+            ]
+        );
 
         // Sync roles for the user
         $this->discordService->syncUserRoles($socialiteUser->id, $roles);

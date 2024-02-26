@@ -9,41 +9,56 @@ use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotsController;
 use App\Http\Controllers\ServersController;
 use App\Http\Controllers\SpecialsController;
+use App\Http\Controllers\userProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/discord/roles', [DiscordController::class, 'syncRolesAndRedirect'])->name('discord.user_info');
-Route::get('/nitrado/servers', [ServersController::class, 'getServers']);
-Route::get('/discord', [DiscordController::class, 'index']);
-Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
-Route::post('/discord/receive-info', [DiscordController::class, 'receiveInfo']);
+// Public Routes
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
-
-
+Route::get('/discord', [DiscordController::class, 'index']);
 Route::get('/discord/register', [SocialiteController::class, 'authenticate'])->name('discord.register');
 Route::get('/discord/callback', [SocialiteController::class, 'handleOAuthCallback']);
+Route::post('/discord/receive-info', [DiscordController::class, 'receiveInfo']);
+Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
+Route::get('/nitrado/servers', [ServersController::class, 'getServers']);
+Route::get('/auth/redirect/{provider}', [SocialiteController::class, 'redirect']);
 
-
-
-
-Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
-    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
-    Route::resource('/users', UsersController::class, ['names' => 'users']);
-    Route::resource('/rules', RulesController::class, ['names' => 'rules']);
-    Route::resource('/screenshots', ScreenshotsController::class, ['names' => 'screenshots']);
-    Route::get('/dj/test/section', [ServersController::class, 'dj'])->name('servers.dj');
-    Route::resource('/games', GamesController::class, ['names' => 'games']);
-    Route::resource('/servers', ServersController::class, ['names' => 'servers']);
-    Route::resource('/specials', SpecialsController::class, ['names' => 'specials']);
-    Route::get('/logout', [SocialiteController::class, 'logout'])->name('logout');
-});
-
+// Error Route
 Route::get('/error', function () {
     abort(500);
 });
 
+// Private Routes (Authenticated and Verified Users)
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Dashboard
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
-Route::get('/auth/redirect/{provider}', [SocialiteController::class, 'redirect']);
+    // User Profiles
+    Route::get('/users', [UsersController::class, 'index'])->name('users.index');
+    Route::resource('/users', UsersController::class, ['names' => 'users']);
 
-//require __DIR__ . '/auth.php';
+    // Rules
+    Route::resource('/rules', RulesController::class, ['names' => 'rules']);
+
+    // Screenshots
+    Route::resource('/screenshots', ScreenshotsController::class, ['names' => 'screenshots']);
+
+    // Games
+    Route::resource('/games', GamesController::class, ['names' => 'games']);
+
+    // Servers
+    Route::get('/dj/test/section', [ServersController::class, 'dj'])->name('servers.dj');
+    Route::resource('/servers', ServersController::class, ['names' => 'servers']);
+
+    // Specials
+    Route::resource('/specials', SpecialsController::class, ['names' => 'specials']);
+
+    // Logout
+    Route::get('/logout', [SocialiteController::class, 'logout'])->name('logout');
+
+    // Discord Role Sync
+    Route::get('/discord/roles', [DiscordController::class, 'syncRolesAndRedirect'])->name('discord.user_info');
+
+    //Profile
+    Route::resource('/profiles', userProfileController::class, ['names' => 'profiles']);
+});
