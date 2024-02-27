@@ -11,7 +11,7 @@
                 <td class="d-flex align-items-center">
                     <!--begin:: Avatar -->
                     <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
-                        <a href="{{route('screenshots.show', $screenshot->id)}}">
+                        <a class href="{{route('screenshots.show', $screenshot->id)}}">
                             <div class="symbol-label">
                                 <img src="{{ $screenshot->path}}" alt="Name Not Found"
                                      class="w-100"/>
@@ -19,7 +19,16 @@
                         </a>
                     </div>
                 </td>
+
                 <td>{{$screenshot->uploader->userProfile?->global_name}}</td>
+                <td>
+                    <x-dashboard-draggable-modal buttonText="View Image"
+                                                 :title="$screenshot->uploader->userProfile?->global_name . ' image'"
+                                                 :id="$screenshot->id">
+                        <img src="{{ $screenshot->path}}" alt="Name Not Found"
+                             class="w-100"/>
+                    </x-dashboard-draggable-modal>
+                </td>
                 <td >
                     <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"
                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions

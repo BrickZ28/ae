@@ -19,7 +19,7 @@ class ScreenshotsController extends Controller
 	{
         $pending_screenshots = Screenshot::with('uploader.userProfile')->where('approved', 0)->get();
 
-        $filters = ['title', 'path', 'uploaded_by', 'actions'];
+        $filters = ['title', 'path', 'uploaded_by', 'view', 'actions'];
 		return view('dashboard.screenshot.index', compact('pending_screenshots', 'filters'));
 	}
 
@@ -32,26 +32,30 @@ class ScreenshotsController extends Controller
 
 	public function store(Request $request)
 	{
+
         $request->validate([
             'title' => 'required',
             'created_by' => 'sometimes|integer|nullable',
             'file' => 'required|image',
             ]);
 
-
-
         $path = $this->uploadFile('do','images', $request->file, 'public');
 
-
         if ($path) {
+            // Check if the user has 'In the Shadows' or 'Owner' role
+            $userHasRequiredRole = Auth::user()->roles()->whereIn('name', ['In the Shadows', 'Owner'])->exists();
+
+            // Set 'approved' to 1 if the user has one of the required roles, otherwise 0
+            $approved = $userHasRequiredRole ? 1 : 0;
+
             Screenshot::create([
                 'title' => $request->title,
-                'created_by' => $request->created_by ?? Auth::id(),
                 'path' => config('constants.buckets.DO_BUCKET_CDN') . $path,
                 'uploaded_by' => Auth::id(),
-                'approved' => 0,
+                'approved' => $approved,
             ]);
         }
+
         return redirect(route('dashboard.index'));
 
 	}
