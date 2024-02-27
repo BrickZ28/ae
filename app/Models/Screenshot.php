@@ -15,8 +15,5 @@ class Screenshot extends Model
         return $this->belongsTo(User::class,'uploaded_by');
     }
 
-    public function created_by(): BelongsTo
-    {
-        return $this->belongsTo(User::class, 'created_by');
-    }
+
 }

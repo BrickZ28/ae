@@ -35,7 +35,6 @@ class ScreenshotsController extends Controller
 
         $request->validate([
             'title' => 'required',
-            'created_by' => 'sometimes|integer|nullable',
             'file' => 'required|image',
             ]);
 
@@ -52,7 +51,6 @@ class ScreenshotsController extends Controller
                 'title' => $request->title,
                 'path' => config('constants.buckets.DO_BUCKET_CDN') . $path,
                 'uploaded_by' => Auth::id(),
-                'created_by' => Auth::id(),
                 'approved' => $approved,
             ]);
         }
