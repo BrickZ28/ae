@@ -39,13 +39,13 @@
                         data-kt-menu="true">
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
-                            <a href="{{route('users.edit', $user->id)}}" class="menu-link px-3">Approve</a>
+                            <a href="{{route('screenshots.update', $screenshot->id)}}" class="menu-link px-3">Approve</a>
                         </div>
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
                             <a href="{{route('profiles.show', $user->id)}}" class="menu-link px-3" >Delete
-                                Profile</a>
+                                ScreenShot</a>
                         </div>
                         <!--end::Menu item-->
                     </div>

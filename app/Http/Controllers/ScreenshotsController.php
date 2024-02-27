@@ -63,6 +63,7 @@ class ScreenshotsController extends Controller
 
 	public function show(Screenshot $screenshot)
 	{
+
 		return $screenshot;
 	}
 
