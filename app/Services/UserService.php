@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\User;
-use App\Models\userProfile;
+use App\Models\UserProfile;
 use Carbon\Carbon;
 
 class UserService {
