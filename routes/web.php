@@ -9,7 +9,7 @@ use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotsController;
 use App\Http\Controllers\ServersController;
 use App\Http\Controllers\SpecialsController;
-use App\Http\Controllers\userProfileController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
