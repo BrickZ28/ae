@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Http\ViewComposers\UserViewComposer;
 use App\Services\DiscordService;
 use App\Services\UserService;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -36,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('endcheckRole', function ($role) {
             return "<?php endif; ?>";
         });
+
+        View::composer('*', UserViewComposer::class);
     }
 
 }
