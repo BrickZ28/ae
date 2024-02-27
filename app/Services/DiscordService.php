@@ -38,11 +38,19 @@ class DiscordService {
         $endpoint = "{$this->apiBase}guilds/{$this->guildId}/roles";
         $response = $this->makeRequest($endpoint);
 
+
         if ($response->successful()) {
             $roles = $response->json();
             foreach ($roles as $role) {
                 Role::updateOrCreate(['role_id' => $role['id']], ['role_name' => $role['name']]);
             }
+        } elseif ($response->failed()) {
+            // Handle any failed request (not in the 200-299 range)
+            $error = $response->json();
+            $statusCode = $response->status();
+
+            return redirect()->route('dashboard.index')->with('error', "Request failed with status $statusCode: ", $error);
+
         }
 
         return redirect()->route('dashboard.index')->with('success', 'Roles added successfully');

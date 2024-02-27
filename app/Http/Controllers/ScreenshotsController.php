@@ -17,7 +17,10 @@ class ScreenshotsController extends Controller
     use FileTrait;
 	public function index()
 	{
-		return Screenshot::all();
+        $pending_screenshots = Screenshot::with('uploader.userProfile')->where('approved', 0)->get();
+
+        $filters = ['title', 'path', 'uploaded_by', 'actions'];
+		return view('dashboard.screenshot.index', compact('pending_screenshots', 'filters'));
 	}
 
     public function create()
@@ -45,7 +48,8 @@ class ScreenshotsController extends Controller
                 'title' => $request->title,
                 'created_by' => $request->created_by ?? Auth::id(),
                 'path' => config('constants.buckets.DO_BUCKET_CDN') . $path,
-                'uploaded_by' => Auth::id()
+                'uploaded_by' => Auth::id(),
+                'approved' => 0,
             ]);
         }
         return redirect(route('dashboard.index'));
