@@ -43,7 +43,7 @@ class ScreenshotsController extends Controller
 
         if ($path) {
             // Check if the user has 'In the Shadows' or 'Owner' role
-            $userHasRequiredRole = Auth::user()->roles()->whereIn('name', ['In the Shadows', 'Owner'])->exists();
+            $userHasRequiredRole = Auth::user()->roles()->whereIn('role_name', ['In the Shadows', 'Owner'])->exists();
 
             // Set 'approved' to 1 if the user has one of the required roles, otherwise 0
             $approved = $userHasRequiredRole ? 1 : 0;
