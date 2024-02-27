@@ -10,7 +10,8 @@
                     <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                         <a href="{{route('users.show', $user->id)}}">
                             <div class="symbol-label">
-                                <img src="{{$user->profile_photo_path}}" alt="Name Not Found" class="w-100"/>
+                                <img src="{{ optional($user->userProfile)->profile_photo_path }}" alt="Name Not Found"
+                                     class="w-100"/>
                             </div>
                         </a>
                     </div>
@@ -46,7 +47,8 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
-                            <a href="#" class="menu-link px-3" data-kt-users-table-filter="delete_row">Delete</a>
+                            <a href="{{route('profiles.show', $user->id)}}" class="menu-link px-3" >View
+                                Profile</a>
                         </div>
                         <!--end::Menu item-->
                     </div>

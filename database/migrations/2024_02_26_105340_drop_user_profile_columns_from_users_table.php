@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
-                'username',
+                'global_name',
                 'profile_photo_path',
                 'avatar',
                 'banner',

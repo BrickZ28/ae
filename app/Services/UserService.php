@@ -14,22 +14,18 @@ class UserService {
     }
 
     public function findOrCreateUser($socialiteUser, $accessToken, $roles, $clientIp) {
+
         // Attempt to find the user by email or create a new one
         $user = User::firstOrNew(['email' => $socialiteUser->email]);
 
         // Update or set user authentication-related attributes
         $user->fill([
             'discord_id' => $socialiteUser->id,
-
-            'global_name' => $socialiteUser->user['global_name'],
+            'username' => $socialiteUser->user['username'],
             'discriminator' => $socialiteUser->user['discriminator'],
-
-
             'verified' => $socialiteUser->user['verified'],
-
             'mfa_enabled' => $socialiteUser->user['mfa_enabled'],
             'premium_type' => $socialiteUser->user['premium_type'],
-
             'last_login_at' => Carbon::now(),
             'last_login_ip' => $clientIp,
             'discord_access_token' => $accessToken,
@@ -40,7 +36,7 @@ class UserService {
         $userProfile = UserProfile::updateOrCreate(
             ['user_id' => $user->id], // Unique identifier for the profile
             [
-                'username' => $socialiteUser->user['username'],
+                'global_name' => $socialiteUser->user['global_name'],
                 'profile_photo_path' => $socialiteUser->avatar,
                 'avatar' => $socialiteUser->user['avatar'],
                 'banner' => $socialiteUser->user['banner'],

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\userProfile;
 use Illuminate\Http\Request;
 
-class userProfileController extends Controller
+class UserProfileController extends Controller
 {
 	public function index()
 	{
@@ -26,9 +27,10 @@ class userProfileController extends Controller
 		return userProfile::create($data);
 	}
 
-	public function show(userProfile $userProfile)
+	public function show($id)
 	{
-		return $userProfile;
+        $user = User::find($id);
+        return view('dashboard.users.show', compact('user'));
 	}
 
 	public function update(Request $request, userProfile $userProfile)

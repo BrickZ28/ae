@@ -10,7 +10,7 @@ return new class extends Migration
 	{
 		Schema::create('user_profiles', function (Blueprint $table) {
 			$table->id();
-			$table->string('username')->nullable();
+			$table->string('global_name')->nullable();
 			$table->string('profile_photo_path')->nullable();
 			$table->string('avatar')->nullable();
 			$table->string('banner')->nullable();
