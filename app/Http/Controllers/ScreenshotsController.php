@@ -52,6 +52,7 @@ class ScreenshotsController extends Controller
                 'title' => $request->title,
                 'path' => config('constants.buckets.DO_BUCKET_CDN') . $path,
                 'uploaded_by' => Auth::id(),
+                'created_by' => Auth::id(),
                 'approved' => $approved,
             ]);
         }
