@@ -16,19 +16,48 @@ trait FileTrait
 
             // Check if the path is returned successfully
             if ($path) {
-                Alert::success('File uploaded', 'File uploaded successfully');
+                dd('File uploaded', 'File uploaded successfully');
                 return $path;
             } else {
                 // If the path is not returned, consider it a failed upload
-                Alert::error('File upload failed', 'The file could not be uploaded.');
+                dd('File upload failed', 'The file could not be uploaded.');
                 return false;
             }
         } catch (\Exception $e) {
             // Catch any exceptions and report the failure
-            Alert::error('File upload failed', 'An error has occurred during upload: ' . $e->getMessage());
+            dd('File upload failed', 'An error has occurred during upload: ' . $e->getMessage());
             return false;
         }
     }
+
+    public function deleteFile($disk, $filePath)
+    {
+
+        try {
+            // First, check if the file path is not null and is a string
+            if (is_string($filePath) && !empty($filePath)) {
+                // Check if the file exists before attempting to delete
+                if (Storage::disk($disk)->exists($filePath)) {
+                    // Delete the file
+                    Storage::disk($disk)->delete($filePath);
+                    dd('Success', 'File deleted successfully.');
+                    return true;
+                } else {
+                    dd('Error', 'File does not exist.');
+                    return false;
+                }
+            } else {
+                // File path is not valid
+                dd('Error', 'Invalid file path.');
+                return false;
+            }
+        } catch (\Exception $e) {
+            // Catch any exceptions and report the failure
+            dd('Error', 'An error has occurred: ' . $e->getMessage());
+            return false;
+        }
+    }
+
 
 
 }

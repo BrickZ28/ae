@@ -42,6 +42,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Screenshots
     Route::resource('/screenshots', ScreenshotsController::class, ['names' => 'screenshots']);
+    Route::patch('/screenshots/approve/{id}', [ScreenshotsController::class, 'approve'])->name('screenshots.approve');
 
     // Games
     Route::resource('/games', GamesController::class, ['names' => 'games']);

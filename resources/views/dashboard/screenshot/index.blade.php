@@ -29,31 +29,68 @@
                              class="w-100"/>
                     </x-dashboard-draggable-modal>
                 </td>
-                <td >
-                    <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"
-                       data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                    <!--begin::Menu-->
-                    <div
-                        class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                        data-kt-menu="true">
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="{{route('screenshots.update', $screenshot->id)}}" class="menu-link px-3">Approve</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="{{route('profiles.show', $user->id)}}" class="menu-link px-3" >Delete
-                                ScreenShot</a>
-                        </div>
-                        <!--end::Menu item-->
-                    </div>
-                    <!--end::Menu-->
+                <td>
+                    <form id="approveForm" action="{{ route('screenshots.approve', $screenshot->id) }}" method="POST" >
+                        @method('PATCH')
+                        @csrf
+                            <button type="submit" class="btn btn-success">Approve</button>
+                    </form>
                 </td>
+                <td><form id="denyForm" action="{{ route('screenshots.destroy', $screenshot->id) }}" method="POST">
+                        @method('DELETE')
+                        @csrf
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                </td>
+                <td><x-display-date-formatted
+                        :date="$screenshot->created_at" format="D M j, Y @ g:i:sa" /></td>
             </tr>
         @endforeach
 
-    </x-datatable_shell>
 
+    </x-datatable_shell>
+    <script>
+        document.getElementById('approveForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
+            // Use SweetAlert to show a confirmation dialog
+            Swal.fire({
+                title: 'Confirm?',
+                text: "This will allow the image to be displayed on the website. Are you sure you want to approve " +
+                    "this image?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User clicked 'Yes', submit the form
+                    event.target.submit();
+                }
+            });
+        });
+    </script>
+    <script>
+        document.getElementById('denyForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
+            // Use SweetAlert to show a confirmation dialog
+            Swal.fire({
+                title: 'Confirm?',
+                text: "This will delete the image from the website. Are you sure you want to delete " +
+                    "this image?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User clicked 'Yes', submit the form
+                    event.target.submit();
+                }
+            });
+        });
+    </script>
 </x-dashboard.layout>

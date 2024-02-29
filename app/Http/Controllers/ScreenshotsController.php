@@ -19,7 +19,7 @@ class ScreenshotsController extends Controller
 	{
         $pending_screenshots = Screenshot::with('uploader.userProfile')->where('approved', 0)->get();
 
-        $filters = ['title', 'path', 'uploaded_by', 'view', 'actions'];
+        $filters = ['title', 'path', 'uploaded_by', 'view', 'approve', 'delete', 'created_at'];
 		return view('dashboard.screenshot.index', compact('pending_screenshots', 'filters'));
 	}
 
@@ -81,8 +81,31 @@ class ScreenshotsController extends Controller
 
 	public function destroy(Screenshot $screenshot)
 	{
-		$screenshot->delete();
 
-		return response()->json();
-	}
+
+        if (Storage::disk('do')->delete($screenshot->path)) {
+            // Optional: Delete the Screenshot model or perform other cleanup
+            $screenshot->delete();
+
+            return back()->with('success', 'Screenshot and file deleted successfully.');
+        } else {
+            return back()->with('error', 'Failed to delete the screenshot file.');
+        }
+    }
+
+
+    public function approve($id)
+    {
+        $screenshot = Screenshot::find($id);
+        if ($screenshot) {
+            $screenshot->approved = 1;
+            $screenshot->save();
+
+            // Correctly chain the methods
+            return redirect()->route('screenshots.index')->with('success', 'Screenshot approved!');
+        }
+
+        // Consider adding an else clause to handle the case where $screenshot is null
+        return redirect()->route('screenshots.index')->withErrors('Screenshot not found.');
+    }
 }
