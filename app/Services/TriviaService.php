@@ -14,7 +14,8 @@ class TriviaService
     {
         DB::transaction(function () use ($questionText, $choicesString, $answer) {
             $question = Question::create(['question' => $questionText]);
-            $choices = array_map('trim', explode(',', $choicesString));
+            $choicesString = rtrim($choicesString, ' ^');
+            $choices = array_map('trim', explode('^', $choicesString));
 
             foreach ($choices as $choiceText) {
                 QuestionChoice::create([
