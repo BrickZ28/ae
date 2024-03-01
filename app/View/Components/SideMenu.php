@@ -39,13 +39,15 @@ class SideMenu extends Component
                 'View Games' => route('games.index')],
             'specials' => ['Create Special' => route('specials.create'),
                 'View Specials' => route('specials.index')],
+            'trivia' => ['Create Question' => route('questions.create'),
+                'View Questions' => route('questions.index')],
         ];
     }
 
     private function createUserSubmenu()
     {
         return $this->user_submenu = [
-            'Specials' => ['View Specials' => '/specials'],
+            'Trivia' => ['View Question' => route('questions.user.random')],
             'Donations' => ['View Users' => '/users'],
         ];
     }
