@@ -7,7 +7,7 @@ use Illuminate\View\Component;
 
 class SideMenu extends Component
 {
-    private $adminRoles = ['In the Shadows', 'Owners'];
+    private $adminRoles = ['In the Shadows', 'Owners', 'Head Admin'];
     public $admin_menu;
     public $admin_submenu;
     public $user_menu;
