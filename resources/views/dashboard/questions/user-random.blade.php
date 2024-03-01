@@ -40,13 +40,19 @@
                               infoTextColor=""
                 />
 
-                <x-form-select label="Select Answer" name="choice" required="required" >
-                    <option value="">Select One</option>
-                    @foreach($random_question->choices as $choice)
 
-                        <option value="{{$choice->id}}">{{$choice->choice}}</option>
+
+                <div class="col-lg-12">
+                    <label class="mb-3">Select Answer</label>
+                    @foreach($random_question->choices as $choice)
+                        <div class="form-check form-check-custom form-check-solid mb-3"> <!-- Added spacing -->
+                            <input class="form-check-input" type="radio" name="choice" value="{{ $choice->id }}" id="choice{{ $choice->id }}">
+                            <label class="form-check-label" for="choice{{ $choice->id }}">
+                                {{ $choice->choice }}
+                            </label>
+                        </div>
                     @endforeach
-                </x-form-select>
+                </div>
 
                 </div>
 

@@ -92,7 +92,7 @@ class TriviaService
         ]);
 
         if ($isCorrect) {
-            return redirect(route('questions.user.random'))->with('success', "You got it right! Credits awarded: {$credits}");
+            return redirect(route('dashboard.index'))->with('success', "You got it right! Credits awarded: {$credits}");
         } else {
             return back()->with('error', "Attempt number {$attemptCount} recorded, {$attempts_left} attempts left. Incorrect answer.")
                 ->with('question_id', $questionId);

@@ -29,6 +29,7 @@ class QuestionController extends Controller
         $choicesString = $request->input('choices');
         $answer = $request->input('answer');
 
+
         $this->triviaService->storeQuestion($questionText, $choicesString, $answer);
 
         return redirect()->route('questions.create')->with('success', 'Question created successfully');
