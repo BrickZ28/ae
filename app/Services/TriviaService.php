@@ -31,15 +31,15 @@ class TriviaService
 
     public function getRandomUserQuestion()
     {
-        $dailyAttemptCount = QuestionAttempt::where('created_at', '>=', now()->startOfDay())
-            ->where('created_at', '<=', now()->endOfDay())
-            ->where('user_id', Auth::id())
-            ->distinct()
-            ->count('question_id');
+//        $dailyAttemptCount = QuestionAttempt::where('created_at', '>=', now()->startOfDay())
+//            ->where('created_at', '<=', now()->endOfDay())
+//            ->where('user_id', Auth::id())
+//            ->distinct()
+//            ->count('question_id');
 
-        if ($dailyAttemptCount >= 5) {
-            return redirect()->route('dashboard.index')->with('error', 'You have already answered 5 questions today.');
-        }
+//        if ($dailyAttemptCount >= 5) {
+//            return redirect()->route('dashboard.index')->with('error', 'You have already answered 5 questions today.');
+//        }
 
         $attemptedQuestionIdsToday = QuestionAttempt::where('created_at', '>=', now()->startOfDay())
             ->where('created_at', '<=', now()->endOfDay())
