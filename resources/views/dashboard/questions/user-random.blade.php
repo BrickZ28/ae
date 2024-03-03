@@ -29,7 +29,7 @@
 
     <x-form :route="route('questions.user.attempt', $random_question->id)" method="get" file="">
         <div class="row gx-10 mb-5">
-
+            <input type="hidden" name="attempt_token" value="{{ session('attempt_token') }}">
             <div class="col-lg-12">
                 <x-form-input label="Question"
                               name="question"

@@ -68,6 +68,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Question
     Route::resource('/questions', QuestionController::class, ['names' => 'questions']);
-    Route::get('/questions/user/random', [QuestionController::class, 'randomUserQuestion'])->name('questions.user.random');
+    Route::get('/questions/user/random/{question_id?}', [QuestionController::class, 'randomUserQuestion'])->name('questions.user.random');
+
     Route::get('/questions/user/attempt/{id}', [QuestionAttemptController::class, 'attemptUserQuestion'])->name('questions.user.attempt');
 });

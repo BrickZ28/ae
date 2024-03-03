@@ -59,6 +59,7 @@ class QuestionController extends Controller
     }
 
     public function randomUserQuestion()
+
     {
         return $this->triviaService->getRandomUserQuestion();
     }
