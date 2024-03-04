@@ -62,7 +62,7 @@ class ServersController extends Controller
 
         $server = Server::where('serverhost_id', $id)->first();
         $filePath = $server->local_file_settings_path;
-        dd($filePath);
+
 
         // Check if the file exists
         if (Storage::exists($filePath)) {
