@@ -63,27 +63,26 @@ class ServersController extends Controller
         $server = Server::where('serverhost_id', $id)->first();
         $filePath = $server->local_file_settings_path;
 
-        if ($file = Storage::disk('public')->exists($filePath)) {
+        if (Storage::disk('public')->exists($filePath)) {
+            // Get the file content
+            $fileContent = Storage::disk('public')->get($filePath);
 
+            // Parse the INI content into an associative array
+            $data = parse_ini_string($fileContent, true, INI_SCANNER_TYPED);
 
-            if (file_exists($filePath)) {
-                dd($filePath, $file);
-                // Parse the INI file into an associative array
-                $data = parse_ini_file($filePath, true, INI_SCANNER_TYPED);
+            // Use $data as needed
+            // For example, print the entire array or a specific value
+            echo '<pre>';
+            print_r($data);
+            echo '</pre>';
 
-                // Use $data as needed
-                // For example, print the entire array or a specific value
-                echo '<pre>';
-                print_r($data);
-                echo '</pre>';
-
-                // To access a specific value, specify the section and the key
-                // Example: echo $data['SectionName']['KeyName'];
-            } else {
-                echo 'File not found.';
-            }
+            // To access a specific value, specify the section and the key
+            // Example: echo $data['SectionName']['KeyName'];
+        } else {
+            echo 'File not found.';
         }
-dd(84);
+
+        dd(84);
 
         $mating_interval_multiplier = StringHelper::extractValue
         ($server['data']['gameserver']['settings']['gameini']['MatingIntervalMultiplier']);
