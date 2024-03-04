@@ -63,20 +63,21 @@ class ServersController extends Controller
         $server = Server::where('serverhost_id', $id)->first();
         $filePath = $server->local_file_settings_path;
 
-        $fileExists = Storage::disk('public')->exists($filePath);
-
-        if ($fileExists) {
-            // Get the file content
+// Check if the file exists in the specified disk
+        if (Storage::disk('public')->exists($filePath)) {
+            // Retrieve the file content
             $fileContent = Storage::disk('public')->get($filePath);
 
-            // Parse the INI content into an associative array
+            // Parse the INI content into a PHP array
             $data = parse_ini_string($fileContent, true, INI_SCANNER_TYPED);
 
-            // Debug or use $data as needed
+            // Assuming you want to return or work with the data array
             return response()->json($data);
         } else {
+            // File doesn't exist, return an error message
             return response()->json(['error' => 'File not found.'], 404);
         }
+
 
         dd(84);
 
