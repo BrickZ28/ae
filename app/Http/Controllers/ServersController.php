@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Helpers\StringHelper;
 use Illuminate\Support\Facades\Route;
 use RealRashid\SweetAlert\Facades\Alert;
+use Storage;
 
 
 class ServersController extends Controller
@@ -54,8 +55,33 @@ class ServersController extends Controller
 
 	public function show($id)
 	{
-        $server = $this->getApiRequest(null,null,"services/{$id}/gameservers");
-        $settings = $server['data']['gameserver'];
+
+//        $server = $this->getApiRequest(null,null,"services/{$id}/gameservers");
+//        $settings = $server['data']['gameserver'];
+
+
+        $server = Server::where('serverhost_id', $id)->first();
+        $filePath = $server->local_file_settings_path;
+
+        // Check if the file exists
+        if (Storage::exists($filePath)) {
+            // Read the file content
+            $jsonContent = Storage::get($filePath);
+
+            // Decode the JSON content into a PHP array
+            $dataArray = json_decode($jsonContent, true);
+
+            // Alternatively, to get an object instead of an array, you can do:
+            // $dataObject = json_decode($jsonContent);
+
+            // Use $dataArray or $dataObject as needed
+            // For example, return it as a response or pass it to a view
+            return response()->json($dataArray);
+        } else {
+            // Handle the case where the file does not exist
+            return response()->json(['error' => 'File not found.'], 404);
+        }
+
 
         $mating_interval_multiplier = StringHelper::extractValue
         ($server['data']['gameserver']['settings']['gameini']['MatingIntervalMultiplier']);
@@ -78,6 +104,7 @@ class ServersController extends Controller
 	public function edit($id)
 	{
         $server = Server::where('serverhost_id', $id)->first();
+
 
         return view('dashboard.server.edit')->with([
             'server' => $server,
@@ -157,6 +184,31 @@ class ServersController extends Controller
         }
 
         return view('dashboard.index');
+    }
+
+    public function readJsonFile()
+    {
+        // Specify the path to your JSON file within the storage/app/public directory
+        $filePath = 'public/example.json';
+
+        // Check if the file exists
+        if (Storage::exists($filePath)) {
+            // Read the file content
+            $jsonContent = Storage::get($filePath);
+
+            // Decode the JSON content into a PHP array
+            $dataArray = json_decode($jsonContent, true);
+
+            // Alternatively, to get an object instead of an array, you can do:
+            // $dataObject = json_decode($jsonContent);
+
+            // Use $dataArray or $dataObject as needed
+            // For example, return it as a response or pass it to a view
+            return response()->json($dataArray);
+        } else {
+            // Handle the case where the file does not exist
+            return response()->json(['error' => 'File not found.'], 404);
+        }
     }
 
 
