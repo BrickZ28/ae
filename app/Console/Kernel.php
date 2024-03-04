@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->job(new ApplyAeCreditsJob())->weekly();
-        $schedule->job(ClearQuestionAttemptsJob())->daily();
+        $schedule->job(new ClearQuestionAttemptsJob())->daily();
     }
 
     /**

@@ -29,6 +29,11 @@
                             <a href="{{route('servers.show', $server['id'])}}" class="menu-link px-3">View</a>
                         </div>
                         <!--end::Menu item-->
+                        <!--begin::Menu item-->
+                        <div class="menu-item px-3">
+                            <a href="{{route('servers.edit', $server['id'])}}" class="menu-link px-3">Edit</a>
+                        </div>
+                        <!--end::Menu item-->
                     </div>
                     <!--end::Menu-->
                 </td>

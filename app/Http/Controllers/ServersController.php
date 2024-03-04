@@ -6,6 +6,7 @@ use App\Models\Game;
 use App\Models\Server;
 use App\Services\ApiService;
 use App\Traits\ApiRequests;
+use App\Traits\FileTrait;
 use Illuminate\Http\Request;
 use App\Helpers\StringHelper;
 use Illuminate\Support\Facades\Route;
@@ -14,7 +15,7 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class ServersController extends Controller
 {
-    use ApiRequests;
+    use ApiRequests, FileTrait;
 	public function index()
 	{
         return view('dashboard.server.index')->with([
@@ -55,7 +56,7 @@ class ServersController extends Controller
 	{
         $server = $this->getApiRequest(null,null,"services/{$id}/gameservers");
         $settings = $server['data']['gameserver'];
-        dd($server['data']['gameserver']);
+
         $mating_interval_multiplier = StringHelper::extractValue
         ($server['data']['gameserver']['settings']['gameini']['MatingIntervalMultiplier']);
         $hatch_speed_multiplier = StringHelper::extractValue
@@ -74,25 +75,52 @@ class ServersController extends Controller
     }
 
 
-	public function edit(Server $server)
+	public function edit($id)
 	{
+        $server = Server::where('serverhost_id', $id)->first();
 
         return view('dashboard.server.edit')->with([
             'server' => $server,
         ]);
 	}
 
-	public function update(Request $request, Server $server)
-	{
+    public function update(Request $request, Server $server)
+    {
 
-        $phrases = explode(", ", $request->settings);
-        $route = Route::current(); // Illuminate\Routing\Route
-        $name = Route::currentRouteName(); // string
-        $action = Route::currentRouteAction(); // string
-        dd(53, $route, $name, $action);
 
-//        dd($request, $phrases, 68);
-	}
+
+        // Check if a file was uploaded with the request
+        if ($request->hasFile('file')) {
+            // Define the disk where files should be stored (e.g., 'local', 'public', 's3')
+            $disk = 'public';
+
+            // Define the folder path, incorporating the server's identifier for organization
+            $folder = 'servers/' . $server->serverhost_id . '/json';
+
+
+            // Retrieve the uploaded file from the request
+            $file = $request->file('file');
+
+            // Attempt to upload the file using the trait's method
+            $path = $this->uploadFile($disk, $folder, $file);
+
+
+            if ($path) {
+                // Optionally, save the path in your server model or perform other actions
+                 $server->local_file_settings_path = $path;
+                // $server->save();
+
+                // Respond with success
+                return redirect()->route('screenshots.index')->with('success','File uploaded successfully' );
+            } else {
+                // Handle upload failure
+                return redirect()->route('screenshots.index')->with('error','File failed to upload' );
+            }
+        } else {
+            // No file was uploaded
+            return redirect()->route('screenshots.index')->with('error','No File present' );
+        }
+    }
 
 	public function destroy(Server $server)
 	{
