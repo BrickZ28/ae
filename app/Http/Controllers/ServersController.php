@@ -86,9 +86,6 @@ class ServersController extends Controller
 
     public function update(Request $request, Server $server)
     {
-
-
-
         // Check if a file was uploaded with the request
         if ($request->hasFile('file')) {
             // Define the disk where files should be stored (e.g., 'local', 'public', 's3')

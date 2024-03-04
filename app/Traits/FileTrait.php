@@ -11,23 +11,24 @@ trait FileTrait
     public function uploadFile($disk, $folder, $file, $visibility = 'public'): bool|string
     {
         try {
-            // Attempt to upload the file to the specified disk (e.g., S3)
+            // Attempt to upload the file to the specified disk
             $path = Storage::disk($disk)->putFile($folder, $file, $visibility);
 
             // Check if the path is returned successfully
             if ($path) {
-                dd('File uploaded', 'File uploaded successfully');
-                return $path;
+                // Redirect to a specific route with a success message
+                return redirect()->route('dashboard.index')->with('success', 'File uploaded successfully');
             } else {
                 // If the path is not returned, consider it a failed upload
-                dd('File upload failed', 'The file could not be uploaded.');
-                return false;
+                // Redirect to a specific route with an error message
+                return redirect()->route('dashboard.index')->with('error', 'The file could not be uploaded.');
             }
         } catch (\Exception $e) {
             // Catch any exceptions and report the failure
-            dd('File upload failed', 'An error has occurred during upload: ' . $e->getMessage());
-            return false;
+            // Redirect to a specific route with an error message including the exception message
+            return redirect()->route('dashboard.index')->with('error', 'An error has occurred during upload: ' . $e->getMessage());
         }
+
     }
 
     public function deleteFile($disk, $filePath)
