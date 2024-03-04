@@ -108,14 +108,14 @@ class ServersController extends Controller
                 // $server->save();
 
                 // Respond with success
-                return redirect()->route('screenshots.index')->with('success','File uploaded successfully' );
+                return redirect()->route('servers.index')->with('success','File uploaded successfully' );
             } else {
                 // Handle upload failure
-                return redirect()->route('screenshots.index')->with('error','File failed to upload' );
+                return redirect()->route('servers.index')->with('error','File failed to upload' );
             }
         } else {
             // No file was uploaded
-            return redirect()->route('screenshots.index')->with('error','No File present' );
+            return redirect()->route('servers.index')->with('error','No File present' );
         }
     }
 
