@@ -80,6 +80,7 @@ class ServersController extends Controller
             } else {
                 echo 'File not found.';
             }
+        }
 
 
         $mating_interval_multiplier = StringHelper::extractValue
