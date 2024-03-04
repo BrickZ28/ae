@@ -38,6 +38,17 @@ class TriviaService
      */
     public function getRandomUserQuestion()
     {
+//        $dailyAttemptCount = QuestionAttempt::where('created_at', '>=', now()->startOfDay())
+//            ->where('created_at', '<=', now()->endOfDay())
+//            ->where('user_id', Auth::id())
+//            ->distinct('question_id')
+//            ->count();
+//
+//        // Check if the user has already attempted 5 questions today
+//        if ($dailyAttemptCount >= 5) {
+//            return redirect()->route('dashboard.index')->with('error', 'You have reached the maximum number of questions for today.');
+//        }
+
         $attemptedQuestionIdsToday = QuestionAttempt::where('created_at', '>=', now()->startOfDay())
             ->where('created_at', '<=', now()->endOfDay())
             ->where('user_id', Auth::id())
@@ -67,6 +78,7 @@ class TriviaService
         $attempt_token = session('attempt_token');
         return view('dashboard.questions.user-random', compact('random_question', 'attempt_token'));
     }
+
 
 
     /**

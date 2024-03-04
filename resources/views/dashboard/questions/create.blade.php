@@ -24,7 +24,7 @@
                                   infoTextColor="text-warning"
                     />
 
-                   <div id="radioChoicesContainer"  >
+                    <div id="radioChoicesContainer"  >
 
                     </div>
 

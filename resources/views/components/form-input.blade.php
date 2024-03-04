@@ -1,19 +1,19 @@
 <label class="form-label fs-6 fw-bold text-gray-700 mb-3">{{ucwords($label)}}</label>
 <!--begin::Input group-->
 <div class="input-group mb-5 ">
-    <input name="{{$name}}"
-           value="{{$value}}"
+    <input name="{{$name ?? ""}}"
+           value="{{$value ?? ""}}"
            type="text"
            class="form-control"
-           placeholder="{{$placeholder}}"
-           aria-label="{{$placeholder}}"
+           placeholder="{{$placeholder ?? ""}}"
+           aria-label="{{$placeholder ?? ""}}"
            {{$required ?? ''}}
 
     aria-describedby="basic-addon1"/>
 
 </div>
 @if (!$errors->get($name))
-    <h3 class="{{$infoTextColor}}" > {{$infoText}}</h3>
+    <h3 class="{{$infoTextColor ?? ""}}" > {{$infoText ?? ""}}</h3>
 @else
     <div class="pb-2">
         <ul style="list-style-type: none">
@@ -23,6 +23,6 @@
                 </li>
             @endforeach
         </ul>
-        <h3 class="{{$infoTextColor}}" > {{$infoText}}</h3>
+        <h3 class="{{$infoTextColor ?? ""}}" > {{$infoText ?? ""}}</h3>
     </div>
 @endif
