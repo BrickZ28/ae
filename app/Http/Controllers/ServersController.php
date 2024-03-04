@@ -64,7 +64,7 @@ class ServersController extends Controller
         $filePath = $server->local_file_settings_path;
 
         if (Storage::disk('public')->exists($filePath)) {
-            dd('file exists');
+
             $jsonContent = Storage::disk('public')->get($filePath);
         // Check if the file exists
 
