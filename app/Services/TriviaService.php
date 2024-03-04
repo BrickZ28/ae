@@ -19,8 +19,13 @@ class TriviaService
     {
         DB::transaction(function () use ($questionText, $choicesString, $answer) {
             $question = Question::create(['question' => $questionText]);
-            $choicesString = rtrim($choicesString, ' ^');
+            $choicesString = rtrim($choicesString, ' ^'); // Trim any trailing '^'
             $choices = array_map('trim', explode('^', $choicesString));
+
+            // Filter out any empty strings from the choices array
+            $choices = array_filter($choices, function($choice) {
+                return !empty($choice);
+            });
 
             foreach ($choices as $choiceText) {
                 QuestionChoice::create([
