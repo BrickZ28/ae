@@ -81,7 +81,7 @@ class ServersController extends Controller
                 echo 'File not found.';
             }
         }
-
+dd(84);
 
         $mating_interval_multiplier = StringHelper::extractValue
         ($server['data']['gameserver']['settings']['gameini']['MatingIntervalMultiplier']);
