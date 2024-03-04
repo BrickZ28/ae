@@ -43,16 +43,16 @@ class TriviaService
      */
     public function getRandomUserQuestion()
     {
-//        $dailyAttemptCount = QuestionAttempt::where('created_at', '>=', now()->startOfDay())
-//            ->where('created_at', '<=', now()->endOfDay())
-//            ->where('user_id', Auth::id())
-//            ->distinct('question_id')
-//            ->count();
-//
-//        // Check if the user has already attempted 5 questions today
-//        if ($dailyAttemptCount >= 5) {
-//            return redirect()->route('dashboard.index')->with('error', 'You have reached the maximum number of questions for today.');
-//        }
+        $dailyAttemptCount = QuestionAttempt::where('created_at', '>=', now()->startOfDay())
+            ->where('created_at', '<=', now()->endOfDay())
+            ->where('user_id', Auth::id())
+            ->distinct('question_id')
+            ->count();
+
+        // Check if the user has already attempted 5 questions today
+        if ($dailyAttemptCount >= 5) {
+            return redirect()->route('dashboard.index')->with('error', 'You have reached the maximum number of questions for today.');
+        }
 
         $attemptedQuestionIdsToday = QuestionAttempt::where('created_at', '>=', now()->startOfDay())
             ->where('created_at', '<=', now()->endOfDay())
@@ -111,12 +111,12 @@ class TriviaService
         $attemptCount = $question->attempts()->where('user_id', $user->id)->count();
 
         // Record the attempt
-//        QuestionAttempt::create([
-//            'user_id' => $user->id,
-//            'question_id' => $questionId,
-//            'choice_id' => $selectedChoiceId,
-//            'is_correct' => $isCorrect,
-//        ]);
+        QuestionAttempt::create([
+            'user_id' => $user->id,
+            'question_id' => $questionId,
+            'choice_id' => $selectedChoiceId,
+            'is_correct' => $isCorrect,
+        ]);
 
         // Always refresh the attempt token after processing to prepare for the next question or retry
         Session::put('attempt_token', Str::random(40));
