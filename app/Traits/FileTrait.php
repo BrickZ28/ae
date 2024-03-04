@@ -34,7 +34,7 @@ trait FileTrait
         }
     }
 
-    }
+
 
     public function deleteFile($disk, $filePath)
     {
