@@ -63,27 +63,39 @@ class ServersController extends Controller
         $server = Server::where('serverhost_id', $id)->first();
         $filePath = $server->local_file_settings_path;
 
-        if ($file = Storage::disk('public')->exists($filePath)) {
+        if (Storage::disk('public')->exists($filePath)) {
+            // Retrieve the file content
+            $fileContent = Storage::disk('public')->get($filePath);
 
+            // Initialize an empty array to hold our INI data
+            $data = [];
 
-            if (file_exists($filePath)) {
-                dd($filePath, $file);
-                // Parse the INI file into an associative array
-                $data = parse_ini_file($filePath, true, INI_SCANNER_TYPED);
+            // Split the file content into lines
+            $lines = explode("\n", $fileContent);
 
-                // Use $data as needed
-                // For example, print the entire array or a specific value
-                echo '<pre>';
-                print_r($data);
-                echo '</pre>';
+            foreach ($lines as $line) {
+                // Ignore comments
+                if (strpos(trim($line), ';') === 0) continue;
 
-                // To access a specific value, specify the section and the key
-                // Example: echo $data['SectionName']['KeyName'];
-            } else {
-                echo 'File not found.';
+                // Parse lines with key=value
+                if (strpos($line, '=') !== false) {
+                    list($key, $value) = explode('=', $line, 2);
+                    $key = trim($key);
+                    $value = trim($value);
+
+                    // Optionally, you can further process the value here (e.g., remove quotes)
+                    $data[$key] = $value;
+                }
             }
+
+            // At this point, $data contains your INI data as an associative array
+            return response()->json($data);
+        } else {
+            // File doesn't exist, return an error message
+            return response()->json(['error' => 'File not found.'], 404);
         }
-dd(84);
+
+        dd(84);
 
         $mating_interval_multiplier = StringHelper::extractValue
         ($server['data']['gameserver']['settings']['gameini']['MatingIntervalMultiplier']);
