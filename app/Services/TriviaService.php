@@ -73,9 +73,9 @@ class TriviaService
             Session::put('attempt_token', Str::random(40));
         }
 
-        if (!$random_question) {
-            return redirect()->route('dashboard.index')->with('error', 'You have attempted all available questions for today.');
-        }
+//        if (!$random_question) {
+//            return redirect()->route('dashboard.index')->with('error', 'You have attempted all available questions for today.');
+//        }
 
         Session::put(['question_start_time' => now()]);
 
