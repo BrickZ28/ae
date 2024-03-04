@@ -23,7 +23,7 @@ trait FileTrait
 
             if ($path) {
                 // If the file is stored successfully, redirect with a success message
-                return redirect()->route('dashboard.index')->with('success', 'File uploaded successfully.');
+                return $fullPath;
             } else {
                 // If the storage was unsuccessful, redirect with an error message
                 return redirect()->route('dashboard.index')->with('error', 'The file could not be uploaded.');
