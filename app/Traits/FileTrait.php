@@ -8,26 +8,31 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 trait FileTrait
 {
-    public function uploadFile($disk, $folder, $file, $visibility = 'public'): bool|string
+    public function uploadFile($disk, $folder, $file, $visibility = 'public')
     {
         try {
-            // Attempt to upload the file to the specified disk
-            $path = Storage::disk($disk)->putFile($folder, $file, $visibility);
+            // Generate a unique filename based on the original filename or you can set a specific name
+            // This example uses the original file name. Ensure you sanitize or create a naming convention as needed.
+            $filename = $file->getClientOriginalName();
 
-            // Check if the path is returned successfully
+            // Define the full path where the file should be stored and overwrite if it exists
+            $fullPath = $folder . '/' . $filename;
+
+            // Use putFileAs to store the file to the specified path on the disk
+            $path = Storage::disk($disk)->putFileAs($folder, $file, $filename, $visibility);
+
             if ($path) {
-                // Redirect to a specific route with a success message
-                return redirect()->route('dashboard.index')->with('success', 'File uploaded successfully');
+                // If the file is stored successfully, redirect with a success message
+                return redirect()->route('dashboard.index')->with('success', 'File uploaded successfully.');
             } else {
-                // If the path is not returned, consider it a failed upload
-                // Redirect to a specific route with an error message
+                // If the storage was unsuccessful, redirect with an error message
                 return redirect()->route('dashboard.index')->with('error', 'The file could not be uploaded.');
             }
         } catch (\Exception $e) {
-            // Catch any exceptions and report the failure
-            // Redirect to a specific route with an error message including the exception message
+            // If an error occurs, catch the exception and redirect with an error message
             return redirect()->route('dashboard.index')->with('error', 'An error has occurred during upload: ' . $e->getMessage());
         }
+    }
 
     }
 
