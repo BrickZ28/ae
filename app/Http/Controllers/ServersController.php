@@ -132,7 +132,7 @@ class ServersController extends Controller
             if ($path) {
                 // Optionally, save the path in your server model or perform other actions
                  $server->local_file_settings_path = $path;
-                // $server->save();
+                 $server->save();
 
                 // Respond with success
                 return redirect()->route('servers.index')->with('success','File uploaded successfully' );
