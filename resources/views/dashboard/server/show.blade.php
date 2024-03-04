@@ -56,13 +56,13 @@
                                             <x-dashboard-product-card-items label="XP multiplier"
                                                                             :setting="$settings['XPMultiplier']"/>
                                             <x-dashboard-product-card-items label="Mating multiplier"
-                                                                            :setting=""/>
+                                                                            :setting="$settings['MatingIntervalMultiplier']"/>
                                             <x-dashboard-product-card-items label="Hatch speed multiplier"
-                                                                            :setting=""/>
+                                                                            :setting="$settings['EggHatchSpeedMultiplier']"/>
                                             <x-dashboard-product-card-items label="Baby cuddle multiplier"
-                                                                            :setting="$baby_cuddle_multiplier"/>
+                                                                            :setting="$settings['BabyCuddleIntervalMultiplier']"/>
                                             <x-dashboard-product-card-items label="Baby imprint multiplier"
-                                                                            :setting="$baby_imprint_multiplier"/>
+                                                                            :setting="$settings['BabyImprintAmountMultiplier']"/>
 
                                             <!--end::Item-->
 
