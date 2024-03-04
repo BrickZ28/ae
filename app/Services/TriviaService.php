@@ -31,7 +31,6 @@ class TriviaService
             }
         });
 
-        return redirect()->route('questions.create')->with('success', 'Question created successfully');
     }
 
     /**
@@ -88,7 +87,7 @@ class TriviaService
         // Then validate the attempt token
         if (!$this->isValidAttempt()) {
             Session::forget('attempt_token'); // Clear attempt token if invalid
-            return redirect()->route('dashboard.index')->with('error', 'This attempt is no longer valid.');
+            return redirect()->route('dashboard.index')->with('error', 'You have already answered this question');
         }
 
         $isCorrect = $choice->is_correct;

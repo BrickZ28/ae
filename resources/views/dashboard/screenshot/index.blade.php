@@ -36,11 +36,12 @@
                             <button type="submit" class="btn btn-success">Approve</button>
                     </form>
                 </td>
-                <td><form id="denyForm" action="{{ route('screenshots.destroy', $screenshot->id) }}" method="POST">
+                <td>
+                    <form id="denyForm" action="{{ route('screenshots.destroy', $screenshot->id) }}" method="POST">
                         @method('DELETE')
                         @csrf
                             <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                    </form>
                 </td>
                 <td><x-display-date-formatted
                         :date="$screenshot->created_at" format="D M j, Y @ g:i:sa" /></td>
