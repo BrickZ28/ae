@@ -73,9 +73,9 @@ class TriviaService
             Session::put('attempt_token', Str::random(40));
         }
 
-//        if (!$random_question) {
-//            return redirect()->route('dashboard.index')->with('error', 'You have attempted all available questions for today.');
-//        }
+        if (!$random_question) {
+            return redirect()->route('dashboard.index')->with('error', 'You have attempted all available questions for today.');
+        }
 
         Session::put(['question_start_time' => now()]);
 
@@ -111,12 +111,12 @@ class TriviaService
         $attemptCount = $question->attempts()->where('user_id', $user->id)->count();
 
         // Record the attempt
-        QuestionAttempt::create([
-            'user_id' => $user->id,
-            'question_id' => $questionId,
-            'choice_id' => $selectedChoiceId,
-            'is_correct' => $isCorrect,
-        ]);
+//        QuestionAttempt::create([
+//            'user_id' => $user->id,
+//            'question_id' => $questionId,
+//            'choice_id' => $selectedChoiceId,
+//            'is_correct' => $isCorrect,
+//        ]);
 
         // Always refresh the attempt token after processing to prepare for the next question or retry
         Session::put('attempt_token', Str::random(40));
