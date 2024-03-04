@@ -128,11 +128,12 @@ class ServersController extends Controller
 
     public function getServers()
     {
-        $api_data = $this->getApiRequest(null, [], 'services');
+        $api_data = $this->getApiRequest("https://api.nitrado.net/services", config('constants.nitrado.api_token'), []);
 
         if ($api_data['status'] === 'success') {
             foreach ($api_data['data']['services'] as $service) {
-                $server_info = $this->getApiRequest(null, null, "services/{$service['id']}/gameservers");
+                $server_info = $this->getApiRequest("https://api.nitrado.net/services/{$service['id']}/gameservers",
+                    config('constants.nitrado.api_token', []));
                 $game_human = $server_info['data']['gameserver']['game_human'];
 
                 $game = Game::where('api_name', $game_human)->first();
@@ -147,7 +148,7 @@ class ServersController extends Controller
                     'start_date' => $service['start_date'],
                     'end_date' => $service['suspend_date'],
                     'crossplay' => (bool)$service['is_xcross'],
-                    'game_id' => $game->id,
+                    'game_id' => $game->id ?? null,
                 ];
 
                 if (Server::firstOrCreate($server_data)) {
