@@ -69,7 +69,8 @@ class ServersController extends Controller
             $fileContent = Storage::disk('public')->get($filePath);
 
             // Parse the INI content into a PHP array
-            $data = parse_ini_string($fileContent, true, INI_SCANNER_TYPED);
+            $data = parse_ini_string($fileContent, true);
+
 
             // Assuming you want to return or work with the data array
             return response()->json($data);
