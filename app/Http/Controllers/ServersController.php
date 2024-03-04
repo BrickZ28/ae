@@ -64,9 +64,10 @@ class ServersController extends Controller
         $filePath = $server->local_file_settings_path;
 
         if ($file = Storage::disk('public')->exists($filePath)) {
-            dd($file);
+
 
             if (file_exists($filePath)) {
+                dd($filePath, $file);
                 // Parse the INI file into an associative array
                 $data = parse_ini_file($filePath, true, INI_SCANNER_TYPED);
 
