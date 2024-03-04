@@ -65,25 +65,21 @@ class ServersController extends Controller
 
         if (Storage::disk('public')->exists($filePath)) {
 
-            $jsonContent = Storage::disk('public')->get($filePath);
-        // Check if the file exists
+            if (file_exists($filePath)) {
+                // Parse the INI file into an associative array
+                $data = parse_ini_file($filePath, true, INI_SCANNER_TYPED);
 
-            // Read the file content
-            $jsonContent = Storage::get($filePath);
+                // Use $data as needed
+                // For example, print the entire array or a specific value
+                echo '<pre>';
+                print_r($data);
+                echo '</pre>';
 
-            // Decode the JSON content into a PHP array
-            $dataArray = json_decode($jsonContent, true);
-
-            // Alternatively, to get an object instead of an array, you can do:
-            // $dataObject = json_decode($jsonContent);
-
-            // Use $dataArray or $dataObject as needed
-            // For example, return it as a response or pass it to a view
-            return response()->json($dataArray);
-        } else {
-            // Handle the case where the file does not exist
-            return response()->json(['error' => 'File not found.'], 404);
-        }
+                // To access a specific value, specify the section and the key
+                // Example: echo $data['SectionName']['KeyName'];
+            } else {
+                echo 'File not found.';
+            }
 
 
         $mating_interval_multiplier = StringHelper::extractValue
