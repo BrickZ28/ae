@@ -10,10 +10,10 @@
                     <div class="d-flex flex-column">
                         <!--begin::Heading-->
                         <div class="mb-13 text-center">
-                            <h1 class="fs-2hx fw-bold mb-5">{{$settings['query']['server_name']}}</h1>
+                            <h1 class="fs-2hx fw-bold mb-5">{{$settings['SessionName']}}</h1>
                             <div class="text-gray-600 fw-semibold fs-5">Current Status
-                                <h1  class="fw-bold {{ $settings['status'] == 'started' ? 'text-bg-success' : 'text-bg-danger' }}">
-                                    {{strtoupper($settings['status'])}}</h1></div>
+{{--                                <h1  class="fw-bold {{ $settings['status'] == 'started' ? 'text-bg-success' : 'text-bg-danger' }}">--}}
+{{--                                    {{strtoupper($settings['status'])}}</h1></div>--}}
                         </div>
                         <!--end::Heading-->
 
@@ -28,17 +28,17 @@
                                         <!--begin::Heading-->
                                         <div class="mb-7">
                                             <!--begin::Title-->
-                                            <h1 class="text-gray-900 mb-5 fw-bolder">{{$settings['game_human']}}</h1>
+                                            <h1 class="text-gray-900 mb-5 fw-bolder"></h1>
                                             <!--end::Title-->
                                             <!--begin::Description-->
-                                            <div class="text-gray-600 fw-semibold mb-5">{{$settings['slots']}}
+                                            <div class="text-gray-600 fw-semibold mb-5">{{$settings['MaxPlayers']}}
                                                 slots</div>
                                             <!--end::Description-->
                                             <!--begin::Price-->
                                             <div>
 
                                                 <span class="fs-3x fw-bold
-                                                text-primary">{{$settings['query']['player_current']}}</span>
+                                                text-primary"></span>
                                                 <span class="fs-7 fw-semibold opacity-50">/
                             <span data-kt-element="period">players online</span>
                         </span>
@@ -50,15 +50,15 @@
                                         <div class="w-100 mb-10 text-center">
                                             <!--begin::Item-->
                                             <x-dashboard-product-card-items label="Taming multiplier"
-                                                                            :setting="$settings['settings']['config']['TamingSpeedMultiplier']"/>
+                                                                            :setting="$settings['TamingSpeedMultiplier']"/>
                                             <x-dashboard-product-card-items label="Harvest multiplier"
-                                                                            :setting="$settings['settings']['config']['HarvestAmountMultiplier']"/>
+                                                                            :setting="$settings['HarvestAmountMultiplier']"/>
                                             <x-dashboard-product-card-items label="XP multiplier"
-                                                                            :setting="$settings['settings']['config']['XPMultiplier']"/>
+                                                                            :setting="$settings['XPMultiplier']"/>
                                             <x-dashboard-product-card-items label="Mating multiplier"
-                                                                            :setting="$mating_interval_multiplier"/>
+                                                                            :setting=""/>
                                             <x-dashboard-product-card-items label="Hatch speed multiplier"
-                                                                            :setting="$hatch_speed_multiplier"/>
+                                                                            :setting=""/>
                                             <x-dashboard-product-card-items label="Baby cuddle multiplier"
                                                                             :setting="$baby_cuddle_multiplier"/>
                                             <x-dashboard-product-card-items label="Baby imprint multiplier"

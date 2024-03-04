@@ -60,10 +60,10 @@ class ServersController extends Controller
 
         if (Storage::disk('public')->exists($filePath)) {
             $fileContent = Storage::disk('public')->get($filePath);
-            $data = $this->parseIniString($fileContent);
+            $settings = $this->parseIniString($fileContent);
 
             // Pass the parsed data to your Blade view
-            return view('your.blade.view', compact('data'));
+            return view('dashboard.server.show', compact('settings'));
         } else {
             // Alternatively, handle the file not existing as needed
             abort(404, 'File not found.');
@@ -82,7 +82,7 @@ class ServersController extends Controller
                 $data[trim($key)] = trim($value);
             }
         }
-dd($data);
+
         return $data;
     }
 
@@ -101,38 +101,60 @@ dd($data);
     {
         // Check if a file was uploaded with the request
         if ($request->hasFile('file')) {
-            // Define the disk where files should be stored (e.g., 'local', 'public', 's3')
-            $disk = 'public';
+            // Validate the file is an .ini file
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            if (strtolower($extension) != 'ini') {
+                return redirect()->route('servers.index')->with('error', 'The file must be an .ini file.');
+            }
 
+            // Define the disk where files should be stored
+            $disk = 'public';
             // Define the folder path, incorporating the server's identifier for organization
             $folder = 'servers/' . $server->serverhost_id . '/json';
 
+            // Check if the filename starts with 'GameUserSettings'
+            if (strpos($file->getClientOriginalName(), 'GameUserSettings') === 0) {
+                // Upload or replace the current file
+                $path = $this->uploadFile($disk, $folder, $file);
+            } else {
+                // For files not starting with 'GameUserSettings', append to the existing GameUserSettings.ini if it exists
+                if (empty($server->local_file_settings_path)) {
+                    return redirect()->route('servers.index')->with('error', 'Please upload the GameUserSettings.ini file first.');
+                } else {
+                    // Ensure the GameUserSettings.ini file exists
+                    $existingFilePath = $server->local_file_settings_path;
+                    if (!Storage::disk($disk)->exists($existingFilePath)) {
+                        return redirect()->route('servers.index')->with('error', 'GameUserSettings.ini file not found.');
+                    }
 
-            // Retrieve the uploaded file from the request
-            $file = $request->file('file');
-
-            // Attempt to upload the file using the trait's method
-            $path = $this->uploadFile($disk, $folder, $file);
-
+                    // Append the content of the uploaded file to the GameUserSettings.ini file
+                    $existingContent = Storage::disk($disk)->get($existingFilePath);
+                    $newContent = file_get_contents($file);
+                    Storage::disk($disk)->put($existingFilePath, $existingContent . "\n" . $newContent);
+                    $path = $existingFilePath; // Since we're appending, the path remains the same
+                }
+            }
 
             if ($path) {
-                // Optionally, save the path in your server model or perform other actions
-                 $server->local_file_settings_path = $path;
-                 $server->save();
+                // Update the server's path with the new or appended file's path
+                $server->local_file_settings_path = $path;
+                $server->save();
 
                 // Respond with success
-                return redirect()->route('servers.index')->with('success','File uploaded successfully' );
+                return redirect()->route('servers.index')->with('success', 'File uploaded successfully');
             } else {
-                // Handle upload failure
-                return redirect()->route('servers.index')->with('error','File failed to upload' );
+                // Handle upload or append failure
+                return redirect()->route('servers.index')->with('error', 'File failed to upload');
             }
         } else {
             // No file was uploaded
-            return redirect()->route('servers.index')->with('error','No File present' );
+            return redirect()->route('servers.index')->with('error', 'No file present');
         }
     }
 
-	public function destroy(Server $server)
+
+    public function destroy(Server $server)
 	{
 	}
 
