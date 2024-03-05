@@ -135,5 +135,39 @@ class ServerService
         }
     }
 
+    public function fetchAndStoreServers()
+    {
+        $api_data = $this->getApiRequest("https://api.nitrado.net/services", config('constants.nitrado.api_token'), []);
+
+        if ($api_data['status'] === 'success') {
+            foreach ($api_data['data']['services'] as $service) {
+                $server_info = $this->getApiRequest("https://api.nitrado.net/services/{$service['id']}/gameservers",
+                    config('constants.nitrado.api_token', []));
+                $game_human = $server_info['data']['gameserver']['game_human'];
+
+                $game = Game::where('api_name', $game_human)->first();
+
+                $server_data = [
+                    'name' => $service['details']['name'],
+                    'ip' => $service['details']['address'],
+                    'serverhost_id' => $service['id'],
+                    'comments' => $service['comment'],
+                    'slots' => $service['details']['slots'],
+                    'status' => $service['status'],
+                    'start_date' => $service['start_date'],
+                    'end_date' => $service['suspend_date'],
+                    'crossplay' => (bool)$service['is_xcross'],
+                    'game_id' => $game->id ?? null,
+                ];
+
+                if (Server::firstOrCreate($server_data)) {
+                    Alert::success('servers_stored', 'Servers stored successfully');
+                }
+            }
+        } else {
+            Alert::error('error', 'Servers did not store successfully');
+        }
+    }
+
 
 }
