@@ -13,10 +13,10 @@
                         <div class="mb-13 text-center">
                             <h1 class="fs-2hx fw-bold mb-5">{{$settings['SessionName']}}</h1>
                             <div class="text-gray-600 fw-semibold fs-5">Current Status
-                                <h1  class="fw-bold {{ $api_server['data']['gameserver']['status'] == 'started' ?
+                                <h1  class="fw-bold {{ $apiServer['data']['gameserver']['status'] == 'started' ?
                                 'text-bg-success' :
                                 'text-bg-danger' }}">
-                                    {{strtoupper($api_server['data']['gameserver']['status'])}}</h1></div>
+                                    {{strtoupper($apiServer['data']['gameserver']['status'])}}</h1></div>
                         </div>
                         <!--end::Heading-->
 
@@ -32,7 +32,7 @@
                                         <div class="mb-7">
                                             <!--begin::Title-->
                                             <h1 class="text-gray-900 mb-5
-                                            fw-bolder">{{$api_server['data']['gameserver']['game_human']}}</h1>
+                                            fw-bolder">{{$apiServer['data']['gameserver']['game_human']}}</h1>
                                             <!--end::Title-->
                                             <!--begin::Description-->
                                             <div class="text-gray-600 fw-semibold mb-5">{{$settings['MaxPlayers']}}
@@ -44,7 +44,7 @@
                                                 <span class="fs-3x fw-bold
                                                 text-primary"></span>
                                                 <span class="fs-7 fw-semibold
-                                                opacity-50">{{$api_server['data']['gameserver']['query']['player_current']}}</span>
+                                                opacity-50">{{$apiServer['data']['gameserver']['query']['player_current']}}</span>
                             <span data-kt-element="period">players online</span>
                         </span>
                                             </div>
