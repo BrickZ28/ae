@@ -58,8 +58,7 @@
                                             @endphp
 
                                             @foreach($settingsList as $settingKey => $label)
-                                                <x-dashboard-product-card-items label="{{ $label }}"
-                                                                                :setting="$settings[$key] ?? 'UNK'"/>
+                                                <x-dashboard-product-card-items label="{{ $label }}" :setting="$settings[$settingKey] ?? 'UNK'"/>
                                             @endforeach
 
                                         </div>
