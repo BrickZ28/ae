@@ -55,7 +55,12 @@ class ServersController extends Controller
 
 	public function show($id)
 	{
+
+
         $server = Server::where('serverhost_id', $id)->firstOrFail();
+        $api_server = $this->getApiRequest("https://api.nitrado.net/services/{$server->serverhost_id}/gameservers",
+            config('constants.nitrado.api_token'),
+            []);
         $filePath = $server->local_file_settings_path;
 
         if (Storage::disk('public')->exists($filePath)) {
@@ -63,7 +68,7 @@ class ServersController extends Controller
             $settings = $this->parseIniString($fileContent);
 
             // Pass the parsed data to your Blade view
-            return view('dashboard.server.show', compact('settings'));
+            return view('dashboard.server.show', compact('settings', 'api_server'));
         } else {
             // Alternatively, handle the file not existing as needed
             abort(404, 'File not found.');
@@ -194,30 +199,6 @@ class ServersController extends Controller
         return view('dashboard.index');
     }
 
-    public function readJsonFile()
-    {
-        // Specify the path to your JSON file within the storage/app/public directory
-        $filePath = 'public/example.json';
-
-        // Check if the file exists
-        if (Storage::exists($filePath)) {
-            // Read the file content
-            $jsonContent = Storage::get($filePath);
-
-            // Decode the JSON content into a PHP array
-            $dataArray = json_decode($jsonContent, true);
-
-            // Alternatively, to get an object instead of an array, you can do:
-            // $dataObject = json_decode($jsonContent);
-
-            // Use $dataArray or $dataObject as needed
-            // For example, return it as a response or pass it to a view
-            return response()->json($dataArray);
-        } else {
-            // Handle the case where the file does not exist
-            return response()->json(['error' => 'File not found.'], 404);
-        }
-    }
 
 
 }
