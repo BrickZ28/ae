@@ -39,64 +39,18 @@ class ServersController extends Controller
 
 	public function store(Request $request)
 	{
-        $request->validate([
-            'name' => 'required',
-        ]);
-
-        if(Server::firstOrCreate ([
-            'name' => $request->name,
-            'ip' => $request->ip,
-        ])) {
-            Alert::success('Server Created', 'New server created successfully');
-        }
+        $this->serverService->createServer($request->all());
 
         return view('dashboard.index');
     }
 
-    public function dj()
-    {
-        $server = $this->getApiRequest(null,null,"services/2877144/gameservers");
-        $settings = $server;
-        dd($settings);
-    }
 
 	public function show($id)
 	{
-
-
-        $server = Server::where('serverhost_id', $id)->firstOrFail();
-        $api_server = $this->getApiRequest("https://api.nitrado.net/services/{$server->serverhost_id}/gameservers",
-            config('constants.nitrado.api_token'),
-            [])->json();
-        $filePath = $server->local_file_settings_path;
-
-        if (Storage::disk('public')->exists($filePath)) {
-            $fileContent = Storage::disk('public')->get($filePath);
-            $settings = $this->parseIniString($fileContent);
-
-            // Pass the parsed data to your Blade view
-            return view('dashboard.server.show', compact('settings', 'api_server'));
-        } else {
-            // Alternatively, handle the file not existing as needed
-            abort(404, 'File not found.');
-        }
+        $data = $this->serverService->getServerData($id);
+        return view('dashboard.server.show', $data);
     }
 
-    protected function parseIniString($fileContent)
-    {
-        $data = [];
-        $lines = explode("\n", $fileContent);
-
-        foreach ($lines as $line) {
-            if (strpos(trim($line), ';') === 0) continue;
-            if (strpos($line, '=') !== false) {
-                list($key, $value) = explode('=', $line, 2);
-                $data[trim($key)] = trim($value);
-            }
-        }
-
-        return $data;
-    }
 
 
 	public function edit($id)
