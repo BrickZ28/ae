@@ -19,10 +19,10 @@ class ServersController extends Controller
     use ApiRequests, FileTrait;
 	public function index()
 	{
-        $servers = Server::getFromAPI();
-        $filters = ['id', 'name', 'slots', 'renew by', 'status', 'game', 'actions'];
-
-        return view('dashboard.server.index', compact('servers', 'filters'));
+        return view('dashboard.server.index')->with([
+            'servers' => Server::getFromAPI(),
+            'filters' => ['id', 'name', 'slots', 'renew by', 'status', 'game', 'actions']
+        ]);
 	}
 
 	public function create()
@@ -32,36 +32,47 @@ class ServersController extends Controller
 
 	public function store(Request $request)
 	{
-        $validatedData = $request->validate(['name' => 'required']);
-
-        Server::firstOrCreate([
-            'name' => $validatedData['name'],
-            'ip' => $request->ip,
+        $request->validate([
+            'name' => 'required',
         ]);
 
-        Alert::success('Server Created', 'New server created successfully');
+        if(Server::firstOrCreate ([
+            'name' => $request->name,
+            'ip' => $request->ip,
+        ])) {
+            Alert::success('Server Created', 'New server created successfully');
+        }
 
-        return redirect()->route('dashboard.index');
+        return view('dashboard.index');
     }
 
+    public function dj()
+    {
+        $server = $this->getApiRequest(null,null,"services/2877144/gameservers");
+        $settings = $server;
+        dd($settings);
+    }
 
 	public function show($id)
 	{
-        $server = Server::where('serverhost_id', $id)->firstOrFail();
-        $apiServer = $this->getApiServerData($server->serverhost_id);
-        $settings = $this->getServerSettingsFromFile($server->local_file_settings_path);
 
-        if ($settings === null) {
+
+        $server = Server::where('serverhost_id', $id)->firstOrFail();
+        $api_server = $this->getApiRequest("https://api.nitrado.net/services/{$server->serverhost_id}/gameservers",
+            config('constants.nitrado.api_token'),
+            [])->json();
+        $filePath = $server->local_file_settings_path;
+
+        if (Storage::disk('public')->exists($filePath)) {
+            $fileContent = Storage::disk('public')->get($filePath);
+            $settings = $this->parseIniString($fileContent);
+
+            // Pass the parsed data to your Blade view
+            return view('dashboard.server.show', compact('settings', 'api_server'));
+        } else {
+            // Alternatively, handle the file not existing as needed
             abort(404, 'File not found.');
         }
-
-        return view('dashboard.server.show', compact('settings', 'apiServer'));
-    }
-
-    protected function getApiServerData($serverHostId)
-    {
-        $url = "https://api.nitrado.net/services/{$serverHostId}/gameservers";
-        return $this->getApiRequest($url, config('constants.nitrado.api_token'), [])->json();
     }
 
     protected function parseIniString($fileContent)
