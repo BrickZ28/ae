@@ -1,4 +1,5 @@
 <x-dashboard.layout>
+
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
@@ -10,14 +11,15 @@
                     <div class="d-flex flex-column">
                         <!--begin::Heading-->
                         <div class="mb-13 text-center">
-                            <h1 class="fs-2hx fw-bold mb-5">{{ $settings['SessionName'] ?? 'Unknown Session' }}</h1>
+                            <h1 class="fs-2hx fw-bold mb-5">{{$settings['SessionName']}}</h1>
                             <div class="text-gray-600 fw-semibold fs-5">Current Status
-                                <h1 class="fw-bold {{ $api_server['data']['gameserver']['status'] == 'started' ? 'text-bg-success' : 'text-bg-danger' }}">
-                                    {{ strtoupper($api_server['data']['gameserver']['status']) ?? 'UNKNOWN' }}
-                                </h1>
-                            </div>
+                                <h1  class="fw-bold {{ $api_server['data']['gameserver']['status'] == 'started' ?
+                                'text-bg-success' :
+                                'text-bg-danger' }}">
+                                    {{strtoupper($api_server['data']['gameserver']['status'])}}</h1></div>
                         </div>
                         <!--end::Heading-->
+
 
                         <!--begin::Row-->
                         <div class="row g-10 justify-content-center">
@@ -29,37 +31,38 @@
                                         <!--begin::Heading-->
                                         <div class="mb-7">
                                             <!--begin::Title-->
-                                            <h1 class="text-gray-900 mb-5 fw-bolder">{{ $api_server['data']['gameserver']['game_human'] ?? 'Unknown Game' }}</h1>
+                                            <h1 class="text-gray-900 mb-5
+                                            fw-bolder">{{$api_server['data']['gameserver']['game_human']}}</h1>
                                             <!--end::Title-->
                                             <!--begin::Description-->
-                                            <div class="text-gray-600 fw-semibold mb-5">{{ $settings['MaxPlayers'] ?? 'UNK' }} slots</div>
+                                            <div class="text-gray-600 fw-semibold mb-5">{{$settings['MaxPlayers']}}
+                                                slots</div>
                                             <!--end::Description-->
                                             <!--begin::Price-->
                                             <div>
-                                                <span class="fs-3x fw-bold text-primary"></span>
-                                                <span class="fs-7 fw-semibold opacity-50">{{ $api_server['data']['gameserver']['query']['player_current'] ?? '0' }} players online</span>
+
+                                                <span class="fs-3x fw-bold
+                                                text-primary"></span>
+                                                <span class="fs-7 fw-semibold
+                                                opacity-50">{{$api_server['data']['gameserver']['query']['player_current']}}</span>
+                            <span data-kt-element="period">players online</span>
+                        </span>
                                             </div>
                                             <!--end::Price-->
                                         </div>
                                         <!--end::Heading-->
                                         <!--begin::Features-->
                                         <div class="w-100 mb-10 text-center">
-                                            <!-- Dynamic Settings Display -->
-                                            @php
-                                                $settingsList = [
-                                                    'TamingSpeedMultiplier' => 'Taming multiplier',
-                                                    'HarvestAmountMultiplier' => 'Harvest multiplier',
-                                                    'XPMultiplier' => 'XP multiplier',
-                                                    'MatingIntervalMultiplier' => 'Mating multiplier',
-                                                    'EggHatchSpeedMultiplier' => 'Hatch speed multiplier',
-                                                    'BabyCuddleIntervalMultiplier' => 'Baby cuddle multiplier',
-                                                    'BabyImprintAmountMultiplier' => 'Baby imprint multiplier',
-                                                ];
-                                            @endphp
+                                            <!--begin::Item-->
+                                            <x-dashboard-product-card-items label="Taming multiplier" :setting="$settings['TamingSpeedMultiplier']"/>
+                                            <x-dashboard-product-card-items label="Harvest multiplier" :setting="$settings['HarvestAmountMultiplier']"/>
+                                            <x-dashboard-product-card-items label="XP multiplier" :setting="$settings['XPMultiplier']"/>
+                                            <x-dashboard-product-card-items label="Mating multiplier" :setting="$settings['MatingIntervalMultiplier']"/>
+                                            <x-dashboard-product-card-items label="Hatch speed multiplier" :setting="$settings['EggHatchSpeedMultiplier']"/>
+                                            <x-dashboard-product-card-items label="Baby cuddle multiplier" :setting="$settings['BabyCuddleIntervalMultiplier']"/>
+                                            <x-dashboard-product-card-items label="Baby imprint multiplier" :setting="$settings['BabyImprintAmountMultiplier']"/>
 
-                                            @foreach($settingsList as $settingKey => $label)
-                                                <x-dashboard-product-card-items label="{{ $label }}" :setting="$settings[$settingKey] ?? 'UNK'"/>
-                                            @endforeach
+                                            <!--end::Item-->
 
                                         </div>
                                         <!--end::Features-->
@@ -70,6 +73,7 @@
                             </div>
                             <!--end::Col-->
                         </div>
+
                         <!--end::Row-->
                     </div>
                     <!--end::Plans-->
@@ -80,4 +84,5 @@
         </div>
         <!--end::Content container-->
     </div>
+
 </x-dashboard.layout>
