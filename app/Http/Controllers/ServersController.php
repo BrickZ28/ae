@@ -16,152 +16,95 @@ use Storage;
 
 class ServersController extends Controller
 {
-    use ApiRequests, FileTrait;
-	public function index()
-	{
-        return view('dashboard.server.index')->with([
-            'servers' => Server::getFromAPI(),
-            'filters' => ['id', 'name', 'slots', 'renew by', 'status', 'game', 'actions']
-        ]);
-	}
-
-	public function create()
-	{
-        return view('dashboard.server.create');
-	}
-
-	public function store(Request $request)
-	{
-        $request->validate([
-            'name' => 'required',
-        ]);
-
-        if(Server::firstOrCreate ([
-            'name' => $request->name,
-            'ip' => $request->ip,
-        ])) {
-            Alert::success('Server Created', 'New server created successfully');
-        }
-
-        return view('dashboard.index');
-    }
-
-    public function dj()
+    public function index()
     {
-        $server = $this->getApiRequest(null,null,"services/2877144/gameservers");
-        $settings = $server;
-        dd($settings);
+        $servers = Server::getFromAPI();
+        $filters = ['id', 'name', 'slots', 'renew by', 'status', 'game', 'actions'];
+
+        return view('dashboard.server.index', compact('servers', 'filters'));
     }
 
-	public function show($id)
-	{
+    public function create()
+    {
+        return view('dashboard.server.create');
+    }
 
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate(['name' => 'required']);
 
+        Server::firstOrCreate([
+            'name' => $validatedData['name'],
+            'ip' => $request->ip,
+        ]);
+
+        Alert::success('Server Created', 'New server created successfully');
+
+        return redirect()->route('dashboard.index');
+    }
+
+    public function show($id)
+    {
         $server = Server::where('serverhost_id', $id)->firstOrFail();
-        $api_server = $this->getApiRequest("https://api.nitrado.net/services/{$server->serverhost_id}/gameservers",
-            config('constants.nitrado.api_token'),
-            [])->json();
-        $filePath = $server->local_file_settings_path;
+        $apiServer = $this->getApiServerData($server->serverhost_id);
+        $settings = $this->getServerSettingsFromFile($server->local_file_settings_path);
 
-        if (Storage::disk('public')->exists($filePath)) {
-            $fileContent = Storage::disk('public')->get($filePath);
-            $settings = $this->parseIniString($fileContent);
-
-            // Pass the parsed data to your Blade view
-            return view('dashboard.server.show', compact('settings', 'api_server'));
-        } else {
-            // Alternatively, handle the file not existing as needed
+        if ($settings === null) {
             abort(404, 'File not found.');
         }
+
+        return view('dashboard.server.show', compact('settings', 'apiServer'));
     }
 
-    protected function parseIniString($fileContent)
+    protected function getApiServerData($serverHostId)
     {
-        $data = [];
-        $lines = explode("\n", $fileContent);
+        $url = "https://api.nitrado.net/services/{$serverHostId}/gameservers";
+        return $this->getApiRequest($url, config('constants.nitrado.api_token'), [])->json();
+    }
 
-        foreach ($lines as $line) {
-            if (strpos(trim($line), ';') === 0) continue;
-            if (strpos($line, '=') !== false) {
-                list($key, $value) = explode('=', $line, 2);
-                $data[trim($key)] = trim($value);
-            }
+    protected function getServerSettingsFromFile($filePath)
+    {
+        if (Storage::disk('public')->exists($filePath)) {
+            $fileContent = Storage::disk('public')->get($filePath);
+            return $this->parseIniString($fileContent);
         }
 
-        return $data;
+        return null;
     }
 
-
-	public function edit($id)
-	{
-        $server = Server::where('serverhost_id', $id)->first();
-
-
-        return view('dashboard.server.edit')->with([
-            'server' => $server,
-        ]);
-	}
+    public function edit($id)
+    {
+        $server = Server::where('serverhost_id', $id)->firstOrFail();
+        return view('dashboard.server.edit', compact('server'));
+    }
 
     public function update(Request $request, Server $server)
     {
-        // Check if a file was uploaded with the request
-        if ($request->hasFile('file')) {
-            // Validate the file is an .ini file
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            if (strtolower($extension) != 'ini') {
-                return redirect()->route('servers.index')->with('error', 'The file must be an .ini file.');
-            }
-
-            // Define the disk where files should be stored
-            $disk = 'public';
-            // Define the folder path, incorporating the server's identifier for organization
-            $folder = 'servers/' . $server->serverhost_id . '/json';
-
-            // Check if the filename starts with 'GameUserSettings'
-            if (strpos($file->getClientOriginalName(), 'GameUserSettings') === 0) {
-                // Upload or replace the current file
-                $path = $this->uploadFile($disk, $folder, $file);
-            } else {
-                // For files not starting with 'GameUserSettings', append to the existing GameUserSettings.ini if it exists
-                if (empty($server->local_file_settings_path)) {
-                    return redirect()->route('servers.index')->with('error', 'Please upload the GameUserSettings.ini file first.');
-                } else {
-                    // Ensure the GameUserSettings.ini file exists
-                    $existingFilePath = $server->local_file_settings_path;
-                    if (!Storage::disk($disk)->exists($existingFilePath)) {
-                        return redirect()->route('servers.index')->with('error', 'GameUserSettings.ini file not found.');
-                    }
-
-                    // Append the content of the uploaded file to the GameUserSettings.ini file
-                    $existingContent = Storage::disk($disk)->get($existingFilePath);
-                    $newContent = file_get_contents($file);
-                    Storage::disk($disk)->put($existingFilePath, $existingContent . "\n" . $newContent);
-                    $path = $existingFilePath; // Since we're appending, the path remains the same
-                }
-            }
-
-            if ($path) {
-                // Update the server's path with the new or appended file's path
-                $server->local_file_settings_path = $path;
-                $server->save();
-
-                // Respond with success
-                return redirect()->route('servers.index')->with('success', 'File uploaded successfully');
-            } else {
-                // Handle upload or append failure
-                return redirect()->route('servers.index')->with('error', 'File failed to upload');
-            }
-        } else {
-            // No file was uploaded
-            return redirect()->route('servers.index')->with('error', 'No file present');
+        if (!$request->hasFile('file')) {
+            return back()->with('error', 'No file present');
         }
+
+        $file = $request->file('file');
+        $validationResult = $this->validateAndUploadFile($file, $server);
+
+        return $validationResult ?: back()->with('success', 'File uploaded successfully');
     }
 
+    protected function validateAndUploadFile($file, $server)
+    {
+        if ($file->getClientOriginalExtension() != 'ini') {
+            return back()->with('error', 'The file must be an .ini file.');
+        }
 
-    public function destroy(Server $server)
-	{
-	}
+        $folder = 'servers/' . $server->serverhost_id . '/json';
+        $path = $this->uploadOrAppendFile($file, $server, $folder);
+
+        if (!$path) {
+            return back()->with('error', 'File failed to upload');
+        }
+
+        $server->update(['local_file_settings_path' => $path]);
+    }
 
     public function getServers()
     {
