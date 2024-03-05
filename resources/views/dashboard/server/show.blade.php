@@ -54,13 +54,13 @@
                                         <!--begin::Features-->
                                         <div class="w-100 mb-10 text-center">
                                             <!--begin::Item-->
-                                            <x-dashboard-product-card-items label="Taming multiplier" :setting="$settings['TamingSpeedMultiplier']"/>
-                                            <x-dashboard-product-card-items label="Harvest multiplier" :setting="$settings['HarvestAmountMultiplier']"/>
-                                            <x-dashboard-product-card-items label="XP multiplier" :setting="$settings['XPMultiplier']"/>
-                                            <x-dashboard-product-card-items label="Mating multiplier" :setting="$settings['MatingIntervalMultiplier']"/>
-                                            <x-dashboard-product-card-items label="Hatch speed multiplier" :setting="$settings['EggHatchSpeedMultiplier']"/>
-                                            <x-dashboard-product-card-items label="Baby cuddle multiplier" :setting="$settings['BabyCuddleIntervalMultiplier']"/>
-                                            <x-dashboard-product-card-items label="Baby imprint multiplier" :setting="$settings['BabyImprintAmountMultiplier']"/>
+                                            <x-dashboard-product-card-items label="Taming multiplier" :setting="$settings['TamingSpeedMultiplier'] ?? 'UNK'"/>
+                                            <x-dashboard-product-card-items label="Harvest multiplier" :setting="$settings['HarvestAmountMultiplier'] ?? 'UNK'"/>
+                                            <x-dashboard-product-card-items label="XP multiplier" :setting="$settings['XPMultiplier'] ?? 'UNK'"/>
+                                            <x-dashboard-product-card-items label="Mating multiplier" :setting="$settings['MatingIntervalMultiplier'] ?? 'UNK'"/>
+                                            <x-dashboard-product-card-items label="Hatch speed multiplier" :setting="$settings['EggHatchSpeedMultiplier'] ?? 'UNK'"/>
+                                            <x-dashboard-product-card-items label="Baby cuddle multiplier" :setting="$settings['BabyCuddleIntervalMultiplier'] ?? 'UNK'"/>
+                                            <x-dashboard-product-card-items label="Baby imprint multiplier" :setting="$settings['BabyImprintAmountMultiplier'] ?? 'UNK'"/>
 
                                             <!--end::Item-->
 
