@@ -16,6 +16,7 @@ use Storage;
 
 class ServersController extends Controller
 {
+    use ApiRequests, FileTrait;
     public function index()
     {
         $servers = Server::getFromAPI();
@@ -105,6 +106,9 @@ class ServersController extends Controller
 
         $server->update(['local_file_settings_path' => $path]);
     }
+    public function destroy(Server $server)
+	{
+	}
 
     public function getServers()
     {
