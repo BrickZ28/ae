@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Game;
 use App\Models\Server;
 use App\Services\ApiService;
+use App\Services\ServerService;
 use App\Traits\ApiRequests;
 use App\Traits\FileTrait;
 use Illuminate\Http\Request;
@@ -17,13 +18,19 @@ use Storage;
 class ServersController extends Controller
 {
     use ApiRequests, FileTrait;
+
+    protected $serverService;
+
+    public function __construct(ServerService $serverService)
+    {
+        $this->serverService = $serverService;
+    }
 	public function index()
 	{
-        return view('dashboard.server.index')->with([
-            'servers' => Server::getFromAPI(),
-            'filters' => ['id', 'name', 'slots', 'renew by', 'status', 'game', 'actions']
-        ]);
-	}
+        $data = $this->serverService->getServersWithFilters();
+        return view('dashboard.server.index', $data);
+
+    }
 
 	public function create()
 	{
