@@ -1,4 +1,5 @@
 <x-dashboard.layout>
+    {{dd($api_server)}}
     <div id="kt_app_content" class="app-content flex-column-fluid">
         <!--begin::Content container-->
         <div id="kt_app_content_container" class="app-container container-xxl">
@@ -18,7 +19,7 @@
                                     {{strtoupper($api_server['gameserver']['status'])}}</h1></div>
                         </div>
                         <!--end::Heading-->
-{{dd($api_server)}}
+
 
                         <!--begin::Row-->
                         <div class="row g-10 justify-content-center">
