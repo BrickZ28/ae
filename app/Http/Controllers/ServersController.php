@@ -60,8 +60,7 @@ class ServersController extends Controller
         $server = Server::where('serverhost_id', $id)->firstOrFail();
         $api_server = $this->getApiRequest("https://api.nitrado.net/services/{$server->serverhost_id}/gameservers",
             config('constants.nitrado.api_token'),
-            []);
-        dd($api_server->json());
+            [])->json();
         $filePath = $server->local_file_settings_path;
 
         if (Storage::disk('public')->exists($filePath)) {
