@@ -44,7 +44,7 @@
                                                 <span class="fs-3x fw-bold
                                                 text-primary"></span>
                                                 <span class="fs-7 fw-semibold
-                                                opacity-50">$api_server['data']['gameserver']['query']['player_current']</span>
+                                                opacity-50">{{$api_server['data']['gameserver']['query']['player_current']}}</span>
                             <span data-kt-element="period">players online</span>
                         </span>
                                             </div>
