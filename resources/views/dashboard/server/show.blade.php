@@ -18,7 +18,7 @@
                                     {{strtoupper($api_server['gameserver']['status'])}}</h1></div>
                         </div>
                         <!--end::Heading-->
-
+{{dd($api_server)}}
 
                         <!--begin::Row-->
                         <div class="row g-10 justify-content-center">
