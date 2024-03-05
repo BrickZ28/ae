@@ -4,7 +4,7 @@
         {{$label}} {{ $setting }}x
     </span>
 
-    <i class="ki-duotone {{ $setting === 'UNK' ? ' ki-cross-square text- ' : 'ki-check-circle text-danger' }}
+    <i class="ki-duotone {{ $setting === 'UNK' ? ' ki-cross-square text-danger ' : 'ki-check-circle text-success' }}
      fs-1">
         <span class="path1"></span>
         <span class="path2"></span>
