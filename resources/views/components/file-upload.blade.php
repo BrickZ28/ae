@@ -1,6 +1,6 @@
 
 <label for="formFileMultiple" class="form-label">{{$label}}</label>
-<input class="form-control" type="file" id="formFile" name="{{$file}}">
+<input class="form-control" type="file" id="formFile" name="{{$file}}" multiple="{{$multiple ?? ''}}">
 
 <div class="pt-2">
     <ul style="list-style-type: none">

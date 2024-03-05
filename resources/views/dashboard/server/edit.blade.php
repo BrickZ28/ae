@@ -6,7 +6,8 @@
 
 
 
-            <x-file-upload label="Add Settings File" file="file" />
+            <x-file-upload label="Add Settings File" file="file" multiple="yes" />
+
 
         </div>
     </x-form>

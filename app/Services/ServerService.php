@@ -96,39 +96,36 @@ class ServerService
     public function updateServer(Server $server, $request)
     {
         if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            if (strtolower($extension) != 'ini') {
-                return redirect()->route('servers.index')->with('error', 'The file must be an .ini file.');
+            $files = $request->file('file'); // Adjusted to handle multiple files
+            $combinedContent = '';
+
+            foreach ($files as $file) {
+                $extension = $file->getClientOriginalExtension();
+                if (strtolower($extension) != 'ini') {
+                    return redirect()->route('servers.index')->with('error', 'All files must be .ini files.');
+                }
+
+                // Combine content of all .ini files
+                $combinedContent .= file_get_contents($file) . "\n";
             }
 
             $disk = 'public';
             $folder = 'servers/' . $server->serverhost_id . '/json';
+            $filename = 'GameSettings.ini'; // Name of the combined file
+            $path = $folder . '/' . $filename;
 
-            if (strpos($file->getClientOriginalName(), 'GameUserSettings') === 0) {
-                $path = $this->uploadFile($disk, $folder, $file);
-            } else {
-                if (empty($server->local_file_settings_path)) {
-                    return redirect()->route('servers.index')->with('error', 'Please upload the GameUserSettings.ini file first.');
-                } else {
-                    $existingFilePath = $server->local_file_settings_path;
-                    if (!Storage::disk($disk)->exists($existingFilePath)) {
-                        return redirect()->route('servers.index')->with('error', 'GameUserSettings.ini file not found.');
-                    }
+            // Check if combined content is not empty
+            if (!empty($combinedContent)) {
+                // Save combined content to a new or existing file
+                Storage::disk($disk)->put($path, $combinedContent);
 
-                    $existingContent = Storage::disk($disk)->get($existingFilePath);
-                    $newContent = file_get_contents($file);
-                    Storage::disk($disk)->put($existingFilePath, $existingContent . "\n" . $newContent);
-                    $path = $existingFilePath;
-                }
-            }
-
-            if ($path) {
+                // Update the server's local_file_settings_path
                 $server->local_file_settings_path = $path;
                 $server->save();
-                return redirect()->route('servers.index')->with('success', 'File uploaded successfully');
+
+                return redirect()->route('servers.index')->with('success', 'Files combined and uploaded successfully');
             } else {
-                return redirect()->route('servers.index')->with('error', 'File failed to upload');
+                return redirect()->route('servers.index')->with('error', 'Failed to combine files');
             }
         } else {
             return redirect()->route('servers.index')->with('error', 'No file present');
