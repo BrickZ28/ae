@@ -17,74 +17,45 @@ use Storage;
 class ServersController extends Controller
 {
     use ApiRequests, FileTrait;
-    public function index()
-    {
+	public function index()
+	{
         $servers = Server::getFromAPI();
         $filters = ['id', 'name', 'slots', 'renew by', 'status', 'game', 'actions'];
+
         return view('dashboard.server.index', compact('servers', 'filters'));
-    }
+	}
 
-    public function create()
-    {
+	public function create()
+	{
         return view('dashboard.server.create');
-    }
+	}
 
-    public function store(Request $request)
-    {
+	public function store(Request $request)
+	{
         $validatedData = $request->validate(['name' => 'required']);
+
         Server::firstOrCreate([
             'name' => $validatedData['name'],
-            'ip' => $request->ip(),
+            'ip' => $request->ip,
         ]);
+
         Alert::success('Server Created', 'New server created successfully');
+
         return redirect()->route('dashboard.index');
     }
 
-    public function show($id)
-    {
+
+	public function show($id)
+	{
         $server = Server::where('serverhost_id', $id)->firstOrFail();
         $apiServer = $this->getApiServerData($server->serverhost_id);
         $settings = $this->getServerSettingsFromFile($server->local_file_settings_path);
+
         if ($settings === null) {
             abort(404, 'File not found.');
         }
-        return view('dashboard.server.show', compact('server', 'apiServer', 'settings'));
-    }
 
-    public function edit($id)
-    {
-        $server = Server::where('serverhost_id', $id)->first();
-        return view('dashboard.server.edit', compact('server'));
-    }
-
-    public function update(Request $request, Server $server)
-    {
-        if ($request->hasFile('file')) {
-            $file = $request->file('file');
-            $extension = $file->getClientOriginalExtension();
-            if (strtolower($extension) != 'ini') {
-                return redirect()->route('servers.index')->with('error', 'The file must be an .ini file.');
-            }
-
-            $disk = 'public';
-            $folder = 'servers/' . $server->serverhost_id . '/json';
-            $path = Storage::disk($disk)->putFileAs($folder, $file, $file->getClientOriginalName());
-
-            if ($path) {
-                $server->local_file_settings_path = $path;
-                $server->save();
-                return redirect()->route('servers.index')->with('success', 'File uploaded successfully');
-            } else {
-                return redirect()->route('servers.index')->with('error', 'File failed to upload');
-            }
-        } else {
-            return redirect()->route('servers.index')->with('error', 'No file present');
-        }
-    }
-
-    public function destroy(Server $server)
-    {
-        // Implement server deletion logic here, if needed.
+        return view('dashboard.server.show', compact('settings', 'apiServer'));
     }
 
     protected function getApiServerData($serverHostId)
@@ -93,14 +64,93 @@ class ServersController extends Controller
         return $this->getApiRequest($url, config('constants.nitrado.api_token'), [])->json();
     }
 
-    protected function getServerSettingsFromFile($filePath)
+    protected function parseIniString($fileContent)
     {
-        if (!Storage::exists($filePath)) {
-            return null;
+        $data = [];
+        $lines = explode("\n", $fileContent);
+
+        foreach ($lines as $line) {
+            if (strpos(trim($line), ';') === 0) continue;
+            if (strpos($line, '=') !== false) {
+                list($key, $value) = explode('=', $line, 2);
+                $data[trim($key)] = trim($value);
+            }
         }
-        $fileContent = Storage::get($filePath);
-        return $this->parseIniString($fileContent);
+
+        return $data;
     }
+
+
+	public function edit($id)
+	{
+        $server = Server::where('serverhost_id', $id)->first();
+
+
+        return view('dashboard.server.edit')->with([
+            'server' => $server,
+        ]);
+	}
+
+    public function update(Request $request, Server $server)
+    {
+        // Check if a file was uploaded with the request
+        if ($request->hasFile('file')) {
+            // Validate the file is an .ini file
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            if (strtolower($extension) != 'ini') {
+                return redirect()->route('servers.index')->with('error', 'The file must be an .ini file.');
+            }
+
+            // Define the disk where files should be stored
+            $disk = 'public';
+            // Define the folder path, incorporating the server's identifier for organization
+            $folder = 'servers/' . $server->serverhost_id . '/json';
+
+            // Check if the filename starts with 'GameUserSettings'
+            if (strpos($file->getClientOriginalName(), 'GameUserSettings') === 0) {
+                // Upload or replace the current file
+                $path = $this->uploadFile($disk, $folder, $file);
+            } else {
+                // For files not starting with 'GameUserSettings', append to the existing GameUserSettings.ini if it exists
+                if (empty($server->local_file_settings_path)) {
+                    return redirect()->route('servers.index')->with('error', 'Please upload the GameUserSettings.ini file first.');
+                } else {
+                    // Ensure the GameUserSettings.ini file exists
+                    $existingFilePath = $server->local_file_settings_path;
+                    if (!Storage::disk($disk)->exists($existingFilePath)) {
+                        return redirect()->route('servers.index')->with('error', 'GameUserSettings.ini file not found.');
+                    }
+
+                    // Append the content of the uploaded file to the GameUserSettings.ini file
+                    $existingContent = Storage::disk($disk)->get($existingFilePath);
+                    $newContent = file_get_contents($file);
+                    Storage::disk($disk)->put($existingFilePath, $existingContent . "\n" . $newContent);
+                    $path = $existingFilePath; // Since we're appending, the path remains the same
+                }
+            }
+
+            if ($path) {
+                // Update the server's path with the new or appended file's path
+                $server->local_file_settings_path = $path;
+                $server->save();
+
+                // Respond with success
+                return redirect()->route('servers.index')->with('success', 'File uploaded successfully');
+            } else {
+                // Handle upload or append failure
+                return redirect()->route('servers.index')->with('error', 'File failed to upload');
+            }
+        } else {
+            // No file was uploaded
+            return redirect()->route('servers.index')->with('error', 'No file present');
+        }
+    }
+
+
+    public function destroy(Server $server)
+	{
+	}
 
     public function getServers()
     {
