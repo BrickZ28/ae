@@ -93,7 +93,47 @@ class ServerService
         return $data;
     }
 
+    public function updateServer(Server $server, $request)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            if (strtolower($extension) != 'ini') {
+                return redirect()->route('servers.index')->with('error', 'The file must be an .ini file.');
+            }
 
+            $disk = 'public';
+            $folder = 'servers/' . $server->serverhost_id . '/json';
+
+            if (strpos($file->getClientOriginalName(), 'GameUserSettings') === 0) {
+                $path = $this->uploadFile($disk, $folder, $file);
+            } else {
+                if (empty($server->local_file_settings_path)) {
+                    return redirect()->route('servers.index')->with('error', 'Please upload the GameUserSettings.ini file first.');
+                } else {
+                    $existingFilePath = $server->local_file_settings_path;
+                    if (!Storage::disk($disk)->exists($existingFilePath)) {
+                        return redirect()->route('servers.index')->with('error', 'GameUserSettings.ini file not found.');
+                    }
+
+                    $existingContent = Storage::disk($disk)->get($existingFilePath);
+                    $newContent = file_get_contents($file);
+                    Storage::disk($disk)->put($existingFilePath, $existingContent . "\n" . $newContent);
+                    $path = $existingFilePath;
+                }
+            }
+
+            if ($path) {
+                $server->local_file_settings_path = $path;
+                $server->save();
+                return redirect()->route('servers.index')->with('success', 'File uploaded successfully');
+            } else {
+                return redirect()->route('servers.index')->with('error', 'File failed to upload');
+            }
+        } else {
+            return redirect()->route('servers.index')->with('error', 'No file present');
+        }
+    }
 
 
 }
