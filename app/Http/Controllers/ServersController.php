@@ -21,7 +21,6 @@ class ServersController extends Controller
     {
         $servers = Server::getFromAPI();
         $filters = ['id', 'name', 'slots', 'renew by', 'status', 'game', 'actions'];
-
         return view('dashboard.server.index', compact('servers', 'filters'));
     }
 
@@ -33,14 +32,11 @@ class ServersController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate(['name' => 'required']);
-
         Server::firstOrCreate([
             'name' => $validatedData['name'],
-            'ip' => $request->ip,
+            'ip' => $request->ip(),
         ]);
-
         Alert::success('Server Created', 'New server created successfully');
-
         return redirect()->route('dashboard.index');
     }
 
@@ -49,12 +45,46 @@ class ServersController extends Controller
         $server = Server::where('serverhost_id', $id)->firstOrFail();
         $apiServer = $this->getApiServerData($server->serverhost_id);
         $settings = $this->getServerSettingsFromFile($server->local_file_settings_path);
-
         if ($settings === null) {
             abort(404, 'File not found.');
         }
+        return view('dashboard.server.show', compact('server', 'apiServer', 'settings'));
+    }
 
-        return view('dashboard.server.show', compact('settings', 'apiServer'));
+    public function edit($id)
+    {
+        $server = Server::where('serverhost_id', $id)->first();
+        return view('dashboard.server.edit', compact('server'));
+    }
+
+    public function update(Request $request, Server $server)
+    {
+        if ($request->hasFile('file')) {
+            $file = $request->file('file');
+            $extension = $file->getClientOriginalExtension();
+            if (strtolower($extension) != 'ini') {
+                return redirect()->route('servers.index')->with('error', 'The file must be an .ini file.');
+            }
+
+            $disk = 'public';
+            $folder = 'servers/' . $server->serverhost_id . '/json';
+            $path = Storage::disk($disk)->putFileAs($folder, $file, $file->getClientOriginalName());
+
+            if ($path) {
+                $server->local_file_settings_path = $path;
+                $server->save();
+                return redirect()->route('servers.index')->with('success', 'File uploaded successfully');
+            } else {
+                return redirect()->route('servers.index')->with('error', 'File failed to upload');
+            }
+        } else {
+            return redirect()->route('servers.index')->with('error', 'No file present');
+        }
+    }
+
+    public function destroy(Server $server)
+    {
+        // Implement server deletion logic here, if needed.
     }
 
     protected function getApiServerData($serverHostId)
@@ -65,50 +95,12 @@ class ServersController extends Controller
 
     protected function getServerSettingsFromFile($filePath)
     {
-        if (Storage::disk('public')->exists($filePath)) {
-            $fileContent = Storage::disk('public')->get($filePath);
-            return $this->parseIniString($fileContent);
+        if (!Storage::exists($filePath)) {
+            return null;
         }
-
-        return null;
+        $fileContent = Storage::get($filePath);
+        return $this->parseIniString($fileContent);
     }
-
-    public function edit($id)
-    {
-        $server = Server::where('serverhost_id', $id)->firstOrFail();
-        return view('dashboard.server.edit', compact('server'));
-    }
-
-    public function update(Request $request, Server $server)
-    {
-        if (!$request->hasFile('file')) {
-            return back()->with('error', 'No file present');
-        }
-
-        $file = $request->file('file');
-        $validationResult = $this->validateAndUploadFile($file, $server);
-
-        return $validationResult ?: back()->with('success', 'File uploaded successfully');
-    }
-
-    protected function validateAndUploadFile($file, $server)
-    {
-        if ($file->getClientOriginalExtension() != 'ini') {
-            return back()->with('error', 'The file must be an .ini file.');
-        }
-
-        $folder = 'servers/' . $server->serverhost_id . '/json';
-        $path = $this->uploadOrAppendFile($file, $server, $folder);
-
-        if (!$path) {
-            return back()->with('error', 'File failed to upload');
-        }
-
-        $server->update(['local_file_settings_path' => $path]);
-    }
-    public function destroy(Server $server)
-	{
-	}
 
     public function getServers()
     {
