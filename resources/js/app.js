@@ -1,14 +1,10 @@
-// Import FullCalendar
+
 import { Calendar } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import interactionPlugin from '@fullcalendar/interaction'; // If you need interactive features
+import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 
-// Optionally, import a locale
-
-
-// Document ready function
 document.addEventListener('DOMContentLoaded', function() {
     const calendarEl = document.getElementById('calendar');
     const calendar = new Calendar(calendarEl, {
@@ -34,7 +30,8 @@ document.addEventListener('DOMContentLoaded', function() {
             const startDate = new Date(arg.event.start);
             const endDate = new Date(arg.event.end);
             const today = new Date();
-            const isActive = arg.event.extendedProps['active'] === 1; // Check if active is 1 (true)
+            const isActive = arg.event.extendedProps['active'] === 1;
+            const oneDay = 1000 * 60 * 60 * 24;// Check if active is 1 (true)
 
             // Check if the event is active
             if (isActive) {
@@ -43,28 +40,26 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Check if the event is in the future
-            if (endDate > today && startDate > today) {
+            else if (endDate > today && startDate > today) {
                 eventBackgroundColor = '#A32CC4'; // Future events color (purple)
                 eventBorderColor = '#A32CC4'; // Future events color (purple)
             }
 
             // Check if the end date is within 24 hours
-            const oneDay = 1000 * 60 * 60 * 24; // Milliseconds in a day
-            if (endDate - today <= oneDay && endDate > today) {
+            // Milliseconds in a day
+            else if (endDate - today <= oneDay && endDate > today) {
                 eventBackgroundColor = '#D0312D'; // End date within 24 hours color (red)
                 eventBorderColor = '#D0312D'; // End date within 24 hours color (red)
             }
 
             // Check if the start date is within 24 hours
-            if (startDate - today <= oneDay && startDate > today) {
+            else if (startDate - today <= oneDay && startDate > today) {
                 eventBackgroundColor = '#FFA500'; // Start date within 24 hours color (orange)
                 eventBorderColor = '#FFA500'; // Start date within 24 hours color (orange)
             }
 
-            return { html: `<div style="background-color: ${eventBackgroundColor}; border-color: ${eventBorderColor};">${eventTitle}</div>` };
+            return { html: `<div class="event" style="background-color: ${eventBackgroundColor}; border-color: ${eventBorderColor};">${eventTitle}</div>` };
         }
     });
     calendar.render();
 });
-
-
