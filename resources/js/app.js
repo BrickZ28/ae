@@ -54,8 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Check if the start date is within 24 hours
             else if (startDate - today <= oneDay && startDate > today) {
-                eventBackgroundColor = '#FFA500'; // Start date within 24 hours color (orange)
-                eventBorderColor = '#FFA500'; // Start date within 24 hours color (orange)
+                eventBackgroundColor = '#8D4004'; // Start date within 24 hours color (orange)
+                eventBorderColor = '#8D4004'; // Start date within 24 hours color (orange)
             }
 
             return { html: `<div class="event" style="background-color: ${eventBackgroundColor}; border-color: ${eventBorderColor};">${eventTitle}</div>` };
