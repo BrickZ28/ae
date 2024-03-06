@@ -48,7 +48,7 @@ class SideMenu extends Component
     {
         return $this->user_submenu = [
             'Trivia' => ['View Question' => route('questions.user.random')],
-            'Donations' => ['View Users' => '/users'],
+            'Calendar' => ['View calendar' => route('calendar.index')],
         ];
     }
 

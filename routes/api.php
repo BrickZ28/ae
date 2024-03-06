@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\v1\ApiAuthController;
 use App\Http\Controllers\Api\v1\RuleController;
+use App\Http\Controllers\SpecialsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => '/v1','middleware' => ['auth:sanctum']],function (){
     Route::post('/logout', [ApiAuthController::class, 'logout']);
     Route::resource('/rule', RuleController::class);
-});
 
+});
+Route::get('/calendar/specials', [SpecialsController::class, 'showCalendar']);
 Route::post('/login', [ApiAuthController::class, 'login']);

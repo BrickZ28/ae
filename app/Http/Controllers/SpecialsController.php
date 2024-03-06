@@ -4,15 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Models\Specials;
 use App\Services\DateRangeParser;
+use App\Services\SpecialsService;
 use Illuminate\Http\Request;
 
 class SpecialsController extends Controller
 {
     protected $dateRangeParser;
+    protected $specialsService;
 
-    public function __construct(DateRangeParser $dateRangeParser)
+    public function __construct(DateRangeParser $dateRangeParser, SpecialsService $specialsService)
     {
         $this->dateRangeParser = $dateRangeParser;
+        $this->specialsService = $specialsService;
     }
 	public function index()
 	{
@@ -97,5 +100,11 @@ class SpecialsController extends Controller
         // Unset the original dates field
         unset($data['dates']);
         return $data;
+    }
+
+    public function showCalendar()
+    {
+
+        return $this->specialsService->fetchForCalendar();
     }
 }

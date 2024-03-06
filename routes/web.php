@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\SocialiteController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiscordController;
 use App\Http\Controllers\GamesController;
@@ -33,6 +34,9 @@ Route::get('/error', function () {
 
 // Private Routes (Authenticated and Verified Users)
 Route::middleware(['auth', 'verified'])->group(function () {
+    //Calendar
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
