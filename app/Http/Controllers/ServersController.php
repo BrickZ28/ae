@@ -52,14 +52,13 @@ class ServersController extends Controller
         return view('dashboard.server.show', $data);
     }
 
-
-
 	public function edit($id)
 	{
         $server = Server::where('id', $id)->with('playstyle')->first();
         $playstyles = Playstyle::all();
+        $games = Game::all();
 
-        return view('dashboard.server.edit', compact('server', 'playstyles'));
+        return view('dashboard.server.edit', compact('server', 'playstyles', 'games'));
 	}
 
     public function update(Request $request, Server $server)

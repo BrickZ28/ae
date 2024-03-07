@@ -10,11 +10,22 @@
                           required="required" />
             <!-- Make sure to pass "file[]" for handling multiple file uploads -->
             <x-file-upload label="Add Settings File" file="file[]" multiple="yes" />
+        </div>
+<label for="style" class="form-label">Select Playstyle</label>
+        <div class="row gx-10 mb-5">
+            <select class="form-select" aria-label="Select Playstyle" name="style">
 
-            <select class="form-select" aria-label="Select example" name="style">
-                <option >Open this select menu</option>
                 @foreach($playstyles as $style)
                     <option value="{{$style->id}}">{{$style->name}}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="row gx-10 mb-5">
+<label for="style" class="form-label">Select Game</label>
+            <select class="form-select" aria-label="Select Game" name="style">
+                <option value="">Select One</option>
+                @foreach($games as $game)
+                    <option value="{{$game->id}}">{{$game->name}}</option>
                 @endforeach
             </select>
         </div>

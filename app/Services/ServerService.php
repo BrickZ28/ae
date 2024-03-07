@@ -95,6 +95,7 @@ class ServerService
 
     public function updateServer(Server $server, $request)
     {
+        dd($request->all());
         if ($request->style || $request->display_name){
         $server->playstyle_id = $request->style;
         $server->display_name = $request->display_name;
