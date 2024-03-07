@@ -12,13 +12,13 @@
                         :date="$game->created_at" format="D M j, Y @ g:i:sa" />
                 </td>
                 <td>
-                    <form action="{{ route('playstyles.edit', $game->id) }}" method="get">
+                    <form action="{{ route('games.edit', $game->id) }}" method="get">
                         @csrf
                         <button type="submit" class="btn btn-primary">Edit</button>
                     </form>
                 </td>
                 <td>
-                    <form id="denyForm" action="{{ route('playstyles.destroy', $game->id) }}" method="POST">
+                    <form id="denyForm" action="{{ route('games.destroy', $game->id) }}" method="POST">
                         @method('DELETE')
                         @csrf
                         <button type="submit" class="btn btn-danger">Delete</button>
@@ -42,5 +42,25 @@
         @endforeach
 
     </x-datatable_shell>
+    <script>
+        document.getElementById('denyForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
 
+            // Use SweetAlert to show a confirmation dialog
+            Swal.fire({
+                title: 'Confirm?',
+                text: "This will delete the games from the website and can break stuff?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User clicked 'Yes', submit the form
+                    event.target.submit();
+                }
+            });
+        });
+    </script>
 </x-dashboard.layout>

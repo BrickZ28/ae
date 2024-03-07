@@ -57,5 +57,8 @@ class GamesController extends Controller
 
 	public function destroy(Game $game)
 	{
+        $game->delete();
+
+        return redirect()->route('dashboard.index')->with('success', 'Game deleted successfully');
 	}
 }
