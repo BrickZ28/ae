@@ -12,6 +12,7 @@
                         <!--begin::Heading-->
                         <div class="mb-13 text-center">
                             <h1 class="fs-2hx fw-bold mb-5">{{$settings['SessionName']}}</h1>
+                           <h3 class=" fw-bold mb-5">{{$server->display_name}}</h3>
                             <div class="text-gray-600 fw-semibold fs-5">Current Status
                                 <h1  class="fw-bold {{ $apiServer['data']['gameserver']['status'] == 'started' ?
                                 'text-bg-success' :

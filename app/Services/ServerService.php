@@ -58,14 +58,14 @@ class ServerService
     public function getServerData($id)
     {
         $server = Server::where('id', $id)->firstOrFail();
-//        $apiServer = $this->getApiServerData($server->serverhost_id);
+        $apiServer = $this->getApiServerData($server->serverhost_id);
         $filePath = $server->local_file_settings_path;
 
         if ($filePath && Storage::disk('public')->exists($filePath)) {
             $fileContent = Storage::disk('public')->get($filePath);
             $settings = $this->parseIniString($fileContent);
 
-            return compact('settings');
+            return compact('settings', 'server', 'apiServer');
         } else {
             abort(404, 'File not found.');
         }
