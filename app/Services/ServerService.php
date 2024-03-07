@@ -95,6 +95,15 @@ class ServerService
 
     public function updateServer(Server $server, $request)
     {
+        if ($request->style){
+        $server->playstyle_id = $request->style;
+        $server->save();
+        }
+
+        if (!$request->hasFile('file') && $request->style){
+            return redirect()->route('servers.index')->with('success', 'Style added to server');
+        }
+
         if ($request->hasFile('file')) {
             $files = $request->file('file'); // Adjusted to handle multiple files
             $combinedContent = '';
@@ -102,7 +111,7 @@ class ServerService
             foreach ($files as $file) {
                 $extension = $file->getClientOriginalExtension();
                 if (strtolower($extension) != 'ini') {
-                    return redirect()->route('servers.index')->with('error', 'All files must be .ini files.');
+                    return redirect()->route('servers.index')->with('success', 'Files combined and uploaded successfully');
                 }
 
                 // Combine content of all .ini files
@@ -121,6 +130,7 @@ class ServerService
 
                 // Update the server's local_file_settings_path
                 $server->local_file_settings_path = $path;
+
                 $server->save();
 
                 return redirect()->route('servers.index')->with('success', 'Files combined and uploaded successfully');

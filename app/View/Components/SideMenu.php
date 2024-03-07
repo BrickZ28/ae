@@ -41,6 +41,8 @@ class SideMenu extends Component
                 'View Specials' => route('specials.index')],
             'trivia' => ['Create Question' => route('questions.create'),
                 'View Questions' => route('questions.index')],
+            'playstyles' => ['Create Playstyle' => route('playstyles.create'),
+                'View Playstyles' => route('playstyles.index')],
         ];
     }
 

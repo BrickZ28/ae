@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Game;
+use App\Models\Playstyle;
 use App\Models\Server;
 use App\Services\ApiService;
 use App\Services\ServerService;
@@ -55,12 +56,10 @@ class ServersController extends Controller
 
 	public function edit($id)
 	{
-        $server = Server::where('serverhost_id', $id)->first();
+        $server = Server::where('serverhost_id', $id)->with('style')->first();
+        $playstyles = Playstyle::all();
 
-
-        return view('dashboard.server.edit')->with([
-            'server' => $server,
-        ]);
+        return view('dashboard.server.edit', compact('server', 'playstyles'));
 	}
 
     public function update(Request $request, Server $server)

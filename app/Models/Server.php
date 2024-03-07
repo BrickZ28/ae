@@ -41,4 +41,9 @@ class Server extends Model
     {
         return $this->belongsTo(Game::class);
     }
+
+    public function style(): BelongsTo
+    {
+        return $this->belongsTo(Playstyle::class);
+    }
 }
