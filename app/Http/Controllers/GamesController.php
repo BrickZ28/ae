@@ -13,7 +13,7 @@ class GamesController extends Controller
 	{
         return view('dashboard.game.index')->with([
             'games' => Game::all(),
-            'filters' => ['id', 'API Name', 'Display Name', 'actions']
+            'filters' => ['id', 'API Name', 'Display Name', 'Created On', 'Edit', 'Delete', 'Servers']
         ]);
 	}
 

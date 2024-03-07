@@ -7,40 +7,36 @@
                 <td>{{$game->id}}</td>
                 <td>{{$game->api_name}}</td>
                 <td>{{$game->display_name}}</td>
+                <td>
+                    <x-display-date-formatted
+                        :date="$game->created_at" format="D M j, Y @ g:i:sa" />
+                </td>
+                <td>
+                    <form action="{{ route('playstyles.edit', $game->id) }}" method="get">
+                        @csrf
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                </td>
+                <td>
+                    <form id="denyForm" action="{{ route('playstyles.destroy', $game->id) }}" method="POST">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+                <td>
+                    <x-dashboard-draggable-modal buttonText="Servers"
+                                                 :title="$game->name"
+                                                 :id="$game->id">
+                        <ul>
+                            @foreach($game->servers as $server)
+                                <li>
+                                    <a href="{{route('servers.show', $server->id)}}">{{$server->display_name}}</a>
+                                </li>
+                            @endforeach
+                        </ul>
 
-                <td class="text-end">
-                    <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"
-                       data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
-                        <i class="ki-duotone ki-down fs-5 ms-1"></i></a>
-                    <!--begin::Menu-->
-                    <div
-                        class="menu menu-sub menu-sub-dropdown menu-column menu-rounded menu-gray-600 menu-state-bg-light-primary fw-semibold fs-7 w-125px py-4"
-                        data-kt-menu="true">
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="{{route('games.edit', $game->id)}}" class="menu-link px-3">Edit</a>
-                        </div>
-                        <!--end::Menu item-->
-                        <!--begin::Menu item-->
-                        <div class="menu-item px-3">
-                            <a href="{{route('games.show', $game->id)}}" class="menu-link px-3">View</a>
-                        </div>
-                        <!--end::Menu item-->
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    <!--end::Menu-->
+                    </x-dashboard-draggable-modal>
                 </td>
             </tr>
         @endforeach
