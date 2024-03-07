@@ -15,16 +15,16 @@ class ServerService
     public function getServersWithFilters()
     {
         // Retrieve servers from the API.
-        $servers = Server::getFromAPI();
+        $servers = Server::with('playstyle', 'game')->get();
 
         // Define the filters.
         $filters = [
-            'id',
-            'name',
+            'display name',
+            'play style',
             'slots',
-            'renew by',
-            'status',
             'game',
+            'status',
+            'in game name',
             'actions',
         ];
 
@@ -57,15 +57,15 @@ class ServerService
 
     public function getServerData($id)
     {
-        $server = Server::where('serverhost_id', $id)->firstOrFail();
-        $apiServer = $this->getApiServerData($server->serverhost_id);
+        $server = Server::where('id', $id)->firstOrFail();
+//        $apiServer = $this->getApiServerData($server->serverhost_id);
         $filePath = $server->local_file_settings_path;
 
-        if (Storage::disk('public')->exists($filePath)) {
+        if ($filePath && Storage::disk('public')->exists($filePath)) {
             $fileContent = Storage::disk('public')->get($filePath);
             $settings = $this->parseIniString($fileContent);
 
-            return compact('settings', 'apiServer');
+            return compact('settings');
         } else {
             abort(404, 'File not found.');
         }
@@ -95,13 +95,14 @@ class ServerService
 
     public function updateServer(Server $server, $request)
     {
-        if ($request->style){
+        if ($request->style || $request->display_name){
         $server->playstyle_id = $request->style;
+        $server->display_name = $request->display_name;
         $server->save();
         }
 
-        if (!$request->hasFile('file') && $request->style){
-            return redirect()->route('servers.index')->with('success', 'Style added to server');
+        if (!$request->hasFile('file') && $request->style || !$request->hasFile('file') && $request->display_name){
+            return redirect()->route('servers.index')->with('success', 'Server Updated');
         }
 
         if ($request->hasFile('file')) {

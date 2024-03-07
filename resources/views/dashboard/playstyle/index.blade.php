@@ -20,7 +20,7 @@
                     <form action="{{ route('playstyles.edit', $style->id) }}" method="get">
 
                         @csrf
-                        <button type="submit" class="btn btn-info">Edit</button>
+                        <button type="submit" class="btn btn-primary">Edit</button>
                     </form>
                 </td>
                 <td>
@@ -31,16 +31,13 @@
                     </form>
                 </td>
                 <td>
-                    <x-dashboard-draggable-modal buttonText="View Servers"
+                    <x-dashboard-draggable-modal buttonText="Servers"
                                                  :title="$style->name"
                                                  :id="$style->id">
                         <ul>
                             @foreach($style->servers as $server)
-                                <li> <form  action="{{ route('servers.show', $server->id) }}" method="POST">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit" class="btn btn-danger">{{ $server->name}}</button>
-                                    </form>
+                                <li>
+                                    <a href="{{route('servers.show', $server->id)}}">{{$server->display_name}}</a>
                                 </li>
                             @endforeach
                         </ul>

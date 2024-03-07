@@ -2,20 +2,18 @@
     <x-datatable_shell breadcrumb-title="Servers" breadcrumb-parent="server management" breadcrumb-child="servers"
                        :$filters>
 
-        @foreach($servers['data']['services'] as $server)
+        @foreach($servers as $server)
 
             <tr>
-                <td>{{$server['id']}}</td>
+                <td>{{$server->display_name}}</td>
                 <td>
-                    {{$server['details']['name']}}
+                    {{$server->playstyle->name}}
                 </td>
-                <td>{{$server['details']['slots']}}</td>
-                <td>
-                    <x-display-date-formatted
-                        :date="$server['suspend_date']" format="D M j, Y @ g:i:sa" />
-                </td>
-                <td>{{$server['status']}}</td>
-                <td>{{$server['details']['slots']}}</td>
+                <td>{{$server->slots}}</td>
+
+                <td>{{$server->game->name}}</td>
+                <td>{{$server->status}}</td>
+                <td>{{$server->name}}</td>
                 <td class="text-end">
                     <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"
                        data-kt-menu-trigger="click" data-kt-menu-placement="bottom-end">Actions
@@ -26,12 +24,19 @@
                         data-kt-menu="true">
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
-                            <a href="{{route('servers.show', $server['id'])}}" class="menu-link px-3">View</a>
+                            <a href="{{route('servers.show', $server->id)}}" class="menu-link px-3">View</a>
                         </div>
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
-                            <a href="{{route('servers.edit', $server['id'])}}" class="menu-link px-3">Edit</a>
+                            <a href="{{route('servers.edit', $server->id)}}" class="menu-link px-3">Edit</a>
+                        </div>
+                        <div class="menu-item px-3">
+                            <form id="denyForm{{$server->id}}" action="{{ route('servers.destroy', $server->id) }}" method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
                         </div>
                         <!--end::Menu item-->
                     </div>
@@ -39,7 +44,31 @@
                 </td>
             </tr>
         @endforeach
+            <script>
+                @foreach($servers as $server)
+                document.getElementById('denyForm{{$server->id}}').addEventListener('submit', function(event) {
+                    event.preventDefault(); // Prevent the form from submitting immediately
 
+                    // Use SweetAlert to show a confirmation dialog
+                    Swal.fire({
+                        title: 'Confirm?',
+                        text: "This will delete the server from the website",
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Yes, do it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // User clicked 'Yes', submit the form
+                            event.target.submit();
+                        }
+                    });
+                });
+                @endforeach
+            </script>
     </x-datatable_shell>
+
+
 
 </x-dashboard.layout>

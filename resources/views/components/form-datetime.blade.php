@@ -1,8 +1,16 @@
-<div class="mb-5">
-    <label class="form-label">{{$label}}</label>
-    <input class="form-control form-control-solid" placeholder="Pick date range" id="{{$name}}"
-           name="{{$name}}" value="{{$value}}"/>
+
+
+
+
+<div class="mb-0">
+    <label class="form-label">{{ucwords($name)}}</label>
+    <input class="form-control form-control-solid" name="{{$name}}" placeholder="Pick date rage"
+           id="kt_daterangepicker_1"/>
 </div>
+
+
+
+
 
 
 <!--begin::Javascript-->
@@ -13,14 +21,12 @@
 <!--end::Javascript-->
 
 <script>
-    $(document).ready(function () {
-        $({{$name}}).daterangepicker({
-            timePicker: true, // Enable time picker if needed
-            startDate: moment().startOf("hour"),
-            endDate: moment().startOf("hour").add(32, "hour"),
-            locale: {
-                format: "M/d/Y h:mm A"
-            }
-        });
-    });
+
+
+
+    $("#kt_daterangepicker_1").daterangepicker();
+
+
+
+
 </script>

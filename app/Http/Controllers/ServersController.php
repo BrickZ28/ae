@@ -56,7 +56,7 @@ class ServersController extends Controller
 
 	public function edit($id)
 	{
-        $server = Server::where('serverhost_id', $id)->with('style')->first();
+        $server = Server::where('id', $id)->with('style')->first();
         $playstyles = Playstyle::all();
 
         return view('dashboard.server.edit', compact('server', 'playstyles'));
@@ -70,6 +70,9 @@ class ServersController extends Controller
 
     public function destroy(Server $server)
 	{
+        $server->delete();
+
+        return redirect()->route('dashboard.index')->with('success', 'Server deleted successfully');
 	}
 
     public function getServers()

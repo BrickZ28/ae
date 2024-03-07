@@ -39,11 +39,15 @@ class Server extends Model
 
     public function game(): BelongsTo
     {
-        return $this->belongsTo(Game::class);
+        return $this->belongsTo(Game::class)->withDefault([
+            'name' => 'Unknown'
+        ]);
     }
 
-    public function style(): BelongsTo
+    public function playstyle(): BelongsTo
     {
-        return $this->belongsTo(Playstyle::class);
+        return $this->belongsTo(Playstyle::class)->withDefault([
+            'name' => 'Unknown'
+        ]);
     }
 }
