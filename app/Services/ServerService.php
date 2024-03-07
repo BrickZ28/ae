@@ -99,6 +99,7 @@ class ServerService
         if ($request->style || $request->display_name || $request->game) {
         $server->playstyle_id = $request->style;
         $server->display_name = $request->display_name;
+        $server->game_id = $request->game;
         $server->save();
         }
 

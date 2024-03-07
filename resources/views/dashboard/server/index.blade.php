@@ -11,7 +11,7 @@
                 </td>
                 <td>{{$server->slots}}</td>
 
-                <td>{{$server->game->name}}</td>
+                <td>{{$server->game->display_name}}</td>
                 <td>{{$server->status}}</td>
                 <td>{{$server->name}}</td>
                 <td class="text-end">
