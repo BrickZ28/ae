@@ -1,5 +1,5 @@
 <x-dashboard.layout>
-    <x-datatable_shell breadcrumb-title="Play Styles" breadcrumb-parent="play style management"
+    <x-datatable_shell breadcrumb-title="Play Styles" breadcrumb-parent="playstyle management"
                        breadcrumb-child="playstyle"
                        :$filters>
 
