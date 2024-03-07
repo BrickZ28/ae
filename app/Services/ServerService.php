@@ -95,14 +95,15 @@ class ServerService
 
     public function updateServer(Server $server, $request)
     {
-        dd($request->all());
-        if ($request->style || $request->display_name){
+
+        if ($request->style || $request->display_name || $request->game) {
         $server->playstyle_id = $request->style;
         $server->display_name = $request->display_name;
         $server->save();
         }
 
-        if (!$request->hasFile('file') && $request->style || !$request->hasFile('file') && $request->display_name){
+        if (!$request->hasFile('file') && $request->style || !$request->hasFile('file') && $request->display_name ||
+            !$request->hasFile('file') && $request->game){
             return redirect()->route('servers.index')->with('success', 'Server Updated');
         }
 
@@ -165,7 +166,6 @@ class ServerService
                     'status' => $service['status'],
                     'start_date' => $service['start_date'],
                     'end_date' => $service['suspend_date'],
-                    'crossplay' => (bool)$service['is_xcross'],
                     'game_id' => $game->id ?? null,
                 ];
 

@@ -1,6 +1,6 @@
 <x-dashboard.layout>
     <x-datatable_shell breadcrumb-title="Play Styles" breadcrumb-parent="play style management"
-                       breadcrumb-child="play styele"
+                       breadcrumb-child="playstyle"
                        :$filters>
 
         @foreach($styles as $style)
