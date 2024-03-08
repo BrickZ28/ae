@@ -25,49 +25,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         },
         eventContent: function(arg) {
-            const eventTitle = arg.event.title;
-            let eventBackgroundColor = '#808080'; // Default to grey for inactive or past events
-            let eventBorderColor = '#808080'; // Default to blue for all events
-
-            const startDate = new Date(arg.event.start);
-            const endDate = new Date(arg.event.end);
+            // Event rendering logic...
+        },
+        dayCellDidMount: function(arg) {
             const today = new Date();
-            const isActive = arg.event.extendedProps['active'] === 1;
-            const oneDay = 1000 * 60 * 60 * 24;// Check if active is 1 (true)
+            const cellDate = arg.date;
+            const cellEl = arg.el;
 
-            // Check if the event is active
-            if (!isActive) {
-                eventBackgroundColor = '#808080'; // Active events color
-                eventBorderColor = '#808080'; // Active events color
+            // Compare the cell date with today's date
+            if (cellDate.toDateString() === today.toDateString()) {
+                // Change the background color of today's cell
+                cellEl.style.backgroundColor = '#000000'; // Change to your desired color
             }
-
-            // Check if the event is active
-            else if (isActive) {
-                eventBackgroundColor = '#3CB043'; // Active events color
-                eventBorderColor = '#3CB043'; // Active events color
-            }
-
-            // Check if the event is in the future
-            else if (endDate > today && startDate > today) {
-                eventBackgroundColor = '#A32CC4'; // Future events color (purple)
-                eventBorderColor = '#A32CC4'; // Future events color (purple)
-            }
-
-            // Check if the end date is within 24 hours
-            // Milliseconds in a day
-            else if (endDate - today <= oneDay && endDate > today) {
-                eventBackgroundColor = '#D0312D'; // End date within 24 hours color (red)
-                eventBorderColor = '#D0312D'; // End date within 24 hours color (red)
-            }
-
-            // Check if the start date is within 24 hours
-            else if (startDate - today <= oneDay && startDate > today) {
-                eventBackgroundColor = '#8D4004'; // Start date within 24 hours color (orange)
-                eventBorderColor = '#8D4004'; // Start date within 24 hours color (orange)
-            }
-
-            return { html: `<div class="event" style="background-color: ${eventBackgroundColor}; border-color: ${eventBorderColor};">${eventTitle}</div>` };
         }
     });
+
     calendar.render();
 });
