@@ -60,11 +60,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 eventBorderColor = '#D0312D'; // End date within 24 hours color (red)
             }
 
-            // // Check if the start date is within 24 hours
-            // else if (startDate - today <= oneDay && startDate > today) {
-            //     eventBackgroundColor = '#8D4004'; // Start date within 24 hours color (orange)
-            //     eventBorderColor = '#8D4004'; // Start date within 24 hours color (orange)
-            // }
+            // Check if the start date is within 24 hours
+            else if (startDate - today <= oneDay && startDate > today) {
+                eventBackgroundColor = '#8D4004'; // Start date within 24 hours color (orange)
+                eventBorderColor = '#8D4004'; // Start date within 24 hours color (orange)
+            }
 
             return { html: `<div class="event" style="background-color: ${eventBackgroundColor}; border-color: ${eventBorderColor};">${eventTitle}</div>` };
         }
