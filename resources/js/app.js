@@ -36,7 +36,13 @@ document.addEventListener('DOMContentLoaded', function() {
             const oneDay = 1000 * 60 * 60 * 24;// Check if active is 1 (true)
 
             // Check if the event is active
-            if (isActive) {
+            if (!isActive) {
+                eventBackgroundColor = '#808080'; // Active events color
+                eventBorderColor = '#808080'; // Active events color
+            }
+
+            // Check if the event is active
+            else if (isActive) {
                 eventBackgroundColor = '#3CB043'; // Active events color
                 eventBorderColor = '#3CB043'; // Active events color
             }
