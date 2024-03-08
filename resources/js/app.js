@@ -37,10 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const oneDay = 1000 * 60 * 60 * 24; // Milliseconds in a day
 
             // Check event status and set colors accordingly
-            if (!isActive) {
-                eventBackgroundColor = '#808080'; // Inactive events color
-                eventBorderColor = '#808080'; // Inactive events color
-            } else if (isActive) {
+           if (isActive) {
                 eventBackgroundColor = '#3CB043'; // Active events color
                 eventBorderColor = '#3CB043'; // Active events color
             } else if (endDate > today && startDate > today) {
