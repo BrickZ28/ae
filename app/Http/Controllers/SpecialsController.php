@@ -70,7 +70,7 @@ class SpecialsController extends Controller
 	{
 		$specials->delete();
 
-		return response()->json();
+        return redirect()->route('dashboard.index')->with('success', 'Special deleted successfully');
 	}
 
     /**

@@ -32,6 +32,14 @@
                         <div class="menu-item px-3">
                             <a href="{{ route('specials.show', $special->id) }}" class="menu-link px-3">View</a>
                         </div>
+                        <div class="menu-item px-3">
+                            <form id="denyForm{{$special->id}}" action="{{ route('specials.destroy', $special->id) }}"
+                                  method="POST">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
                         <!--end::Menu item-->
                     </div>
                 </td>
@@ -42,4 +50,30 @@
 
     </x-datatable_shell>
 
+
 </x-dashboard.layout>
+
+<script>
+    // Add event listener to each form
+    document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
+            // Use SweetAlert to show a confirmation dialog
+            Swal.fire({
+                title: 'Confirm?',
+                text: "This will delete the playstyle from the website and can break stuff?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, do it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User clicked 'Yes', submit the form
+                    event.target.submit();
+                }
+            });
+        });
+    });
+</script>
