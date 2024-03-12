@@ -6,7 +6,11 @@ use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 
 return Application::configure(basePath: dirname(__DIR__))
-    ->withProviders()
+    ->withProviders([
+        \SocialiteProviders\Manager\ServiceProvider::class,
+        \RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        \Yajra\Datatables\DatatablesServiceProvider::class,
+    ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         // api: __DIR__.'/../routes/api.php',
