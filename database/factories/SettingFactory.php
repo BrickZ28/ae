@@ -9,8 +9,6 @@ use Illuminate\Support\Carbon;
 
 class SettingFactory extends Factory
 {
-    protected $model = Setting::class;
-
     public function definition(): array
     {
         return [

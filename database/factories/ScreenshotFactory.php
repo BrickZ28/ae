@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ScreenshotFactory extends Factory
 {
-    protected $model = Screenshot::class;
-
     public function definition(): array
     {
         return [

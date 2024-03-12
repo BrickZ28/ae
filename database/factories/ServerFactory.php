@@ -8,8 +8,6 @@ use Illuminate\Support\Carbon;
 
 class ServerFactory extends Factory
 {
-    protected $model = Server::class;
-
     public function definition(): array
     {
         return [

@@ -8,8 +8,6 @@ use Illuminate\Support\Carbon;
 
 class SpecialsFactory extends Factory
 {
-    protected $model = Specials::class;
-
     public function definition(): array
     {
         return [

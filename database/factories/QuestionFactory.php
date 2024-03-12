@@ -8,8 +8,6 @@ use Illuminate\Support\Carbon;
 
 class QuestionFactory extends Factory
 {
-    protected $model = Question::class;
-
     public function definition(): array
     {
         return [
