@@ -29,7 +29,7 @@ class ProcessTransactionJob implements ShouldQueue
         $this->reason = $reason;
     }
 
-    public function handle()
+    public function handle(): void
     {
 
         // Create a new transaction
