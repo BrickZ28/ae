@@ -11,11 +11,14 @@ use Illuminate\Queue\SerializesModels;
 
 class ProcessTransactionJob implements ShouldQueue
 {
-	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $payerId;
+
     protected $payeeId;
+
     protected $amount;
+
     protected $reason;
 
     public function __construct($payerId, $payeeId, $amount, $reason)

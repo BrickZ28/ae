@@ -18,7 +18,7 @@ class ScreenshotFactory extends Factory
             'created_at' => fake()->dateTime(),
             'updated_at' => fake()->dateTime(),
             'created_by' => User::all()->random()->id,
-            'uploaded_by' => User::all()->random()->id
+            'uploaded_by' => User::all()->random()->id,
         ];
     }
 }

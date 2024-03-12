@@ -8,52 +8,53 @@ use Auth;
 use Illuminate\Http\Request;
 use RealRashid\SweetAlert\Facades\Alert;
 
-
 class RulesController extends Controller
 {
-	public function index()
-	{
+    public function index()
+    {
         return view('dashboard.rule.index')->with([
             'rules' => Rule::all(),
-            'filters' => ['id', 'priority', 'rule', 'last updated', 'created on', 'created by', 'actions']
+            'filters' => ['id', 'priority', 'rule', 'last updated', 'created on', 'created by', 'actions'],
         ]);
-	}
+    }
+
     public function create()
     {
         return view('dashboard.rule.create');
     }
-	public function store(Request $request)
-	{
-        $request->validate([
-             'rule' => 'required',
-             'priority' => 'required|min:1|max:2|numeric',
-         ]);
 
-        if(Rule::create([
-           'rule' => $request->rule,
-           'priority' => $request->priority,
-           'user_id' => Auth::id(),
+    public function store(Request $request)
+    {
+        $request->validate([
+            'rule' => 'required',
+            'priority' => 'required|min:1|max:2|numeric',
+        ]);
+
+        if (Rule::create([
+            'rule' => $request->rule,
+            'priority' => $request->priority,
+            'user_id' => Auth::id(),
         ])) {
-        Alert::success('Rule Created', 'New rule created successfully');
-    }
+            Alert::success('Rule Created', 'New rule created successfully');
+        }
 
         return view('dashboard.index');
-	}
+    }
 
-	public function show($id)
-	{
+    public function show($id)
+    {
 
-	}
+    }
 
-	public function edit($id)
-	{
+    public function edit($id)
+    {
         return view('dashboard.rule.edit')->with([
             'rule' => Rule::find($id),
         ]);
-	}
+    }
 
-	public function update(Request $request, $id)
-	{
+    public function update(Request $request, $id)
+    {
         $request->validate([
             'rule' => 'required',
             'priority' => 'required|min:1|max:2|numeric',
@@ -63,18 +64,18 @@ class RulesController extends Controller
         $rule->rule = $request->rule;
         $rule->priority = $request->priority;
 
-        if ($rule->save()){
+        if ($rule->save()) {
             Alert::success('UPdated', 'Rule Updated');
         } else {
             Alert::error('Failed', 'Rule failed to update');
         }
 
         return view('dashboard.index');
-	}
+    }
 
-	public function destroy($id)
-	{
-	}
+    public function destroy($id)
+    {
+    }
 
     public function apiRulesIndex()
     {

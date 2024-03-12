@@ -6,17 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-	public function up(): void
-	{
-		Schema::table('users', function (Blueprint $table) {
-			$table->bigInteger('ae_credits');
-		});
-	}
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->bigInteger('ae_credits');
+        });
+    }
 
-	public function down(): void
-	{
-		Schema::table('users', function (Blueprint $table) {
-			$table->dropColumn('ae_credits');
-		});
-	}
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('ae_credits');
+        });
+    }
 };

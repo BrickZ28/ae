@@ -1,14 +1,13 @@
 <?php
 
 use App\Models\Screenshot;
-use App\Models\Server;
 use App\Models\Specials;
-use App\Traits\ApiRequests;
 
 if (! function_exists('getRandomScreenshot')) {
     function getRandomScreenshot()
     {
         $image = Screenshot::inRandomOrder()->limit(4)->get();
+
         return $image;
     }
 }
@@ -22,12 +21,13 @@ if (! function_exists('getSpecials')) {
 }
 
 if (! function_exists('getRandomImage')) {
-    function getRandomImage() {
+    function getRandomImage()
+    {
         // Path to the directory containing images
         $directory = public_path('assets/media/illustrations/dozzy-1');
 
         // Get all image files from the directory
-        $imageFiles = glob($directory . '/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
+        $imageFiles = glob($directory.'/*.{jpg,jpeg,png,gif}', GLOB_BRACE);
 
         // If there are no image files, return null
         if (empty($imageFiles)) {

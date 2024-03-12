@@ -26,9 +26,9 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-        /**
-         * Bootstrap any application services.
-         */
+    /**
+     * Bootstrap any application services.
+     */
     public function boot(): void
     {
         Blade::directive('checkRole', function ($expression) {
@@ -36,10 +36,9 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Blade::directive('endcheckRole', function ($role) {
-            return "<?php endif; ?>";
+            return '<?php endif; ?>';
         });
 
         View::composer('*', UserViewComposer::class);
     }
-
 }

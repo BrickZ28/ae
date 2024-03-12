@@ -21,5 +21,4 @@ class DateRangeParser
 
         return [$startDate, $endDate];
     }
-
 }

@@ -9,24 +9,24 @@ use Illuminate\Http\Request;
 
 class RuleController extends Controller
 {
-	public function index()
-	{
+    public function index()
+    {
         return RuleResource::collection(Rule::all());
-	}
+    }
 
-	public function store(Request $request)
-	{
-	}
+    public function store(Request $request)
+    {
+    }
 
-	public function show(Rule $rule)
-	{
-	}
+    public function show(Rule $rule)
+    {
+    }
 
-	public function update(Request $request, Rule $rule)
-	{
-	}
+    public function update(Request $request, Rule $rule)
+    {
+    }
 
-	public function destroy(Rule $rule)
-	{
-	}
+    public function destroy(Rule $rule)
+    {
+    }
 }

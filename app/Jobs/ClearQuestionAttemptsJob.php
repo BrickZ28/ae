@@ -11,15 +11,15 @@ use Illuminate\Queue\SerializesModels;
 
 class ClearQuestionAttemptsJob implements ShouldQueue
 {
-	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-	public function __construct()
-	{
-	}
+    public function __construct()
+    {
+    }
 
-	public function handle(): void
-	{
+    public function handle(): void
+    {
         // Clear all question attempts
         QuestionAttempt::truncate();
-	}
+    }
 }

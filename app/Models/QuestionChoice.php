@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuestionChoice extends Model
 {
-	use HasFactory;
+    use HasFactory;
 
-        protected $guarded = [];
+    protected $guarded = [];
 
     public function question(): BelongsTo
     {

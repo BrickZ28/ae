@@ -8,20 +8,20 @@ use Illuminate\Support\Carbon;
 
 class SpecialsFactory extends Factory
 {
-	protected $model = Specials::class;
+    protected $model = Specials::class;
 
-	public function definition(): array
-	{
-		return [
-			'created_at' => Carbon::now(),
-			'updated_at' => Carbon::now(),
-			'title' => $this->faker->word(),
-			'description' => $this->faker->text(),
-			'discount' => $this->faker->randomFloat(),
-			'start_date' => Carbon::now(),
-			'end_date' => Carbon::now(),
-			'usuage_limit' => $this->faker->randomNumber(),
-			'active' => $this->faker->boolean(),
-		];
-	}
+    public function definition(): array
+    {
+        return [
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+            'title' => $this->faker->word(),
+            'description' => $this->faker->text(),
+            'discount' => $this->faker->randomFloat(),
+            'start_date' => Carbon::now(),
+            'end_date' => Carbon::now(),
+            'usuage_limit' => $this->faker->randomNumber(),
+            'active' => $this->faker->boolean(),
+        ];
+    }
 }

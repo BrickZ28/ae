@@ -7,12 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Specials extends Model
 {
-	use HasFactory;
+    use HasFactory;
 
-   protected $guarded = [];
+    protected $guarded = [];
 
-	protected $casts = [
-		'start_date' => 'datetime',
-		'end_date' => 'datetime',
-	];
+    protected $casts = [
+        'start_date' => 'datetime',
+        'end_date' => 'datetime',
+    ];
 }

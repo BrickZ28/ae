@@ -37,5 +37,3 @@ return [
         'redirect' => env('DISCORD_CALLBACK'),
     ],
 ];
-
-

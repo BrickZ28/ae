@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Question;
 use App\Models\QuestionChoice;
-use Illuminate\Http\Request;
 use App\Services\TriviaService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class QuestionController extends Controller
@@ -19,7 +20,8 @@ class QuestionController extends Controller
     public function index()
     {
         $questions = Question::all();
-        $filters =['id','question', 'created on', 'updated on', 'view', 'edit', 'delete'];
+        $filters = ['id', 'question', 'created on', 'updated on', 'view', 'edit', 'delete'];
+
         return view('dashboard.questions.index', compact('questions', 'filters'));
     }
 
@@ -44,7 +46,6 @@ class QuestionController extends Controller
         return view('dashboard.questions.edit', compact('question'));
     }
 
-
     public function show(Question $question)
     {
         return $question;
@@ -57,7 +58,7 @@ class QuestionController extends Controller
             'choices' => 'required|array',
             'choices.*.id' => 'required|exists:question_choices,id', // Validate choice IDs exist
             'choices.*.text' => 'required|string|max:255', // Validate choice texts
-            'correct_answer' => 'required|integer|exists:question_choices,id'
+            'correct_answer' => 'required|integer|exists:question_choices,id',
         ]);
 
         DB::transaction(function () use ($validatedData, $questionId, $request) {
@@ -85,7 +86,6 @@ class QuestionController extends Controller
     }
 
     public function randomUserQuestion()
-
     {
         return $this->triviaService->getRandomUserQuestion();
     }

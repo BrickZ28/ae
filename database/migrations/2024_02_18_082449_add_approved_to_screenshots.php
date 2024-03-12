@@ -6,17 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-	public function up(): void
-	{
-		Schema::table('screenshots', function (Blueprint $table) {
-			$table->boolean('approved')->default(false);
-		});
-	}
+    public function up(): void
+    {
+        Schema::table('screenshots', function (Blueprint $table) {
+            $table->boolean('approved')->default(false);
+        });
+    }
 
-	public function down(): void
-	{
-		Schema::table('screenshots', function (Blueprint $table) {
-			$table->dropColumn('approved');
-		});
-	}
+    public function down(): void
+    {
+        Schema::table('screenshots', function (Blueprint $table) {
+            $table->dropColumn('approved');
+        });
+    }
 };

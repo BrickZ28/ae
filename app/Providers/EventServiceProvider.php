@@ -25,14 +25,11 @@ class EventServiceProvider extends ServiceProvider
             // ... other providers
             \SocialiteProviders\Discord\DiscordExtendSocialite::class.'@handle',
 
-            ],
+        ],
         DiscordTestEvent::class => [
             MessageComponentInteractionListener::class,
         ],
     ];
-
-
-
 
     /**
      * Register any events for your application.

@@ -6,18 +6,18 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-	public function up(): void
-	{
-		Schema::create('settings', function (Blueprint $table) {
-			$table->id();
+    public function up(): void
+    {
+        Schema::create('settings', function (Blueprint $table) {
+            $table->id();
             $table->string('setting');
             $table->foreignId('server_id')->constrained()->cascadeOnDelete();
-			$table->timestamps();
-		});
-	}
+            $table->timestamps();
+        });
+    }
 
-	public function down(): void
-	{
-		Schema::dropIfExists('settings');
-	}
+    public function down(): void
+    {
+        Schema::dropIfExists('settings');
+    }
 };

@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::group(['prefix' => '/v1','middleware' => ['auth:sanctum']],function (){
+Route::group(['prefix' => '/v1', 'middleware' => ['auth:sanctum']], function () {
     Route::post('/logout', [ApiAuthController::class, 'logout']);
     Route::resource('/rule', RuleController::class);
 

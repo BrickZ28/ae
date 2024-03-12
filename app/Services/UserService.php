@@ -6,14 +6,17 @@ use App\Models\User;
 use App\Models\UserProfile;
 use Carbon\Carbon;
 
-class UserService {
+class UserService
+{
     protected $discordService;
 
-    public function __construct(DiscordService $discordService) {
+    public function __construct(DiscordService $discordService)
+    {
         $this->discordService = $discordService;
     }
 
-    public function findOrCreateUser($socialiteUser, $accessToken, $roles, $clientIp) {
+    public function findOrCreateUser($socialiteUser, $accessToken, $roles, $clientIp)
+    {
 
         // Attempt to find the user by email or create a new one
         $user = User::firstOrNew(['email' => $socialiteUser->email]);
@@ -53,5 +56,4 @@ class UserService {
 
         return $user;
     }
-
 }

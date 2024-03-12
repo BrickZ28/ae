@@ -74,6 +74,7 @@ class ServerService
     protected function getApiServerData($serverHostId)
     {
         $url = "https://api.nitrado.net/services/{$serverHostId}/gameservers";
+
         return $this->getApiRequest($url, config('constants.nitrado.api_token'), [])->json();
     }
 
@@ -83,9 +84,11 @@ class ServerService
         $lines = explode("\n", $fileContent);
 
         foreach ($lines as $line) {
-            if (strpos(trim($line), ';') === 0) continue;
+            if (strpos(trim($line), ';') === 0) {
+                continue;
+            }
             if (strpos($line, '=') !== false) {
-                list($key, $value) = explode('=', $line, 2);
+                [$key, $value] = explode('=', $line, 2);
                 $data[trim($key)] = trim($value);
             }
         }
@@ -97,14 +100,14 @@ class ServerService
     {
 
         if ($request->style || $request->display_name || $request->game) {
-        $server->playstyle_id = $request->style;
-        $server->display_name = $request->display_name;
-        $server->game_id = $request->game;
-        $server->save();
+            $server->playstyle_id = $request->style;
+            $server->display_name = $request->display_name;
+            $server->game_id = $request->game;
+            $server->save();
         }
 
-        if (!$request->hasFile('file') && $request->style || !$request->hasFile('file') && $request->display_name ||
-            !$request->hasFile('file') && $request->game){
+        if (! $request->hasFile('file') && $request->style || ! $request->hasFile('file') && $request->display_name ||
+            ! $request->hasFile('file') && $request->game) {
             return redirect()->route('servers.index')->with('success', 'Server Updated');
         }
 
@@ -119,16 +122,16 @@ class ServerService
                 }
 
                 // Combine content of all .ini files
-                $combinedContent .= file_get_contents($file) . "\n";
+                $combinedContent .= file_get_contents($file)."\n";
             }
 
             $disk = 'public';
-            $folder = 'servers/' . $server->serverhost_id . '/json';
+            $folder = 'servers/'.$server->serverhost_id.'/json';
             $filename = 'GameSettings.ini'; // Name of the combined file
-            $path = $folder . '/' . $filename;
+            $path = $folder.'/'.$filename;
 
             // Check if combined content is not empty
-            if (!empty($combinedContent)) {
+            if (! empty($combinedContent)) {
                 // Save combined content to a new or existing file
                 Storage::disk($disk)->put($path, $combinedContent);
 
@@ -148,7 +151,7 @@ class ServerService
 
     public function fetchAndStoreServers()
     {
-        $api_data = $this->getApiRequest("https://api.nitrado.net/services", config('constants.nitrado.api_token'), []);
+        $api_data = $this->getApiRequest('https://api.nitrado.net/services', config('constants.nitrado.api_token'), []);
 
         if ($api_data['status'] === 'success') {
             foreach ($api_data['data']['services'] as $service) {
@@ -178,6 +181,4 @@ class ServerService
             Alert::error('error', 'Servers did not store successfully');
         }
     }
-
-
 }

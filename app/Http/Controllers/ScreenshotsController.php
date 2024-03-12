@@ -6,39 +6,38 @@ use App\Models\Screenshot;
 use App\Models\User;
 use App\Traits\FileTrait;
 use Auth;
-use Config;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rules\File;
-use RealRashid\SweetAlert\Facades\Alert;
 
 class ScreenshotsController extends Controller
 {
     use FileTrait;
-	public function index()
-	{
+
+    public function index()
+    {
         $pending_screenshots = Screenshot::with('uploader.userProfile')->where('approved', 0)->get();
 
         $filters = ['title', 'path', 'uploaded_by', 'view', 'approve', 'delete', 'created_at'];
-		return view('dashboard.screenshot.index', compact('pending_screenshots', 'filters'));
-	}
+
+        return view('dashboard.screenshot.index', compact('pending_screenshots', 'filters'));
+    }
 
     public function create()
     {
         return view('dashboard.screenshot.create')->with([
-            'users' => User::get()->sortBy('username')
+            'users' => User::get()->sortBy('username'),
         ]);
     }
 
-	public function store(Request $request)
-	{
+    public function store(Request $request)
+    {
 
         $request->validate([
             'title' => 'required',
             'file' => 'required|image',
-            ]);
+        ]);
 
-        $path = $this->uploadFile('do','images', $request->file, 'public');
+        $path = $this->uploadFile('do', 'images', $request->file, 'public');
 
         if ($path) {
             // Check if the user has 'In the Shadows' or 'Owner' role
@@ -49,7 +48,7 @@ class ScreenshotsController extends Controller
 
             Screenshot::create([
                 'title' => $request->title,
-                'path' => config('constants.buckets.DO_BUCKET_CDN') . $path,
+                'path' => config('constants.buckets.DO_BUCKET_CDN').$path,
                 'uploaded_by' => Auth::id(),
                 'approved' => $approved,
             ]);
@@ -57,31 +56,30 @@ class ScreenshotsController extends Controller
 
         return redirect(route('dashboard.index'));
 
-	}
+    }
 
-	public function show(Screenshot $screenshot)
-	{
+    public function show(Screenshot $screenshot)
+    {
 
-		return $screenshot;
-	}
+        return $screenshot;
+    }
 
-	public function update(Request $request, Screenshot $screenshot)
-	{
-		$request->validate([
-			'title' => ['required'],
-			'path' => ['required'],
-			'uploaded_by' => ['required', 'integer'],
-			'belongs_to' => ['required', 'integer'],
-		]);
+    public function update(Request $request, Screenshot $screenshot)
+    {
+        $request->validate([
+            'title' => ['required'],
+            'path' => ['required'],
+            'uploaded_by' => ['required', 'integer'],
+            'belongs_to' => ['required', 'integer'],
+        ]);
 
-		$screenshot->update($request->validated());
+        $screenshot->update($request->validated());
 
-		return $screenshot;
-	}
+        return $screenshot;
+    }
 
-	public function destroy(Screenshot $screenshot)
-	{
-
+    public function destroy(Screenshot $screenshot)
+    {
 
         if (Storage::disk('do')->delete($screenshot->path)) {
             // Optional: Delete the Screenshot model or perform other cleanup
@@ -92,7 +90,6 @@ class ScreenshotsController extends Controller
             return back()->with('error', 'Failed to delete the screenshot file.');
         }
     }
-
 
     public function approve($id)
     {

@@ -8,13 +8,13 @@ use Illuminate\Support\Carbon;
 
 class QuestionAttemptFactory extends Factory
 {
-	protected $model = QuestionAttempt::class;
+    protected $model = QuestionAttempt::class;
 
-	public function definition(): array
-	{
-		return [
-			'created_at' => Carbon::now(),
-			'updated_at' => Carbon::now(),
-		];
-	}
+    public function definition(): array
+    {
+        return [
+            'created_at' => Carbon::now(),
+            'updated_at' => Carbon::now(),
+        ];
+    }
 }

@@ -11,9 +11,7 @@ use Illuminate\Support\Facades\Http;
 
 class Server extends Model
 {
-
-
-	use HasFactory;
+    use HasFactory;
     use HttpResponses;
 
     protected $guarded = [];
@@ -40,14 +38,14 @@ class Server extends Model
     public function game(): BelongsTo
     {
         return $this->belongsTo(Game::class)->withDefault([
-            'name' => 'Unknown'
+            'name' => 'Unknown',
         ]);
     }
 
     public function playstyle(): BelongsTo
     {
         return $this->belongsTo(Playstyle::class)->withDefault([
-            'name' => 'Unknown'
+            'name' => 'Unknown',
         ]);
     }
 }

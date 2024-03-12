@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class QuestionAttempt extends Model
 {
-	use HasFactory;
+    use HasFactory;
 
-        protected $guarded = [];
+    protected $guarded = [];
 
     // Each attempt belongs to a question
     public function question(): BelongsTo

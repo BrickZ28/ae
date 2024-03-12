@@ -17,7 +17,7 @@ return new class extends Migration
                 'banner_color',
                 'accent_color',
                 'locale',
-                'public_flags'
+                'public_flags',
             ]);
         });
     }

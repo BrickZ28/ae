@@ -8,14 +8,19 @@ use Illuminate\View\Component;
 class SideMenu extends Component
 {
     private $adminRoles = ['In the Shadows', 'Owners', 'Head Admin'];
+
     public $admin_menu;
+
     public $admin_submenu;
+
     public $user_menu;
+
     public $user_submenu;
+
     public $header;
 
     public function __construct($admin_menu = 'Admin', $admin_submenu = [], $user_menu = 'User', $user_submenu = [],
-                                $header = [], $roles = [])
+        $header = [], $roles = [])
     {
 
         $this->admin_menu = $admin_menu;
@@ -59,20 +64,18 @@ class SideMenu extends Component
 
         $this->header = []; // Explicit initialization
 
-
         if (count(array_intersect($this->roles, $this->adminRoles)) > 0) {
             $this->header['Admin'] = $this->createAdminSubmenu();
         }
 
         $this->header['User'] = $this->createUserSubmenu();
 
-
     }
 
     public function render(): View
-	{
-		return view('components.side-menu')->with([
-            'header', $this->buildMenu()
+    {
+        return view('components.side-menu')->with([
+            'header', $this->buildMenu(),
         ]);
-	}
+    }
 }

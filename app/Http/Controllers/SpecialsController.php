@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 class SpecialsController extends Controller
 {
     protected $dateRangeParser;
+
     protected $specialsService;
 
     public function __construct(DateRangeParser $dateRangeParser, SpecialsService $specialsService)
@@ -17,13 +18,14 @@ class SpecialsController extends Controller
         $this->dateRangeParser = $dateRangeParser;
         $this->specialsService = $specialsService;
     }
-	public function index()
-	{
+
+    public function index()
+    {
         return view('dashboard.special.index')->with([
             'specials' => Specials::all(),
-            'filters' => ['Title', 'Started On', 'Ends', 'Active', 'discount', 'Use limit', 'actions']
+            'filters' => ['Title', 'Started On', 'Ends', 'Active', 'discount', 'Use limit', 'actions'],
         ]);
-	}
+    }
 
     public function create()
     {
@@ -37,8 +39,8 @@ class SpecialsController extends Controller
         ]);
     }
 
-	public function store(Request $request)
-	{
+    public function store(Request $request)
+    {
 
         $data = $this->getArr($request);
 
@@ -47,36 +49,30 @@ class SpecialsController extends Controller
 
         // Redirect back to the dashboard index page
         return redirect()->route('dashboard.index')->with('success', 'Special created successfully');
-	}
+    }
 
-
-	public function update(Request $request, $id)
-	{
+    public function update(Request $request, $id)
+    {
         $data = $this->getArr($request);
 
         $special = Specials::find($id);
         $special->update($data);
 
-
-
-		return redirect()->route('dashboard.index')->with('success', 'Special updated successfully');
-	}
+        return redirect()->route('dashboard.index')->with('success', 'Special updated successfully');
+    }
 
     public function show(Specials $specials)
     {
         return $specials;
     }
-	public function destroy(Specials $specials)
-	{
-		$specials->delete();
+
+    public function destroy(Specials $specials)
+    {
+        $specials->delete();
 
         return redirect()->route('dashboard.index')->with('success', 'Special deleted successfully');
-	}
+    }
 
-    /**
-     * @param Request $request
-     * @return array
-     */
     public function getArr(Request $request): array
     {
         $data = $request->validate([
@@ -99,6 +95,7 @@ class SpecialsController extends Controller
 
         // Unset the original dates field
         unset($data['dates']);
+
         return $data;
     }
 
