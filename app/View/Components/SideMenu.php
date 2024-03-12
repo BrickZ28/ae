@@ -43,6 +43,8 @@ class SideMenu extends Component
                 'View Questions' => route('questions.index')],
             'playstyles' => ['Create Playstyle' => route('playstyles.create'),
                 'View Playstyles' => route('playstyles.index')],
+            'categories' => ['Create Category' => route('categories.create'),
+                'View Categories' => route('categories.index')],
         ];
     }
 
