@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiscordController;
 use App\Http\Controllers\GamesController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PlaystyleController;
 use App\Http\Controllers\QuestionAttemptController;
@@ -44,6 +45,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+
+    //Item
+    Route::resource('/items', ItemController::class, ['names' => 'items']);
 
     // User Profiles
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');

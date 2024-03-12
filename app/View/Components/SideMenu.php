@@ -45,6 +45,8 @@ class SideMenu extends Component
                 'View Playstyles' => route('playstyles.index')],
             'categories' => ['Create Category' => route('categories.create'),
                 'View Categories' => route('categories.index')],
+            'items' => ['Create Item' => route('items.create'),
+                'View Items' => route('items.index')],
         ];
     }
 

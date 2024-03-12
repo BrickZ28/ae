@@ -15,7 +15,7 @@
                 <x-form-input label="Description"
                               name="description"
                               value="{{old('name')}}"
-                              placeholder="Breif description about the category"
+                              placeholder="Brief description about the category"
                               required="" />
 
 
