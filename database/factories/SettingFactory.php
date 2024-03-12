@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Models\Server;
-use App\Models\Setting;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
