@@ -17,7 +17,9 @@
         "@fullcalendar/list": "^6.1.11",
         "@fullcalendar/timegrid": "^6.1.11",
         "@sweetalert2/themes": "^5.0.16",
+        "datatables.net": "^2.0.2",
         "datatables.net-dt": "^1.13.11",
+        "jquery": "^3.7.1",
         "sweetalert2": "^11.6.13"
     }
 }
