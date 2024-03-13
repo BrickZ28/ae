@@ -10,8 +10,8 @@
                               placeholder="Insert Name"
                               required="required" />
 
-                <x-form-input label="Description" name="name"
-                              value="{{ old('name') }}"
+                <x-form-input label="Description" name="description"
+                              value="{{ old('description') }}"
                               placeholder="Brief description about the item"
                               required="" />
 
