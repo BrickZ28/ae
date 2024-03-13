@@ -12,9 +12,10 @@ return new class extends Migration
 			$table->id();
 			$table->string('name');
 			$table->text('description');
-			$table->decimal('price');
+			$table->integer('price');
+            $table->string('currency_type');
             $table->string('image')->nullable();
-            $table->boolean('visible')->default(true);
+            $table->boolean('active')->default(true);
 			$table->timestamps();
 		});
 	}

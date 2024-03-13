@@ -63,7 +63,7 @@ class CategoryService
     private function validateCategory(Request $request)
     {
         return $request->validate([
-            'name' => 'required',
+            'name' => 'required|unique:categories|max:255',
             'description' => 'max:255'
         ]);
     }

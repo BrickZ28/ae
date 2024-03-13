@@ -1,24 +1,23 @@
 <x-dashboard.layout>
 
-    <x-breadcrumbs title="Create Package" parent="packages" child="create" />
-    <x-form :route="route('packages.store')" method="post" file="yes">
+    <x-breadcrumbs title="Edit Package" parent="packages" child="create" />
+    <x-form :route="route('packages.update', $package->id)" method="post" file="yes">
         <div class="row gx-10 mb-5">
 
             <div class="col-lg-12">
                 <x-form-input label="Package Name"
                               name="name"
-                              value="{{old('name')}}"
-                              placeholder="Create a name for the Package"
+                              value="{{$package->name}}"
+                              placeholder="Edit name for the Package"
                               required="required" />
 
-                <!-- Example parent div with a specific width -->
                 <x-form-input label="Description"
                               name="description"
-                              value="{{old('description')}}"
+                              value="{{$package->description}}"
                               placeholder="List Items in Package"
                               required="required" />
 
-                <x-form-select label="Select Items" name="items[]" required="required" id="items">
+                <x-form-select label="Add Items" name="items[]" required="required" id="items">
                     <option value="">Select One</option>
                     @foreach($items as $item)
                         <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -27,13 +26,22 @@
 
                 <x-form-input label="Package Items" name="package_items" value="" readonly="readonly" id="package_items" />
 
+                <x-form-select label="Remove Items" name="remove_items[]" required="" id="remove_items">
+                    @foreach($package->items as $item)
+                        <option value="{{ $item->id }}">{{ $item->name }}</option>
+                    @endforeach
+                </x-form-select>
+
+                <x-form-input label="Items to be removed" name="remove_package_items" value="" readonly="readonly"
+                              id="remove_package_items" />
+
                 <x-form-input label="Price" name="price"
-                              value="{{ old('price') }}"
+                              value="{{ $package->price }}"
                               placeholder="Insert Price"
                               required="required" />
 
                 <x-form-select label="Currency Type" name="currency_type" required="required" >
-                    <option value="">Select One</option>
+                    <option value="{{$package->currency_type}}">{{$package->currency_type}}</option>
                     <option value="USD">USD</option>
                     <option value="AEC">AfterEarth Credits</option>
                 </x-form-select>
@@ -42,7 +50,7 @@
 
                 <x-form-checkbox label="Visible In Store"
                                  name="visible"
-                                 checked="{{ old('active') == 1 ? 'checked' : '' }}"
+                                 checked="{{ $package->active == 1 ? 'checked' : '' }}"
                 />
 
 

@@ -21,7 +21,7 @@ class Item extends Model
 
     public function packages(): BelongsToMany
     {
-        return $this->belongsToMany(Package::class, 'item_package');
+        return $this->belongsToMany(Package::class, 'item_package')->withTimestamps();
     }
 
 }

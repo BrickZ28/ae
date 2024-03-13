@@ -15,7 +15,7 @@ return new class extends Migration
 			$table->integer('price');
             $table->string('currency_type');
             $table->string('image')->nullable();
-            $table->boolean('visible')->default(true);
+            $table->boolean('active')->default(true);
 			$table->foreignId('category_id')->constrained()->cascadeOnDelete();
 			$table->timestamps();
 		});

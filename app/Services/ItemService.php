@@ -4,11 +4,13 @@ namespace App\Services;
 
 use App\Models\Category;
 use App\Models\Item;
+use App\Traits\FileTrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class ItemService
 {
+    use FileTrait;
     public function index()
     {
         $items = Item::with('category')->get();
@@ -29,11 +31,11 @@ class ItemService
         $itemCreated = Item::create($validatedData);
 
         if ($request->hasFile('image')) {
-            $this->storeItemImage($itemCreated, $request->file('image'));
+            $this->uploadFile('do','images/items', $request->image, 'public');
         }
 
         if ($itemCreated) {
-            return redirect()->route('dashboard.index')->with('success', 'New item created successfully');
+            return redirect()->route('items.create')->with('success', 'New item created successfully');
         } else {
             return back()->with('error', 'Failed to create a new item. Please try again.')->withInput();
         }
@@ -52,7 +54,7 @@ class ItemService
         $item->update($validatedData);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $this->storeItemImage($item, $request->file('image'));
+            $this->uploadFile('do','images/items', $request->image, 'public');
         }
 
         return redirect()->route('dashboard.index')->with('success', 'Item updated successfully');
@@ -78,13 +80,9 @@ class ItemService
             'currency_type' => 'required',
             'price' => 'integer|required',
             'image' => 'image|nullable',
+            'active' => 'boolean|nullable',
         ]);
     }
 
-    private function storeItemImage(Item $item, $image)
-    {
-        $path = $image->store('images/items', 'public');
-        $item->image_path = $path;
-        $item->save();
-    }
+
 }

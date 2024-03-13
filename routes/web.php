@@ -8,6 +8,7 @@ use App\Http\Controllers\DiscordController;
 use App\Http\Controllers\GamesController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PlaystyleController;
 use App\Http\Controllers\QuestionAttemptController;
 use App\Http\Controllers\QuestionController;
