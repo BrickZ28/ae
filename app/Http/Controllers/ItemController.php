@@ -4,10 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Item;
+use App\Traits\FileTrait;
+use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ItemController extends Controller
 {
+    use FileTrait;
 	public function index()
 	{
         $items = Item::with('category')->get();
@@ -30,7 +34,12 @@ class ItemController extends Controller
             'category_id' => 'required',
             'currency_type' => 'required',
             'price' => 'required',
+            'image' => 'image',
         ]);
+
+        if ($request->hasFile('image')) {
+            $path = $this->uploadFile('do','images/items', $request->image, 'public');
+        }
 
         // Attempt to create the Category and capture the result
         $itemCreated = Item::create($validatedData);
@@ -51,13 +60,52 @@ class ItemController extends Controller
 
 	public function edit(Item $item)
 	{
+        $categories = Category::all();
+        return view('dashboard.item.edit', compact('item', 'categories'));
 	}
 
-	public function update(Request $request, Item $item)
-	{
-	}
+    public function update(Request $request, Item $item)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            'currency_type' => 'required',
+            'price' => 'required',
+            // Note: 'image' validation is handled separately
+        ]);
 
-	public function destroy(Item $item)
-	{
-	}
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $request->validate([
+                'image' => 'image|max:2048', // Validate the image only if it's present
+            ]);
+
+            $path = $request->file('image')->store('images/items', 'public');
+            $validatedData['image_path'] = $path; // Add or update the path
+        }
+
+        $item->update($validatedData);
+
+        return redirect()->route('dashboard.index')->with('success', 'Item updated successfully');
+    }
+
+
+    public function destroy(Item $item)
+    {
+        // Check if the item has a path for an image and if it exists
+        if ($item->path && Storage::disk('do')->exists($item->path)) {
+            // Attempt to delete the image
+            $imageDeleted = Storage::disk('do')->delete($item->path);
+
+            if (!$imageDeleted) {
+                // If the image deletion fails, return with an error message
+                return back()->with('error', 'Failed to delete the item image.');
+            }
+        }
+
+        // If there's no image or if the image was successfully deleted, delete the item
+        $item->delete();
+
+        return back()->with('success', 'Item deleted successfully.');
+    }
+
 }

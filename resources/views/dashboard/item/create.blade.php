@@ -1,7 +1,7 @@
 <x-dashboard.layout>
 
     <x-breadcrumbs title="Create Item" parent="items" child="create" />
-    <x-form :route="route('items.store')" method="post" file="">
+    <x-form :route="route('items.store')" method="post" file="yes">
         <div class="row gx-10 mb-5">
 
             <div class="col-lg-12">
@@ -10,10 +10,10 @@
                               placeholder="Insert Name"
                               required="required" />
 
-                <x-form-input label="Item" name="name"
+                <x-form-input label="Description" name="name"
                               value="{{ old('name') }}"
-                              placeholder="Insert Name"
-                              required="required" />
+                              placeholder="Brief description about the item"
+                              required="" />
 
                 <x-form-select label="Category" name="category_id" required="required" >
                     <option value="">Select One</option>
@@ -32,6 +32,8 @@
                     <option value="USD">USD</option>
                     <option value="AEC">AfterEarth Credits</option>
                 </x-form-select>
+
+                <x-file-upload label="Add Image" file="image" />
 
             </div>
 

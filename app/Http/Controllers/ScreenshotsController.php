@@ -38,7 +38,7 @@ class ScreenshotsController extends Controller
             'file' => 'required|image',
             ]);
 
-        $path = $this->uploadFile('do','images', $request->file, 'public');
+        $path = $this->uploadFile('do','images/screenshots', $request->file, 'public');
 
         if ($path) {
             // Check if the user has 'In the Shadows' or 'Owner' role

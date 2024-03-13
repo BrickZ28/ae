@@ -34,7 +34,7 @@ class CategoryController extends Controller
 
         if ($categoryCreated) {
             // If the category is successfully created, redirect with success message
-            return redirect()->route('dashboard.index')->with('success', 'New category created successfully');
+            return redirect()->route('categories.create')->with('success', 'New category created successfully');
         } else {
             // If the category creation fails, redirect back with an error message
             // This is more of a precautionary measure, as create() typically throws an exception on failure

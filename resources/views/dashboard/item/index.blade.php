@@ -6,20 +6,23 @@
             <tr>
                 <td>{{$item->name}}</td>
                 <td> {{$item->category->name}} </td>
-                <td>{{$item->price}}{{$item->currency_type}}</td>
+                <td>{{$item->price}} {{$item->currency_type}}</td>
 
                 <td><x-display-date-formatted
                         :date="$item->updated_at" format="D M j, Y @ g:i:sa" /></td>
                 <td>
-                    <form action="{{ route('items.show', $item->id) }}" method="get">
-                        @csrf
-                        <button type="submit" class="btn btn-primary">View</button>
-                    </form>
+                    <x-dashboard-draggable-modal buttonText="View Item"
+                                                 :title="$item->name . ' image'"
+                                                 :id="$item->id">
+                        <img src="{{ $item->image}}" alt="Name Not Found"
+                             class="w-100"/>
+                        <p class="mt-3">{{$item->description}}</p>
+                    </x-dashboard-draggable-modal>
                 </td>
                 <td>
                     <form action="{{ route('items.edit', $item->id) }}" method="get">
                         @csrf
-                        <button type="submit" class="btn btn-primary">Edit</button>
+                        <button type="submit" class="btn btn-info">Edit</button>
                     </form>
                 </td>
                 <td>
@@ -41,7 +44,7 @@
             // Use SweetAlert to show a confirmation dialog
             Swal.fire({
                 title: 'Confirm?',
-                text: "This will delete the category from the website and can break stuff?",
+                text: "This will delete the item from the website and can break stuff?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',

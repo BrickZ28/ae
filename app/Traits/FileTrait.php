@@ -18,6 +18,7 @@ trait FileTrait
             // Define the full path where the file should be stored and overwrite if it exists
             $fullPath = $folder . '/' . $filename;
 
+
             // Use putFileAs to store the file to the specified path on the disk
             $path = Storage::disk($disk)->putFileAs($folder, $file, $filename, $visibility);
 
