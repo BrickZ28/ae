@@ -53,6 +53,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
     Route::resource('/users', UsersController::class, ['names' => 'users']);
 
+    //Package
+    Route::resource('/packages', PackageController::class, ['names' => 'packages']);
+
     //Playstyle
     Route::resource('/playstyles', PlaystyleController::class, ['names' => 'playstyles']);
 

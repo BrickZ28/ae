@@ -13,6 +13,8 @@ return new class extends Migration
 			$table->string('name');
 			$table->text('description');
 			$table->decimal('price');
+            $table->string('image')->nullable();
+            $table->boolean('visible')->default(true);
 			$table->timestamps();
 		});
 	}

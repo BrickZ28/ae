@@ -48,6 +48,12 @@
 
                     <x-file-upload label="Update Image" file="image" />
 
+                <x-form-checkbox label="Visible In Store"
+                                 name="visible"
+                                 value="1"
+                                 checked="{{ old('active') == 1 || $special->active ? 'checked' : '' }}"
+                />
+
             </div>
 
             <!--end::Col-->
