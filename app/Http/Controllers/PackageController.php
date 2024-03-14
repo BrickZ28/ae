@@ -40,6 +40,7 @@ class PackageController extends Controller
 
 	public function update(Request $request, Package $package)
 	{
+        $this->packageService->update($request, $package);
 	}
 
 	public function destroy(Package $package)

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use App\Models\Category;
 use App\Models\Item;
 use App\Models\Package;
 use App\Traits\FileTrait;
@@ -22,8 +23,9 @@ class PackageService
 
     public function create()
     {
-        $items = Item::all();
-        return view('dashboard.package.create', compact('items'));
+
+        $categories = Category::with('items')->get();
+        return view('dashboard.package.create', compact('categories'));
     }
 
     public function store(Request $request)
@@ -33,12 +35,12 @@ class PackageService
             'description' => 'required|string',
             'items' => 'required|array',
             'items.*' => 'exists:items,id', // Ensure all selected items exist in the items table
-            'package_items' => 'required|string',
             'price' => 'required|numeric',
             'currency_type' => 'required|string',
-            'image' => 'nullable', // Add validation rule for the 'image' field
-            'active' => 'boolean|nullable', // Add validation rule for the 'visible' field
+            'image' => 'nullable|file|image|max:2048', // Adjusted image validation
+            'active' => 'boolean|nullable', // Adjusted based on form input name
         ]);
+
 
         $packageData = [
             'name' => $validatedData['name'],
