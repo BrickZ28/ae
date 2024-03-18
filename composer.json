@@ -7,13 +7,13 @@
     "require": {
         "php": "^8.3",
         "guzzlehttp/guzzle": "^7.8",
-        "laravel/framework": "^10.10",
-        "laravel/sanctum": "^3.3",
+        "laravel/framework": "^11.0",
+        "laravel/sanctum": "dev-master",
         "laravel/socialite": "^5.10",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.22",
         "nwilging/laravel-discord-bot": "^1.1",
-        "realrashid/sweet-alert": "^7.1",
+        "realrashid/sweet-alert": "dev-master",
         "socialiteproviders/discord": "^4.2",
         "yajra/laravel-datatables-oracle": "10.3.1"
     },
