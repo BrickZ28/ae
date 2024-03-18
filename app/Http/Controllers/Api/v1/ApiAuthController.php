@@ -7,9 +7,9 @@ use App\Http\Requests\V1\LoginUserRequest;
 use App\Http\Requests\V1\StoreUserRequest;
 use App\Models\User;
 use App\Traits\Responses\HttpResponses;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Auth;
 
 class ApiAuthController extends Controller
 {
@@ -18,9 +18,9 @@ class ApiAuthController extends Controller
     public function login(LoginUserRequest $request)
     {
         $check_login = DB::table('personal_access_tokens')->where('name', $request->discord_id)->first();
-        if ($check_login){
+        if ($check_login) {
             return $this->success([
-                'token' => $check_login->token
+                'token' => $check_login->token,
             ]);
         }
         $request->validated($request->all());
@@ -29,7 +29,7 @@ class ApiAuthController extends Controller
 
         return $this->success([
             'user' => $user,
-            'token' => $user->createToken($user->discord_id)->plainTextToken
+            'token' => $user->createToken($user->discord_id)->plainTextToken,
         ]);
     }
 
@@ -41,10 +41,11 @@ class ApiAuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
+
         return $this->success([
-                'user' => $user,
-                'token' => $user->createToken('API Token of' . $user->name)->plainTextToken
-            ]
+            'user' => $user,
+            'token' => $user->createToken('API Token of'.$user->name)->plainTextToken,
+        ]
         );
     }
 
@@ -53,8 +54,7 @@ class ApiAuthController extends Controller
         Auth::user()->currentAccessToken()->delete();
 
         return $this->success([
-            'message' => 'Logged Out'
+            'message' => 'Logged Out',
         ]);
     }
-
 }

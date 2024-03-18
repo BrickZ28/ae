@@ -7,8 +7,8 @@ use Illuminate\Database\Seeder;
 
 class ServerSeeder extends Seeder
 {
-	public function run(): void
-	{
-		Server::factory(10)->create();
-	}
+    public function run(): void
+    {
+        Server::factory(10)->create();
+    }
 }

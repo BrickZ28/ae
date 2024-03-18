@@ -18,7 +18,7 @@ class RuleFactory extends Factory
     {
         return [
             'rule' => fake()->sentence(),
-            'priority' => fake()->numberBetween(1,2)
+            'priority' => fake()->numberBetween(1, 2),
         ];
     }
 }

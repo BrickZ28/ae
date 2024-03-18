@@ -7,8 +7,8 @@ use Illuminate\View\Component;
 
 class SideMenuItems extends Component
 {
-	public function render(): View
-	{
-		return view('components.side-menu-items');
-	}
+    public function render(): View
+    {
+        return view('components.side-menu-items');
+    }
 }

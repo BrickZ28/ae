@@ -7,8 +7,8 @@ use Illuminate\Database\Seeder;
 
 class SettingSeeder extends Seeder
 {
-	public function run(): void
-	{
-		Setting::factory(10)->create();
-	}
+    public function run(): void
+    {
+        Setting::factory(10)->create();
+    }
 }

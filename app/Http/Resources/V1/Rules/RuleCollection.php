@@ -8,10 +8,10 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 /** @see \App\Models\Rule */
 class RuleCollection extends ResourceCollection
 {
-	public function toArray(Request $request): array
-	{
-		return [
-			'data' => $this->collection,
-		];
-	}
+    public function toArray(Request $request): array
+    {
+        return [
+            'data' => $this->collection,
+        ];
+    }
 }

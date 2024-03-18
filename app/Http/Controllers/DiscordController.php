@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use App\Services\DiscordService;
-use App\Traits\ApiRequests;
 
 class DiscordController extends Controller
 {
@@ -18,7 +16,7 @@ class DiscordController extends Controller
     public function syncRolesAndRedirect()
     {
         $this->discordService->syncDiscordRoles();
+
         return redirect()->route('dashboard.index')->with('success', 'Roles added successfully');
     }
-
 }

@@ -7,8 +7,8 @@ use Illuminate\Database\Seeder;
 
 class RuleSeeder extends Seeder
 {
-	public function run(): void
-	{
-		Rule::factory(10)->create();
-	}
+    public function run(): void
+    {
+        Rule::factory(10)->create();
+    }
 }

@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
+
+use App\Jobs\ProcessTransactionJob;
+use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
-use App\Models\User;
-use App\Jobs\ProcessTransactionJob;
-
 
 class UsersController extends Controller
 {
@@ -13,13 +14,14 @@ class UsersController extends Controller
 
         return view('dashboard.users.index')->with([
             'users' => User::with('userProfile')->get(),
-            'filters' => ['id','username', 'role', 'Tribe', 'Last Login', 'Joined', 'actions']
+            'filters' => ['id', 'username', 'role', 'Tribe', 'Last Login', 'Joined', 'actions'],
         ]);
     }
 
     public function edit($id)
     {
         $user = User::find($id);
+
         return view('dashboard.users.edit', compact('user'));
     }
 
@@ -34,8 +36,7 @@ class UsersController extends Controller
             'reason.required_if' => 'The reason field is required when credits is not 0 or blank.',
         ]);
 
-
-        if($request->ae_credits > 0 || $request->ae_credits < 0) {
+        if ($request->ae_credits > 0 || $request->ae_credits < 0) {
             $user->update([
                 'ae_credits' => $user->ae_credits + $request->ae_credits,
             ]);
@@ -45,5 +46,3 @@ class UsersController extends Controller
         return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
 }
-
-

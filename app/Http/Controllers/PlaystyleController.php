@@ -8,20 +8,20 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class PlaystyleController extends Controller
 {
-	public function index()
-	{
+    public function index()
+    {
         $styles = Playstyle::all();
 
         $filters = ['id', 'name', 'created_at', 'updated_at', 'edit', 'delete', 'servers'];
 
         return view('dashboard.playstyle.index', compact('styles', 'filters'));
 
-	}
+    }
 
-	public function create()
-	{
+    public function create()
+    {
         return view('dashboard.playstyle.create');
-	}
+    }
 
     public function store(Request $request)
     {
@@ -43,29 +43,28 @@ class PlaystyleController extends Controller
         return redirect()->route('dashboard.index');
     }
 
-
     public function show($id)
-	{
-	}
+    {
+    }
 
-	public function edit($id)
-	{
+    public function edit($id)
+    {
         return view('dashboard.playstyle.edit', ['style' => Playstyle::find($id)]);
-	}
+    }
 
-	public function update(Request $request, $id)
-	{
+    public function update(Request $request, $id)
+    {
         $validatedData = $request->validate([
             'name' => 'required',
         ]);
 
-// Find the rule
+        // Find the rule
         $style = Playstyle::find($id);
 
-// Update the rule with validated data
+        // Update the rule with validated data
         $style->fill($validatedData);
 
-// Save the updated rule
+        // Save the updated rule
         if ($style->save()) {
             Alert::success('Updated', 'Style Updated');
         } else {
@@ -73,12 +72,12 @@ class PlaystyleController extends Controller
         }
 
         return view('dashboard.index');
-	}
+    }
 
-	public function destroy(Playstyle $playstyle)
-	{
+    public function destroy(Playstyle $playstyle)
+    {
         $playstyle->delete();
 
         return redirect()->route('dashboard.index')->with('success', 'Style deleted successfully');
-	}
+    }
 }

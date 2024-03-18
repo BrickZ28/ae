@@ -7,40 +7,40 @@ use Illuminate\Http\Request;
 
 class QuestionChoiceController extends Controller
 {
-	public function index()
-	{
-		return QuestionChoice::all();
-	}
+    public function index()
+    {
+        return QuestionChoice::all();
+    }
 
-	public function store(Request $request)
-	{
-		$data = $request->validate([
+    public function store(Request $request)
+    {
+        $data = $request->validate([
 
-		]);
+        ]);
 
-		return QuestionChoice::create($data);
-	}
+        return QuestionChoice::create($data);
+    }
 
-	public function show(QuestionChoice $questionChoice)
-	{
-		return $questionChoice;
-	}
+    public function show(QuestionChoice $questionChoice)
+    {
+        return $questionChoice;
+    }
 
-	public function update(Request $request, QuestionChoice $questionChoice)
-	{
-		$data = $request->validate([
+    public function update(Request $request, QuestionChoice $questionChoice)
+    {
+        $data = $request->validate([
 
-		]);
+        ]);
 
-		$questionChoice->update($data);
+        $questionChoice->update($data);
 
-		return $questionChoice;
-	}
+        return $questionChoice;
+    }
 
-	public function destroy(QuestionChoice $questionChoice)
-	{
-		$questionChoice->delete();
+    public function destroy(QuestionChoice $questionChoice)
+    {
+        $questionChoice->delete();
 
-		return response()->json();
-	}
+        return response()->json();
+    }
 }

@@ -6,19 +6,19 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-	public function up(): void
-	{
-		Schema::create('question_choices', function (Blueprint $table) {
-			$table->id();
+    public function up(): void
+    {
+        Schema::create('question_choices', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('question_id')->constrained()->onDelete('cascade');
             $table->string('choice');
             $table->boolean('is_correct')->default(false);
-			$table->timestamps();
-		});
-	}
+            $table->timestamps();
+        });
+    }
 
-	public function down(): void
-	{
-		Schema::dropIfExists('question_choices');
-	}
+    public function down(): void
+    {
+        Schema::dropIfExists('question_choices');
+    }
 };

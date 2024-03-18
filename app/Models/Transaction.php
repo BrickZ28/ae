@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Transaction extends Model
 {
     protected $guarded = [];
+
     public function payer(): BelongsTo
     {
         return $this->belongsTo(User::class, 'payer_id');

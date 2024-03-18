@@ -2,8 +2,8 @@
 
 namespace App\Http\ViewComposers;
 
-use Illuminate\View\View;
-use Illuminate\Support\Facades\Auth; // Ensure you use the Auth facade
+use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View; // Ensure you use the Auth facade
 
 class UserViewComposer
 {

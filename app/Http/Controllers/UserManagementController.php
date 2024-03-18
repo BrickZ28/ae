@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Apps;
 
-use App\DataTables\UsersDataTable;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,9 +17,10 @@ class UserManagementController extends Controller
 
         if ($request->ajax()) {
             $data = User::all();
+
             return Datatables::of($data)
                 ->addIndexColumn()
-                ->addColumn('action', function($row){
+                ->addColumn('action', function ($row) {
 
                     $btn = '<a href="javascript:void(0)" class="edit btn btn-primary btn-sm">View</a>';
 

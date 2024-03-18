@@ -1,7 +1,8 @@
 <?php
+
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Nwilging\LaravelDiscordBot\Events\MessageComponentInteractionEvent;
 use Nwilging\LaravelDiscordBot\Contracts\Listeners\MessageComponentInteractionEventListenerContract;
+use Nwilging\LaravelDiscordBot\Events\MessageComponentInteractionEvent;
 
 class MessageComponentInteractionListener implements MessageComponentInteractionEventListenerContract, ShouldQueue
 {

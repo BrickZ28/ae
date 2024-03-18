@@ -11,9 +11,9 @@ use Illuminate\Queue\SerializesModels;
 
 class ApplyAeCreditsJob implements ShouldQueue
 {
-	use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function handle()
+    public function handle(): void
     {
         // Retrieve all users
         $users = User::all();

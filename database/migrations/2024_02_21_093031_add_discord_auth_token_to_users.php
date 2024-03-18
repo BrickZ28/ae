@@ -6,17 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-	public function up(): void
-	{
-		Schema::table('users', function (Blueprint $table) {
+    public function up(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
             $table->string('discord_access_token')->nullable();
-		});
-	}
+        });
+    }
 
-	public function down(): void
-	{
-		Schema::table('users', function (Blueprint $table) {
-			$table->dropColumn('discord_access_token');
-		});
-	}
+    public function down(): void
+    {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('discord_access_token');
+        });
+    }
 };

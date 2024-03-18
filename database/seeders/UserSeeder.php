@@ -7,8 +7,8 @@ use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
-	public function run(): void
-	{
+    public function run(): void
+    {
         User::factory(10)->create();
-	}
+    }
 }

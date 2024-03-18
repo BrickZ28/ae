@@ -10,7 +10,7 @@
                     <div class="symbol symbol-circle symbol-50px overflow-hidden me-3">
                         <a href="{{route('users.show', $user->id)}}">
                             <div class="symbol-label">
-                                <img src="{{ optional($user->userProfile)->profile_photo_path }}" alt="Name Not Found"
+                                <img src="{{ $user->userProfile?->profile_photo_path }}" alt="Name Not Found"
                                      class="w-100"/>
                             </div>
                         </a>

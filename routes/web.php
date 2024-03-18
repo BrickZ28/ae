@@ -18,7 +18,6 @@ use App\Http\Controllers\ServersController;
 use App\Http\Controllers\SpecialsController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UsersController;
-use App\Models\QuestionAttempt;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes

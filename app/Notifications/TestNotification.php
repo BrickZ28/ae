@@ -12,7 +12,7 @@ class TestNotification extends Notification implements DiscordNotificationContra
 {
     use Queueable;
 
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['discord'];
     }

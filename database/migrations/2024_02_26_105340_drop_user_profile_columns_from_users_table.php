@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
+    public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn([
@@ -17,12 +17,12 @@ return new class extends Migration
                 'banner_color',
                 'accent_color',
                 'locale',
-                'public_flags'
+                'public_flags',
             ]);
         });
     }
 
-    public function down()
+    public function down(): void
     {
         Schema::table('users', function (Blueprint $table) {
             $table->string('username')->nullable()->after('id');

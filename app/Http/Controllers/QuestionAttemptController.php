@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\TriviaService;
+use Illuminate\Http\Request;
 
 class QuestionAttemptController extends Controller
 {
@@ -16,6 +17,7 @@ class QuestionAttemptController extends Controller
     public function attemptUserQuestion($questionId, Request $request)
     {
         $selectedChoiceId = $request->input('choice');
+
         return $this->triviaService->attemptUserQuestion($questionId, $selectedChoiceId);
     }
 }

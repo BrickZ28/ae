@@ -6,20 +6,20 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-	public function up(): void
-	{
-		Schema::create('games', function (Blueprint $table) {
-			$table->id();
+    public function up(): void
+    {
+        Schema::create('games', function (Blueprint $table) {
+            $table->id();
 
             $table->string('api_name');
             $table->string('display_name');
 
-			$table->timestamps();
-		});
-	}
+            $table->timestamps();
+        });
+    }
 
-	public function down(): void
-	{
-		Schema::dropIfExists('games');
-	}
+    public function down(): void
+    {
+        Schema::dropIfExists('games');
+    }
 };

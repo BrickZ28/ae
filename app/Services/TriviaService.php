@@ -23,8 +23,8 @@ class TriviaService
             $choices = array_map('trim', explode('^', $choicesString));
 
             // Filter out any empty strings from the choices array
-            $choices = array_filter($choices, function($choice) {
-                return !empty($choice);
+            $choices = array_filter($choices, function ($choice) {
+                return ! empty($choice);
             });
 
             foreach ($choices as $choiceText) {
@@ -73,7 +73,7 @@ class TriviaService
             Session::put('attempt_token', Str::random(40));
         }
 
-        if (!$random_question) {
+        if (! $random_question) {
             return redirect()->route('dashboard.index')->with('error', 'You have attempted all available questions for today.');
         }
 
@@ -81,10 +81,9 @@ class TriviaService
 
         // Pass both the question and the existing/new token to the view
         $attempt_token = session('attempt_token');
+
         return view('dashboard.questions.user-random', compact('random_question', 'attempt_token'));
     }
-
-
 
     /**
      * Handle a user's attempt to answer a question, checking for correctness and whether the attempt is valid (e.g., not expired).
@@ -98,12 +97,14 @@ class TriviaService
         // Check for timeout first
         if ($this->timedOut()) {
             Session::forget('attempt_token'); // Clear attempt token on timeout
+
             return redirect()->route('dashboard.index')->with('error', 'Time limit exceeded. Your attempt has been recorded as incorrect.');
         }
 
         // Then validate the attempt token
-        if (!$this->isValidAttempt()) {
+        if (! $this->isValidAttempt()) {
             Session::forget('attempt_token'); // Clear attempt token if invalid
+
             return redirect()->route('dashboard.index')->with('error', 'You have already answered this question');
         }
 
@@ -127,16 +128,15 @@ class TriviaService
 
             // After a correct answer, redirect to the dashboard (or next question) and clear the question_id from the session
             Session::forget('question_id');
+
             return redirect(route('dashboard.index'))->with('success', "You got it right! Credits awarded: {$credits}");
         } else {
             // If the answer is incorrect, allow retrying the same question without changing the attempt token
             // 'question_id' remains in the session for retry
-            return back()->with('error', "Attempt number " . ($attemptCount + 1) . " recorded. Incorrect answer.")
+            return back()->with('error', 'Attempt number '.($attemptCount + 1).' recorded. Incorrect answer.')
                 ->with('question_id', $questionId);
         }
     }
-
-
 
     /**
      * Check if the current attempt has timed out.
@@ -144,6 +144,7 @@ class TriviaService
     private function timedOut()
     {
         $startTime = Session::get('question_start_time');
+
         return now()->diffInSeconds($startTime) > 120;
     }
 
@@ -154,6 +155,7 @@ class TriviaService
     {
         $attemptToken = Session::get('attempt_token');
         $providedToken = request()->input('attempt_token');
+
         return $attemptToken && $attemptToken === $providedToken;
     }
 
