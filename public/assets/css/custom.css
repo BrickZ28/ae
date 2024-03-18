@@ -14,6 +14,24 @@
 }
 
 
+.tabs-container {
+    border: 1px solid #363843; /* Light grey border */
+    padding: 20px; /* Spacing inside the box */
+    margin: 10px 0; /* Space outside the box, top & bottom */
+    border-radius: 5px; /* Optional: Rounds the corners of the border */
+}
+
+.items-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 10px;
+}
+
+.form-check {
+    break-inside: avoid; /* Helps with grid item flow */
+}
+
+
 
 .btn.btn-maroon {
     color: var(--maroon-light);
@@ -25,6 +43,8 @@
     border-color-active: null;
     bg-color-active: lighten(var(--maroon-active), 3%);
 }
+
+
 
 .custom-landing-dark-bg {
     background-color: var(--custom-dark-background);
@@ -85,6 +105,17 @@ body[custom-dark-data-kt-sticky-landing-header=on] {
 
     body[custom-dark-data-kt-sticky-landing-header=on] {
         padding-top: 70px
+    }
+
+    .input-row {
+        display: flex;
+        flex-wrap: wrap; /* This allows items to wrap in small screens */
+        gap: 20px; /* Adjust the gap between items */
+    }
+
+    .input-container {
+        flex: 1; /* Ensures each input field takes equal width */
+        min-width: 250px; /* Prevents inputs from becoming too small on narrow screens */
     }
 }
 

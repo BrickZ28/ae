@@ -5,9 +5,11 @@
            value="{{$value ?? ""}}"
            type="text"
            class="form-control"
+           id="{{$id ?? ""}}"
            placeholder="{{$placeholder ?? ""}}"
            aria-label="{{$placeholder ?? ""}}"
-           {{$required ?? ''}}
+          {{$readonly ?? ""}}
+          {{$required ?? ""}}
 
     aria-describedby="basic-addon1"/>
 

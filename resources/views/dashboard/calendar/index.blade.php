@@ -11,5 +11,5 @@
         </div>
     </div>
 
-    @vite(['resources/js/app.js'])
+    @vite(['resources/js/calendar/calendar.js'])
 </x-dashboard.layout>

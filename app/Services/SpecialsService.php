@@ -29,7 +29,7 @@ class SpecialsService
                 'start' => $special->start_date,
                 'end' => $special->end_date,
                 'active' => $special->active,
-                // Add other fields as needed
+                'description' => $special->description,
             ];
         }
 

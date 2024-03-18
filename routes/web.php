@@ -2,10 +2,13 @@
 
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiscordController;
 use App\Http\Controllers\GamesController;
+use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PlaystyleController;
 use App\Http\Controllers\QuestionAttemptController;
 use App\Http\Controllers\QuestionController;
@@ -35,14 +38,23 @@ Route::get('/error', function () {
 // Private Routes (Authenticated and Verified Users)
 Route::middleware(['auth', 'verified'])->group(function () {
     //Calendar
-    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::get('/calendars', [CalendarController::class, 'index'])->name('calendar.index');
+
+    //Categories
+    Route::resource('/categories', CategoryController::class, ['names' => 'categories']);
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
+    //Item
+    Route::resource('/items', ItemController::class, ['names' => 'items']);
+
     // User Profiles
     Route::get('/users', [UsersController::class, 'index'])->name('users.index');
     Route::resource('/users', UsersController::class, ['names' => 'users']);
+
+    //Package
+    Route::resource('/packages', PackageController::class, ['names' => 'packages']);
 
     //Playstyle
     Route::resource('/playstyles', PlaystyleController::class, ['names' => 'playstyles']);
