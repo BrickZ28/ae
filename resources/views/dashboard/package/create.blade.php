@@ -21,8 +21,6 @@
                                       required="required"/>
                     </div>
                 </div>
-
-
                 <label class="form-label fs-6 fw-bold text-gray-700 mb-3">Add Items to Package</label>
                 <div class="tabs-container">
                     <div class="tab-content" id="myTabContent">
