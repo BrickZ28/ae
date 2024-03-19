@@ -9,6 +9,7 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "*",
         "laravel/tinker": "^2.9",
+        "martinbean/socialite-discord-provider": "1.2",
         "realrashid/sweet-alert": "*",
         "socialiteproviders/manager": "*"
     },
