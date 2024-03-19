@@ -9,7 +9,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withProviders([
         \SocialiteProviders\Manager\ServiceProvider::class,
         \RealRashid\SweetAlert\SweetAlertServiceProvider::class,
-        \Yajra\Datatables\DatatablesServiceProvider::class,
     ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Apps;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Yajra\DataTables\Facades\DataTables;
+
 
 class UserManagementController extends Controller
 {

@@ -1,5 +1,7 @@
 <?php
 
+use App\Jobs\ApplyAeCreditsJob;
+use App\Jobs\ClearQuestionAttemptsJob;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schedule;
