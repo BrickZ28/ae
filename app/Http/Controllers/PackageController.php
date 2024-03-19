@@ -26,7 +26,7 @@ class PackageController extends Controller
 
 	public function store(Request $request)
 	{
-        $this->packageService->store($request);
+       return  $this->packageService->store($request);
 	}
 
 	public function show(Package $package)

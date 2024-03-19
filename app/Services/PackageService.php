@@ -30,6 +30,7 @@ class PackageService
 
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'name' => 'required|string',
             'description' => 'required|string',
@@ -62,7 +63,9 @@ class PackageService
 
         $package = Package::create($packageData);
 
+
         $package->items()->attach($validatedData['items']);
+
 
         return redirect()->route('packages.index')->with('success', 'New package created successfully');
     }
