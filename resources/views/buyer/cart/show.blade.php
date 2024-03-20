@@ -32,11 +32,12 @@
                         @foreach($itemsUSD as $item)
                             <tr>
                                 <td class="d-flex align-items-center font-weight-bolder">
-                                    <div class="symbol symbol-60 flex-shrink-0 mr-4 ">
-                                        <div class="symbol-label" style="background-image: url('{{ $item->image }}')"></div>
-                                    </div>
-                                    <a href="#" class=" text-hover-primary">{{ $item->name }}</a>
-                                </td>
+                                   <div class="symbol symbol-60 flex-shrink-0 mr-4 ">
+    <div class="symbol-label" style="background-image: url('{{ $item->image }}')"></div>
+</div>
+<!-- Trigger the SweetAlert2 popup with a button -->
+<button type="button" class="btn btn-bg-light btn-color-info item-info" style="margin-left: 20px;"
+        data-name="{{ $item->name }}" data-image="{{ $item->image }}" data-quantity="{{ $item->pivot->quantity }}" data-price="{{ $item->price }}">{{ $item->name }}</button> </td>
                                 <td class="text-center align-middle">
                                     <span class="mr-2 font-weight-bolder">{{ $item->pivot->quantity }}</span>
                                 </td>
@@ -67,13 +68,13 @@
                                     <div class="symbol symbol-60 flex-shrink-0 mr-4 ">
                                         <div class="symbol-label" style="background-image: url('{{ $item->image }}')"></div>
                                     </div>
-                                    <a href="#" class=" text-hover-primary">{{ $item->name }}</a>
+                                    <button type="button" class="btn btn-bg-light btn-color-info item-info" data-name="{{ $item->name }}" data-image="{{ $item->image }}" data-quantity="{{ $item->pivot->quantity }}" data-price="{{ $item->price }}">{{ $item->name }}</button>
                                 </td>
                                 <td class="text-center align-middle">
                                     <span class="mr-2 font-weight-bolder">{{ $item->pivot->quantity }}</span>
                                 </td>
                                 <td class="text-right align-middle font-weight-bolder font-size-h5">
-                                    ${{ $item->price }}
+                                    {{ $item->price }} AEC
                                 </td>
                                 <td class="text-right align-middle">
                                     <form action="{{ route('carts.destroy', $item->id) }}" method="POST">
@@ -104,4 +105,38 @@
                 <!--end::Shopping Cart-->
             </div>
         </div>
+    </div>
+
+    <script>
+document.querySelectorAll('.item-info').forEach(item => {
+    item.addEventListener('click', function() {
+        // Get the data from the button
+        const name = this.getAttribute('data-name');
+        let image = this.getAttribute('data-image');
+        const price = this.getAttribute('data-price');
+        const currency_type = this.getAttribute('data-currency');
+        let description = this.getAttribute('data-description');
+
+        // Check if the description is blank
+        description = description ? description : 'No description added';
+
+        // Format the price based on the currency type
+        const formattedPrice = currency_type === 'USD' ? `$${price}` : `${price} AEC`;
+
+        // Use SweetAlert to show the data
+        Swal.fire({
+            title: `<img src="${image}" onerror="this.onerror=null; this.src='{{asset('assets/media/logos/favicon.ico')}}';" style="width: 100%; max-width: 250px; margin: 0 auto; display: block;">`,
+            html: `
+                <ul>
+                    <li>Name: ${name}</li>
+                    <li>Price: ${formattedPrice}</li>
+                </ul>
+                <p>${description}</p>
+            `,
+            showCloseButton: true,
+            showConfirmButton: true,
+        });
+    });
+});
+        </script>
 </x-dashboard.layout>

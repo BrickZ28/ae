@@ -1,5 +1,5 @@
 <x-dashboard.layout>
-    <x-datatable_shell breadcrumb-title="Items" breadcrumb-parent="View Items" breadcrumb-child="items" :$filters />
+    <x-datatable_shell breadcrumb-title="Items" breadcrumb-parent="View Items" breadcrumb-child="items" :$filters>
 
         @foreach($items as $item)
 
