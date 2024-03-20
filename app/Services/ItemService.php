@@ -11,11 +11,27 @@ use Illuminate\Http\Request;
 class ItemService
 {
     use FileTrait;
+
+    private function getFilters()
+    {
+        if(auth()->user()->hasAnyRole(['Owners', 'Head Admin'])){
+            $filters = ['name', 'category', 'price', 'Updated on', 'view', 'edit', 'delete'];
+        } else {
+            $filters = ['image', 'name', 'price', 'Last update', 'View', 'add to cart', 'view cart'];
+        }
+
+        return $filters;
+    }
     public function index()
     {
-        $items = Item::with('category')->get();
-        $filters = ['name', 'category', 'price', 'Updated on', 'view', 'edit', 'delete'];
-        return view('dashboard.item.index', compact('items', 'filters'));
+        $items = Item::where('active', 1)->with('category')->get();
+        $filters = $this->getFilters();
+        if(auth()->user()->hasAnyRole([ 'Owners', 'Head Admin'])){
+            return view('dashboard.item.index', compact('items', 'filters'));
+        } else {
+            return view('buyer.item.index', compact('items', 'filters'));
+        }
+
     }
 
     public function create()

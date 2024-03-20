@@ -2,13 +2,13 @@
 
 namespace App\View\Components;
 
+use App\Models\Category;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class SideMenu extends Component
 {
     private $adminRoles = ['In the Shadows', 'Owners', 'Head Admin'];
-
     public $admin_menu;
 
     public $admin_submenu;
@@ -59,9 +59,17 @@ class SideMenu extends Component
 
     private function createUserSubmenu()
     {
+        $categories = Category::all(); // Retrieve all categories
+
+        $shopSubmenu = [];
+        foreach ($categories as $category) {
+            $shopSubmenu[$category->name] = route('items.index', ['category' => $category->id]);
+        }
+
         return $this->user_submenu = [
             'Trivia' => ['View Question' => route('questions.user.random')],
             'Calendar' => ['View calendar' => route('calendar.index')],
+            'Shop' => $shopSubmenu, // Add the Shop submenu
         ];
     }
 

@@ -24,4 +24,8 @@ class Item extends Model
         return $this->belongsToMany(Package::class, 'item_package')->withTimestamps();
     }
 
+    public function carts(): BelongsToMany
+{
+    return $this->belongsToMany(Cart::class, 'cart_items')->withPivot('quantity');
+}
 }
