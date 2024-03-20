@@ -30,6 +30,10 @@ Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
 Route::get('/nitrado/servers', [ServersController::class, 'getServers']);
 Route::get('/auth/redirect/{provider}', [SocialiteController::class, 'redirect']);
 
+Route::get('/under-construction', function () {
+    return view('under-construction');
+});
+
 // Error Route
 Route::get('/error', function () {
     abort(500);

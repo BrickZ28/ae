@@ -19,7 +19,7 @@
                         <p class="mt-3">
                         Details:
                         <ul>
-                            <li>Price: {{$package->price}} {{$package->currency_type}}}</li>
+                            <li>Price: {{$package->price}} {{$package->currency_type}}</li>
                             <li>Active: {{$package->active ? 'Yes': 'No'}}</li>
                             <li>Updated At: <x-display-date-formatted
                                     :date="$package->updated_at" format="D M j, Y @ g:i:sa" /></li>
