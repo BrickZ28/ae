@@ -51,6 +51,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Categories
     Route::resource('/categories', CategoryController::class, ['names' => 'categories']);
 
+    //Checkout
+    Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
+
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 

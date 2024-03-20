@@ -64,4 +64,23 @@ class CartController extends Controller
 	public function destroy(Cart $cart)
 	{
 	}
+
+    public function checkout()
+{
+    $cart = Cart::where('user_id', auth()->id())->with('items')->first();
+
+    if (!$cart) {
+        return back()->with('error', 'No items in cart.');
+    }
+
+    $totalUSD = $cart->items->where('currency_type', 'USD')->reduce(function ($carry, $item) {
+        return $carry + ($item->price * $item->pivot->quantity);
+    }, 0);
+
+    $totalAEC = $cart->items->where('currency_type', 'AEC')->reduce(function ($carry, $item) {
+        return $carry + ($item->price * $item->pivot->quantity);
+    }, 0);
+
+    return view('buyer.cart.checkout', compact('cart', 'totalUSD', 'totalAEC'));
+}
 }
