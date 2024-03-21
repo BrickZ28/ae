@@ -31,10 +31,10 @@
                         <!--begin::Cart Content-->
                         @foreach($itemsUSD as $item)
                             <tr class="shopping-border">
-                                <td class="d-flex align-items-center font-weight-bolder" >
+                                <td class="d-flex align-items-center font-weight-bolder">
                                     <div class="symbol symbol-60 flex-shrink-0 mr-4 ">
                                         <div class="symbol-label"
-                                             style="background-image: url('{{ $item->image }}')" ></div>
+                                             style="background-image: url('{{ $item->image }}')"></div>
                                     </div>
                                     <!-- Trigger the SweetAlert2 popup with a button -->
                                     <button type="button" class="btn btn-bg-light btn-color-info item-info"
@@ -44,7 +44,13 @@
                                             data-price="{{ $item->price }}">{{ $item->name }}</button>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <span class="mr-2 font-weight-bolder">{{ $item->pivot->quantity }}</span>
+                                    <form action="{{ route('carts.updateQuantity', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="number" name="quantity" value="{{ $item->pivot->quantity }}"
+                                               min="1" style="width: 50px;">
+                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                    </form>
                                 </td>
                                 <td class="text-right align-middle font-weight-bolder font-size-h5">
                                     ${{ $item->price }}
@@ -84,7 +90,13 @@
                                             data-price="{{ $item->price }}">{{ $item->name }}</button>
                                 </td>
                                 <td class="text-center align-middle">
-                                    <span class="mr-2 font-weight-bolder">{{ $item->pivot->quantity }}</span>
+                                    <form action="{{ route('carts.updateQuantity', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('PATCH')
+                                        <input type="number" name="quantity" value="{{ $item->pivot->quantity }}"
+                                               min="1" style="width: 50px;">
+                                        <button type="submit" class="btn btn-sm btn-primary">Update</button>
+                                    </form>
                                 </td>
                                 <td class="text-right align-middle font-weight-bolder font-size-h5">
                                     {{ $item->price }} AEC
@@ -94,7 +106,7 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger font-weight-bolder font-size-sm">
-                                            Remove
+                                            Remove Item
                                         </button>
                                     </form>
                                 </td>
@@ -110,7 +122,8 @@
                         <tr>
 
                             <td colspan="2" class="border-0 text-right pt-10">
-                                <a href="{{route('checkout')}}" class="btn btn-success font-weight-bolder px-8">Proceed to
+                                <a href="{{route('checkout')}}" class="btn btn-success font-weight-bolder px-8">Proceed
+                                    to
                                     Checkout</a>
                             </td>
                         </tr>

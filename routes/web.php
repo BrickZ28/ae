@@ -47,6 +47,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Cart
     Route::resource('/carts', CartController::class, ['names' => 'carts']);
+    Route::patch('/carts/updateQuantity/{id}', [CartController::class, 'updateQuantity'])->name('carts.updateQuantity');
 
     //Categories
     Route::resource('/categories', CategoryController::class, ['names' => 'categories']);

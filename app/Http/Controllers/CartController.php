@@ -61,9 +61,63 @@ class CartController extends Controller
 	{
 	}
 
-	public function destroy(Cart $cart)
-	{
-	}
+public function destroy($id)
+{
+    // Retrieve the cart
+    $cart = Cart::where('user_id', auth()->id())->first();
+
+    // Check if the cart exists
+    if (!$cart) {
+        return redirect()->route('dashboard.index')->with('error', 'No Cart found.');
+    }
+
+    // Retrieve the item
+    $item = Item::find($id);
+
+    // Check if the item exists
+    if (!$item) {
+        return redirect()->route('dashboard.index')->with('error', 'No Item found.');
+    }
+
+    // Detach the item from the cart
+    $cart->items()->detach($item->id);
+
+    // Check if the cart is empty
+    if ($cart->items->isEmpty()) {
+        // Delete the cart if it's empty
+        $cart->delete();
+    }
+
+    if (!Cart::where('user_id', auth()->id())->first()){
+        return redirect()->route('dashboard.index')->with('success', 'Item removed from cart and cart is empty.');
+    } else {
+        return back()->with('success', 'Item removed from cart successfully.');
+    }
+}
+
+public function updateQuantity($id, Request $request)
+{
+    // Retrieve the cart
+    $cart = Cart::where('user_id', auth()->id())->first();
+
+    // Check if the cart exists
+    if (!$cart) {
+        return back()->with('error', 'No Cart found.');
+    }
+
+    // Retrieve the item
+    $item = Item::find($id);
+
+    // Check if the item exists
+    if (!$item) {
+        return back()->with('error', 'No Item found.');
+    }
+
+    // Update the quantity of the item in the cart
+    $cart->items()->updateExistingPivot($item->id, ['quantity' => $request->quantity]);
+
+    return back()->with('success', 'Item quantity updated successfully.');
+}
 
     public function checkout()
 {
