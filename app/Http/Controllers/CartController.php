@@ -135,6 +135,7 @@ public function updateQuantity($id, Request $request)
         return $carry + ($item->price * $item->pivot->quantity);
     }, 0);
 
+
     return view('buyer.cart.checkout', compact('cart', 'totalUSD', 'totalAEC'));
 }
 }
