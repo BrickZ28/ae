@@ -6,7 +6,7 @@
             <form id="kt_ecommerce_edit_order_form"
                   class="form d-flex flex-column flex-lg-row"
                   data-kt-redirect="apps/ecommerce/sales/listing.html"
-                  action="#" method="post">
+                  action="{{route('process-payment')}}" method="post">
 
                 <!--begin::Aside column-->
 
