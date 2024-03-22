@@ -9,63 +9,7 @@
                   action="#" method="post">
 
                 <!--begin::Aside column-->
-                <div class="w-100 flex-lg-row-auto w-lg-300px mb-7 me-7 me-lg-10">
-                    <!--begin::Order details-->
-                    <div class="card card-flush py-4">
-                        <!--begin::Card header-->
-                        <div class="card-header">
-                            <div class="card-title">
-                                <h2>Order Details</h2>
-                            </div>
-                        </div>
-                        <!--end::Card header-->
-                        <!--begin::Card body-->
-                        <div class="card-body pt-0">
-                            <div class="d-flex flex-column gap-10">
-                                <!--begin::Input group-->
-                                <div class="fv-row">
-                                    <!--begin::Label-->
-                                    <label class="form-label">Order ID</label>
-                                    <!--end::Label-->
-                                    <!--begin::Auto-generated ID-->
-                                    <div class="fw-bold fs-3">#{{$cart->id}}</div>
-                                    <!--end::Input-->
-                                </div>
-                                <!--end::Input group-->
-                                <!--begin::Input group-->
-                                <div class="fv-row">
-                                    <!--begin::Label-->
-                                    <label class="required form-label">Payment Method</label>
-                                    <!--end::Label-->
-                                    <!--begin::Select2-->
-                                    <select class="form-select mb-2" data-control="select2" data-hide-search="true"
-                                            data-placeholder="Select an option" name="payment_method"
-                                            id="kt_ecommerce_edit_order_payment">
-                                        <option></option>
-                                        <option value="paypal">Paypal</option>
-                                        <option value="aec">AfterEarth Credits</option>
-                                    </select>
-                                    <!--end::Select2-->
 
-                                </div>
-                                <!--end::Input group-->
-                                <!--begin::Input group-->
-                                <div class="fv-row">
-                                    <!--begin::Label-->
-
-                                </div>
-                                <!--end::Input group-->
-                                <!--begin::Input group-->
-                                <div class="fv-row">
-
-                                </div>
-                                <!--end::Input group-->
-                            </div>
-                        </div>
-                        <!--end::Card header-->
-                    </div>
-                    <!--end::Order details-->
-                </div>
                 <!--end::Aside column-->
                 <!--begin::Main column-->
                 <div class="d-flex flex-column flex-lg-row-fluid gap-7 gap-lg-10">
