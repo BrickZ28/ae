@@ -30,7 +30,7 @@
                 <td>
                     <form id="denyForm" action="{{ route('carts.show', $item->id) }}" method="get">
                                                @csrf
-                        <button type="submit" class="btn btn-danger">Cart</button>
+                        <button type="submit" class="btn btn-danger">View Cart</button>
                     </form>
                 </td>
 
