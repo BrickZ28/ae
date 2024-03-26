@@ -6,8 +6,8 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // addVendors(['amcharts', 'amcharts-maps', 'amcharts-stock']);
+        $cartIsEmpty = auth()->user() && auth()->user()->cart && auth()->user()->cart->items->isEmpty();
 
-        return view('dashboard.index');
+        return view('dashboard.index', compact('cartIsEmpty'));
     }
 }

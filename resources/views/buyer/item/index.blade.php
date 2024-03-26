@@ -39,25 +39,6 @@
 
     </x-datatable_shell>
     <script>
-        document.getElementById('denyForm').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent the form from submitting immediately
-
-            // Use SweetAlert to show a confirmation dialog
-            Swal.fire({
-                title: 'Confirm?',
-                text: "This will delete the item from the website and can break stuff?",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, do it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    // User clicked 'Yes', submit the form
-                    event.target.submit();
-                }
-            });
-        });
 
 
 

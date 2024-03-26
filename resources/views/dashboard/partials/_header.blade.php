@@ -44,15 +44,15 @@
                 <!--begin::Cart-->
                 <div class="app-navbar-item ms-1 ms-md-4">
                     <!--begin::Menu wrapper-->
+                    <a id="myCart" href="{{ auth()->user() && auth()->user()->cart ? route('carts.show', ['cart' => auth()->user
+                    ()->cart->id]) : '#' }}" class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px">
                     <div class="btn btn-icon  btn-active-color-primary
                     w-35px h-35px position-relative ki-duotone ki-handcart fs-2">
-
-                        @if(auth()->user()->cart)
-                            <span
-                                class="bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle top-0 start-50 animation-blink"></span>
-                            <a href="{{ route('carts.show', ['cart' => auth()->user()->cart->id]) }}" class="btn btn-icon btn-custom btn-icon-muted btn-active-light btn-active-color-primary w-35px h-35px">My Cart</a>
-                        @endif
-                    </div>
+                        <span
+                            class="bullet bullet-dot bg-success h-6px w-6px position-absolute translate-middle
+                            top-0 start-50 @if(auth()->user() && auth()->user()->cart)animation-blink @endif"></span>
+                        <span style="font-size: 0.6em;">My Cart</span>
+                    </div> </a>
                     <!--end::Menu wrapper-->
                 </div>
                 <!--end::Cart-->
@@ -432,3 +432,18 @@
     <!--end::Header container-->
 </div>
 <!--end::Header-->
+
+<script>
+   document.addEventListener('DOMContentLoaded', function() {
+    var cartLink = document.querySelector('#myCart');
+    cartLink.addEventListener('click', function(e) {
+        var href = e.target.getAttribute('href');
+        var cartIsEmpty = @json($cartIsEmpty);
+        console.log(cartIsEmpty);
+        if (cartIsEmpty) {
+            e.preventDefault();
+            Swal.fire("OH No", "It looks like your cart is empty!  Please browse the shop in the side menu", "error");
+        }
+    });
+});
+</script>

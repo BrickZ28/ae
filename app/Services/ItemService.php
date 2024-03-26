@@ -26,10 +26,11 @@ class ItemService
     {
         $items = Item::where('active', 1)->with('category')->get();
         $filters = $this->getFilters();
+
         if(auth()->user()->hasAnyRole([ 'Owners', 'Head Admin'])){
             return view('dashboard.item.index', compact('items', 'filters'));
         } else {
-            return view('buyer.item.index', compact('items', 'filters'));
+            return view('buyer.item.index', compact('items', 'filters', ));
         }
 
     }
