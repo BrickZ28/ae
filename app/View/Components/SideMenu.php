@@ -70,7 +70,7 @@ class SideMenu extends Component
             'Trivia' => ['View Question' => route('questions.user.random')],
             'Calendar' => ['View calendar' => route('calendar.index')],
             'Shop' => $shopSubmenu, // Add the Shop submenu
-            'Purchases' ['View Purchases']
+//            'Invoices' => ['View Purchases' => route('user.purchases', $id)],
         ];
     }
 
