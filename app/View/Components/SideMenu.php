@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 
 class SideMenu extends Component
 {
-    private $adminRoles = ['In the Shadows', 'Owners', 'Head Admin'];
+    private $adminRoles = ['In the Shadows', 'Owner', 'Head Admin'];
     public $admin_menu;
 
     public $admin_submenu;
@@ -70,6 +70,7 @@ class SideMenu extends Component
             'Trivia' => ['View Question' => route('questions.user.random')],
             'Calendar' => ['View calendar' => route('calendar.index')],
             'Shop' => $shopSubmenu, // Add the Shop submenu
+            'Purchases' ['View Purchases']
         ];
     }
 
