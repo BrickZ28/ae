@@ -71,7 +71,12 @@ class User extends Authenticatable
     }
 
     public function cart(): HasOne
-{
-    return $this->hasOne(Cart::class);
-}
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    public function transactions(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'payer_id');
+    }
 }

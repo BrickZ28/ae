@@ -99,7 +99,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Specials
     Route::resource('/specials', SpecialsController::class, ['names' => 'specials']);
 
-    // User Profiles
+    // User
     Route::resource('/users', UsersController::class, ['names' => 'users']);
+    Route::get('/transactions/history/{id}', [UsersController::class, 'transactionHistory'])->name('user.transactions');
 
 });

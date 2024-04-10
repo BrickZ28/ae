@@ -3,12 +3,13 @@
 namespace App\View\Components;
 
 use App\Models\Category;
+use Auth;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
 class SideMenu extends Component
 {
-    private $adminRoles = ['In the Shadows', 'Owner', 'Head Admin'];
+    private $adminRoles = ['In the Shadows', 'Head Admin'];
     public $admin_menu;
 
     public $admin_submenu;
@@ -61,6 +62,9 @@ class SideMenu extends Component
     {
         $categories = Category::all(); // Retrieve all categories
 
+        $cart_link =  auth()->user() && auth()->user()->cart ? route('carts.show', ['cart' => auth()->user
+    ()->cart->id]) : '#';
+
         $shopSubmenu = [];
         foreach ($categories as $category) {
             $shopSubmenu[$category->name] = route('items.index', ['category' => $category->id]);
@@ -70,7 +74,8 @@ class SideMenu extends Component
             'Trivia' => ['View Question' => route('questions.user.random')],
             'Calendar' => ['View calendar' => route('calendar.index')],
             'Shop' => $shopSubmenu, // Add the Shop submenu
-//            'Invoices' => ['View Purchases' => route('user.purchases', $id)],
+            'Invoices' => ['View Transactions' => route('user.transactions', ['id' => Auth::id()]),
+                'View Cart' =>  $cart_link],
         ];
     }
 

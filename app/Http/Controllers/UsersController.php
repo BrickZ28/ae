@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\ProcessTransactionJob;
+use App\Models\Transaction;
 use App\Models\User;
 use Auth;
 use Illuminate\Http\Request;
@@ -45,4 +46,13 @@ class UsersController extends Controller
 
         return redirect()->route('users.index')->with('success', 'User updated successfully');
     }
+
+    public function transactionHistory($id)
+{
+    $user = User::with('transactions.item', 'transactions.package')->find($id);
+    $filters = ['id', 'amount', 'reason', 'item', 'created_at', 'type', 'view'];
+
+    return view('dashboard.users.transactions.index', compact( 'filters', 'user'));
+}
+
 }

@@ -18,4 +18,14 @@ class Transaction extends Model
     {
         return $this->belongsTo(User::class, 'payee_id');
     }
+
+    public function item(): BelongsTo
+    {
+        return $this->belongsTo(Item::class);
+    }
+
+    public function package()
+    {
+        return $this->belongsTo(Package::class);
+    }
 }
