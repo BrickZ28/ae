@@ -12,7 +12,8 @@
                         :date="$transaction->created_at" format="D M j, Y @ g:i:sa" /></td>
                 <td>{{$transaction->transaction_type}} initiated</td>
                 <td>
-                    <form action="">
+                    <form action="{{route('transactions.show', $transaction->id)}}" method="get">
+                        @csrf
                         <button class="btn btn-sm btn-primary" type="submit">View</button>
                     </form>
                 </td>

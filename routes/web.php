@@ -17,6 +17,7 @@ use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotsController;
 use App\Http\Controllers\ServersController;
 use App\Http\Controllers\SpecialsController;
+use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
@@ -25,12 +26,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 Route::get('/discord', [DiscordController::class, 'index']);
 Route::get('/discord/register', [SocialiteController::class, 'authenticate'])->name('discord.register');
-Route::get('/discord/callback', [SocialiteController::class, 'handleOAuthCallback']);
+Route::get('/discord/callback', [SocialiteController::class, 'processUserAuthRequest'])->middleware('discord.user');
+Route::get('/dashboard/registration/play-options', [DashboardController::class, 'playOptions'])->name('dashboard.play-options');
 Route::post('/discord/receive-info', [DiscordController::class, 'receiveInfo']);
 Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
 Route::get('/nitrado/servers', [ServersController::class, 'getServers']);
 Route::get('/auth/redirect/{provider}', [SocialiteController::class, 'redirect']);
-
 Route::get('/under-construction', function () {
     return view('under-construction');
 });
@@ -55,7 +56,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Checkout
     Route::get('/checkout', [CartController::class, 'checkout'])->name('checkout');
-
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
 
@@ -78,7 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/playstyles', PlaystyleController::class, ['names' => 'playstyles']);
 
     //Profile
-    Route::resource('/profiles', userProfileController::class, ['names' => 'profiles']);
+    Route::resource('/profiles', UserProfileController::class, ['names' => 'profiles']);
 
     //Question
     Route::resource('/questions', QuestionController::class, ['names' => 'questions']);
@@ -98,6 +98,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Specials
     Route::resource('/specials', SpecialsController::class, ['names' => 'specials']);
+
+    //Transactions
+    Route::resource('/transactions', TransactionsController::class, ['names' => 'transactions']);
 
     // User
     Route::resource('/users', UsersController::class, ['names' => 'users']);

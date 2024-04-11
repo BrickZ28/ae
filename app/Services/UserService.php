@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\UserProfile;
 use Carbon\Carbon;
@@ -15,12 +16,19 @@ class UserService
         $this->discordService = $discordService;
     }
 
-    public function findOrCreateUser($socialiteUser, $accessToken, $roles, $clientIp)
+    public function userIsMember($socialiteUser)
+{
+    $user = User::whereEmail($socialiteUser->email)->first();
+
+    if ($user->hasAnyRole(['Member'])) {
+        return $user;
+    } else {
+        return false;
+    }
+}
+
+    public function updateUser($user, $socialiteUser, $clientIp, $accessToken, $roles)
     {
-
-        // Attempt to find the user by email or create a new one
-        $user = User::firstOrNew(['email' => $socialiteUser->email]);
-
         // Update or set user authentication-related attributes
         $user->fill([
             'discord_id' => $socialiteUser->id,
@@ -36,7 +44,7 @@ class UserService
         ])->save();
 
         // Now, handle the UserProfile data
-        $userProfile = UserProfile::updateOrCreate(
+        UserProfile::updateOrCreate(
             ['user_id' => $user->id], // Unique identifier for the profile
             [
                 'global_name' => $socialiteUser->user['global_name'],
@@ -51,9 +59,13 @@ class UserService
             ]
         );
 
+//        $this->discordService->assignDiscordRole($socialiteUser->id);
+
+
         // Sync roles for the user
         $this->discordService->syncUserRoles($socialiteUser->id, $roles);
 
         return $user;
     }
+
 }

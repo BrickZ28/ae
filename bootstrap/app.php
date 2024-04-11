@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\FetchDiscordUserMiddleware;
 use App\Providers\AppServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -26,6 +27,11 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->throttleApi();
 
         $middleware->replaceInGroup('web', \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class, \App\Http\Middleware\VerifyCsrfToken::class);
+
+        $middleware->alias([
+            'discord.user' => FetchDiscordUserMiddleware::class
+        ]);
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

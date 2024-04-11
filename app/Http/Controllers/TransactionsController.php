@@ -20,4 +20,9 @@ class TransactionsController extends Controller
 
         return redirect()->route('dashboard.index')->with('success', 'Transaction created successfully');
     }
+    public function show(Transaction $transaction)
+    {
+        return view('dashboard.transactions.show', compact('transaction'));
+    }
+
 }

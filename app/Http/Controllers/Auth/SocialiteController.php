@@ -26,18 +26,31 @@ class SocialiteController extends Controller
         return Socialite::driver('discord')->scopes(['identify', 'guilds'])->redirect();
     }
 
-    public function handleOAuthCallback(Request $request)
+    public function processUserAuthRequest(Request $request)
     {
-        $socialiteUser = Socialite::driver('discord')->stateless()->user();
-        $accessToken = $socialiteUser->token;
-        $roles = $this->discordService->fetchUserRoles($socialiteUser->id);
-        $clientIp = $request->ip(); // Get client IP address
+        //middleware this stuff since its used on all login/register request
+        $socialiteUser = $request->session()->get('socialiteUser');
+        $accessToken = $request->session()->get('accessToken');
+        $roles = $request->session()->get('roles');
+        $clientIp = $request->session()->get('clientIp');
 
-        $user = $this->userService->findOrCreateUser($socialiteUser, $accessToken, $roles, $clientIp);
 
-        Auth::login($user, true);
+        //Next we need to check if the user is a member or not
+        //if a user we will need to sync info to the database
+        //if not a user we will need to redirect to the option modal
 
-        return redirect()->to('/dashboard');
+//        $user = $this->userService->findOrCreateUser($socialiteUser, $accessToken, $roles, $clientIp);
+        $user = $this->userService->userIsMember($socialiteUser);
+
+
+
+        if ($user) {
+            $this->userService->updateUser($user, $socialiteUser, $clientIp, $accessToken, $roles);
+            Auth::login($user, true);
+            return redirect(route('dashboard.index'));
+        } else {
+            return redirect()->to('/dashboard/registration/play-options');
+        }
     }
 
     public function logout(Request $request)

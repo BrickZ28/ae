@@ -21,6 +21,15 @@ class DiscordService
         $this->apiBase = 'https://discord.com/api/v10/';
     }
 
+    public function assignDiscordRole($userId, $roleId)
+    {
+
+        $endpoint = "{$this->apiBase}guilds/{$this->guildId}/members/{$userId}/roles/{$roleId}";
+        $response = Http::withHeaders(['Authorization' => 'Bot '.$this->botToken])->put($endpoint);
+
+        return $response->successful();
+    }
+
     public function fetchUserRoles($userId)
     {
         $endpoint = "{$this->apiBase}guilds/{$this->guildId}/members/{$userId}";

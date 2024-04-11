@@ -10,4 +10,9 @@ class DashboardController extends Controller
 
         return view('dashboard.index', compact('cartIsEmpty'));
     }
+
+    public function playOptions()
+    {
+        return view('dashboard.play-options');
+    }
 }
