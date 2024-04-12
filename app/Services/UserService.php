@@ -16,19 +16,31 @@ class UserService
         $this->discordService = $discordService;
     }
 
-    public function userIsMember($socialiteUser)
+   public function userIsMember($socialiteUser, $roles)
 {
     $user = User::whereEmail($socialiteUser->email)->first();
 
-    if ($user->hasAnyRole(['Member'])) {
-        return $user;
-    } else {
-        return false;
+    if ($user) {
+        // Get the 'Member' role ID from the roles table
+        $memberRoleId = Role::where('role_name', 'Member')->first()->role_id;
+
+
+        // Check if any of the user's roles match the 'Member' role ID
+        foreach ($roles as $role) {
+            if ($role === $memberRoleId) {
+                return $user;
+            }
+        }
     }
+
+    return false;
 }
 
     public function updateUser($user, $socialiteUser, $clientIp, $accessToken, $roles)
     {
+        if (!$user) {
+            $user = new User;
+        }
         // Update or set user authentication-related attributes
         $user->fill([
             'discord_id' => $socialiteUser->id,
@@ -59,10 +71,9 @@ class UserService
             ]
         );
 
-//        $this->discordService->assignDiscordRole($socialiteUser->id);
-
-
         // Sync roles for the user
+        $roleId = Role::where('role_name', 'Member')->first()->role_id;
+        $this->discordService->assignDiscordRole($socialiteUser->id, $roleId);
         $this->discordService->syncUserRoles($socialiteUser->id, $roles);
 
         return $user;

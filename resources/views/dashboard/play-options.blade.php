@@ -24,7 +24,8 @@
                     </p>
                     <!--end::Description-->
                     <!--begin::Action-->
-                    <a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal" data-bs-target="#kt_modal_select_users">Select Users</a>
+                    <a href="#" class="btn btn-primary er fs-6 px-8 py-4" data-bs-toggle="modal"
+                       data-bs-target="#kt_modal_select_users">Select Game and Style</a>
                     <!--end::Action-->
                 </div>
                 <!--end::Heading-->
@@ -46,7 +47,7 @@
         <div class="app-wrapper flex-column flex-row-fluid" id="kt_app_wrapper">
             <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
                 <div class="d-flex flex-column flex-column-fluid">
-                    <div class="modal fade" id="kt_modal_select_users" tabindex="-1" aria-hidden="true">
+                    <div class="modal fade" id="kt_modal_select_users" tabindex="-1" >
                         <!--begin::Modal dialog-->
                         <div class="modal-dialog mw-700px">
                             <!--begin::Modal content-->
@@ -85,39 +86,26 @@
                                             <div class="d-flex flex-stack pb-3">
                                                 <!--begin::Info-->
                                                 <div class="d-flex">
-                                                    <!--begin::Avatar-->
-                                                    <div class="symbol symbol-circle symbol-45px">
-                                                        <img src="assets/media/avatars/300-20.jpg" alt="" />
-                                                    </div>
-                                                    <!--end::Avatar-->
+
                                                     <!--begin::Details-->
-                                                    <div class="ms-5">
+                                                    <div>
                                                         <!--begin::Name-->
                                                         <div class="d-flex align-items-center">
-                                                            <a href="pages/user-profile/overview.html" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">Emma Smith</a>
+                                                            Ark Survival Ascended
                                                             <!--begin::Label-->
                                                             <span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
-												<i class="ki-duotone ki-star fs-8 text-success me-1"></i>Author</span>
+												<i class="ki-duotone ki-star fs-8 text-success me-1"></i>PVE</span>
                                                             <!--end::Label-->
                                                         </div>
                                                         <!--end::Name-->
                                                         <!--begin::Desc-->
-                                                        <span class="text-muted fw-semibold mb-3">Art Director</span>
+                                                        <span class="text-muted fw-semibold mb-3">ASA</span>
                                                         <!--end::Desc-->
                                                     </div>
                                                     <!--end::Details-->
                                                 </div>
                                                 <!--end::Info-->
-                                                <!--begin::Stats-->
-                                                <div clas="d-flex">
-                                                    <!--begin::Price-->
-                                                    <div class="text-end pb-3">
-                                                        <span class="text-gray-900 fw-bold fs-5">$75.60</span>
-                                                        <span class="text-muted fs-7">/hr</span>
-                                                    </div>
-                                                    <!--end::Price-->
-                                                </div>
-                                                <!--end::Stats-->
+
                                             </div>
                                             <!--end::Info-->
                                             <!--begin::Wrapper-->
@@ -125,18 +113,34 @@
                                                 <!--begin::Section-->
                                                 <div class="d-flex flex-column">
                                                     <!--begin::Text-->
-                                                    <p class="text-gray-700 fw-semibold fs-6 mb-4">First, a disclaimer - the entire process writing a blog post often takes more.</p>
+                                                    <p class="text-gray-700 fw-semibold fs-6 mb-4">Kit includes LvL 200
+                                                        Petra, and <button class="btn btn-link btn-color-success btn-active-color-primary me-5 mb-2 " type="button"
+                                                                           data-bs-toggle="modal"
+                                                                            data-bs-target="#imageModal"
+                                                                           onclick="document.getElementById('modalImage').src='https://aeg-development.nyc3.cdn.digitaloceanspaces.com/images/kits/ArkAscended_startkit.png'">theses pictured items</button> </p>
                                                     <!--end::Text-->
                                                     <!--begin::Tags-->
                                                     <div class="d-flex text-gray-700 fw-semibold fs-7">
                                                         <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">Art Director</span>
+                                                        <span class="border border-2 rounded me-3 p-1 px-2">Metal Armor
+                                                        </span>
                                                         <!--end::Tag-->
                                                         <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">UX</span>
+                                                        <span class="border border-2 rounded me-3 p-1 px-2">Metal
+                                                            Craft gear
+                                                        </span>
                                                         <!--end::Tag-->
                                                         <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">Laravel</span>
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Saddle</span>
+                                                        <!--end::Tag-->
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Spyglass</span>
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Sword</span>
+                                                        <!--end::Tag-->
                                                         <!--end::Tag-->
                                                     </div>
                                                     <!--end::Tags-->
@@ -150,18 +154,21 @@
                                                     <!--begin::Action-->
                                                     <div class="d-flex flex-stack">
                                                         <!--begin::Progress-->
-                                                        <div class="d-flex flex-column mw-200px">
-                                                            <div class="d-flex align-items-center mb-2">
-                                                                <span class="text-gray-700 fs-6 fw-semibold me-2">90%</span>
-                                                                <span class="text-muted fs-8">Job Success</span>
-                                                            </div>
-                                                            <div class="progress h-6px w-200px">
-                                                                <div class="progress-bar bg-primary" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
+                                                        <div class="d-flex flex-column mw-250px">
+                                                            <ul>
+                                                                <li>Self claimed</li>
+                                                                <li>Limit one per person</li>
+                                                                <li>Further info in discord message</li>
+                                                            </ul>
                                                         </div>
                                                         <!--end::Progress-->
                                                         <!--begin::Button-->
-                                                        <a href="#" class="btn btn-sm btn-primary">Select</a>
+                                                        <form action="{{route('register.process')}}" method="GET">
+                                                            @csrf
+                                                            <input type="hidden" name="game" value="asapve">
+                                                            <button type="submit" class="btn btn-sm
+                                                            btn-success">Select</button>
+                                                        </form>
                                                         <!--end::Button-->
                                                     </div>
                                                     <!--end::Action-->
@@ -170,6 +177,205 @@
                                             </div>
                                             <!--end::Wrapper-->
                                         </div>
+                                        <!--end::User-->
+                                        <!--begin::User-->
+                                       <div class="border border-hover-primary p-7 rounded mb-7">
+                                            <!--begin::Info-->
+                                            <div class="d-flex flex-stack pb-3">
+                                                <!--begin::Info-->
+                                                <div class="d-flex">
+
+                                                    <!--begin::Details-->
+                                                    <div>
+                                                        <!--begin::Name-->
+                                                        <div class="d-flex align-items-center">
+                                                            Ark Survival Ascended
+                                                            <!--begin::Label-->
+                                                            <span class="badge badge-light-danger d-flex
+                                                            align-items-center fs-8 fw-semibold">
+												<i class="ki-duotone ki-star fs-8 text-success me-1"></i>PVP</span>
+                                                            <!--end::Label-->
+                                                        </div>
+                                                        <!--end::Name-->
+                                                        <!--begin::Desc-->
+                                                        <span class="text-muted fw-semibold mb-3">ASA</span>
+                                                        <!--end::Desc-->
+                                                    </div>
+                                                    <!--end::Details-->
+                                                </div>
+                                                <!--end::Info-->
+
+                                            </div>
+                                            <!--end::Info-->
+                                            <!--begin::Wrapper-->
+                                            <div class="p-0">
+                                                <!--begin::Section-->
+                                                <div class="d-flex flex-column">
+                                                    <!--begin::Text-->
+                                                    <p class="text-gray-700 fw-semibold fs-6 mb-4">Kit includes LvL 150
+                                                        Petra, and <button class="btn btn-link btn-color-danger
+                                                        btn-active-color-primary me-5 mb-2 " type="button"
+                                                                           data-bs-toggle="modal"
+                                                                            data-bs-target="#imageModal"
+                                                                           onclick="document.getElementById('modalImage').src='https://aeg-development.nyc3.cdn.digitaloceanspaces.com/images/kits/ArkAscended_startkit.png'">theses pictured items</button> </p>
+                                                    <!--end::Text-->
+                                                    <!--begin::Tags-->
+                                                    <div class="d-flex text-gray-700 fw-semibold fs-7">
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1 px-2">Metal Armor
+                                                        </span>
+                                                        <!--end::Tag-->
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1 px-2">Metal
+                                                            Craft gear
+                                                        </span>
+                                                        <!--end::Tag-->
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Saddle</span>
+                                                        <!--end::Tag-->
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Spyglass</span>
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Sword</span>
+                                                        <!--end::Tag-->
+                                                        <!--end::Tag-->
+                                                    </div>
+                                                    <!--end::Tags-->
+                                                </div>
+                                                <!--end::Section-->
+                                                <!--begin::Footer-->
+                                                <div class="d-flex flex-column">
+                                                    <!--begin::Separator-->
+                                                    <div class="separator separator-dashed border-muted my-5"></div>
+                                                    <!--end::Separator-->
+                                                    <!--begin::Action-->
+                                                    <div class="d-flex flex-stack">
+                                                        <!--begin::Progress-->
+                                                        <div class="d-flex flex-column mw-250px">
+                                                            <ul>
+                                                                <li>Self claimed</li>
+                                                                <li>Limit one per person</li>
+                                                                <li>Further info in discord message</li>
+                                                            </ul>
+                                                        </div>
+                                                        <!--end::Progress-->
+                                                        <!--begin::Button-->
+                                                        <form action="" method="">
+                                                            @csrf
+                                                            <input type="hidden" name="game" value="asapvp">
+                                                            <button type="submit" class="btn btn-sm
+                                                            btn-danger">Select</button>
+                                                        </form>
+                                                        <!--end::Button-->
+                                                    </div>
+                                                    <!--end::Action-->
+                                                </div>
+                                                <!--end::Footer-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+
+                                        <!--end::User-->
+                                        <!--begin::User-->
+                                       <div class="border border-hover-primary p-7 rounded mb-7">
+                                            <!--begin::Info-->
+                                            <div class="d-flex flex-stack pb-3">
+                                                <!--begin::Info-->
+                                                <div class="d-flex">
+
+                                                    <!--begin::Details-->
+                                                    <div>
+                                                        <!--begin::Name-->
+                                                        <div class="d-flex align-items-center">
+                                                            Ark Survival Evolved
+                                                            <!--begin::Label-->
+                                                            <span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
+												<i class="ki-duotone ki-star fs-8 text-success me-1"></i>PVE</span>
+                                                            <!--end::Label-->
+                                                        </div>
+                                                        <!--end::Name-->
+                                                        <!--begin::Desc-->
+                                                        <span class="text-muted fw-semibold mb-3">ASA</span>
+                                                        <!--end::Desc-->
+                                                    </div>
+                                                    <!--end::Details-->
+                                                </div>
+                                                <!--end::Info-->
+
+                                            </div>
+                                            <!--end::Info-->
+                                            <!--begin::Wrapper-->
+                                            <div class="p-0">
+                                                <!--begin::Section-->
+                                                <div class="d-flex flex-column">
+                                                    <!--begin::Text-->
+                                                    <p class="text-gray-700 fw-semibold fs-6 mb-4">Kit includes LvL 200
+                                                        Petra, and <button class="btn btn-link btn-color-success btn-active-color-primary me-5 mb-2 " type="button"
+                                                                           data-bs-toggle="modal"
+                                                                            data-bs-target="#imageModal"
+                                                                           onclick="document.getElementById('modalImage').src='https://aeg-development.nyc3.cdn.digitaloceanspaces.com/images/kits/ArkAscended_startkit.png'">theses pictured items</button> </p>
+                                                    <!--end::Text-->
+                                                    <!--begin::Tags-->
+                                                    <div class="d-flex text-gray-700 fw-semibold fs-7">
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1 px-2">Metal Armor
+                                                        </span>
+                                                        <!--end::Tag-->
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1 px-2">Metal
+                                                            Craft gear
+                                                        </span>
+                                                        <!--end::Tag-->
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Saddle</span>
+                                                        <!--end::Tag-->
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Spyglass</span>
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Sword</span>
+                                                        <!--end::Tag-->
+                                                        <!--end::Tag-->
+                                                    </div>
+                                                    <!--end::Tags-->
+                                                </div>
+                                                <!--end::Section-->
+                                                <!--begin::Footer-->
+                                                <div class="d-flex flex-column">
+                                                    <!--begin::Separator-->
+                                                    <div class="separator separator-dashed border-muted my-5"></div>
+                                                    <!--end::Separator-->
+                                                    <!--begin::Action-->
+                                                    <div class="d-flex flex-stack">
+                                                        <!--begin::Progress-->
+                                                        <div class="d-flex flex-column mw-250px">
+                                                            <ul>
+                                                                <li>Self claimed</li>
+                                                                <li>Limit one per person</li>
+                                                                <li>Further info in discord message</li>
+                                                            </ul>
+                                                        </div>
+                                                        <!--end::Progress-->
+                                                        <!--begin::Button-->
+                                                        <form action="" method="">
+                                                            @csrf
+                                                            <input type="hidden" name="game" value="asapve">
+                                                            <button type="submit" class="btn btn-sm btn-primary">Select</button>
+                                                        </form>
+                                                        <!--end::Button-->
+                                                    </div>
+                                                    <!--end::Action-->
+                                                </div>
+                                                <!--end::Footer-->
+                                            </div>
+                                            <!--end::Wrapper-->
+                                        </div>
+
                                         <!--end::User-->
                                         <!--begin::User-->
                                         <div class="border border-hover-primary p-7 rounded mb-7">
@@ -177,39 +383,26 @@
                                             <div class="d-flex flex-stack pb-3">
                                                 <!--begin::Info-->
                                                 <div class="d-flex">
-                                                    <!--begin::Avatar-->
-                                                    <div class="symbol symbol-circle symbol-45px">
-                                                        <img src="assets/media/avatars/300-11.jpg" alt="" />
-                                                    </div>
-                                                    <!--end::Avatar-->
+
                                                     <!--begin::Details-->
-                                                    <div class="ms-5">
+                                                    <div>
                                                         <!--begin::Name-->
                                                         <div class="d-flex align-items-center">
-                                                            <a href="pages/user-profile/overview.html" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">Sean Bean</a>
+                                                            Ark Survival Ascended
                                                             <!--begin::Label-->
                                                             <span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
-												<i class="ki-duotone ki-star fs-8 text-success me-1"></i>Author</span>
+												<i class="ki-duotone ki-star fs-8 text-success me-1"></i>PVE</span>
                                                             <!--end::Label-->
                                                         </div>
                                                         <!--end::Name-->
                                                         <!--begin::Desc-->
-                                                        <span class="text-muted fw-semibold mb-3">Project Manager</span>
+                                                        <span class="text-muted fw-semibold mb-3">ASA</span>
                                                         <!--end::Desc-->
                                                     </div>
                                                     <!--end::Details-->
                                                 </div>
                                                 <!--end::Info-->
-                                                <!--begin::Stats-->
-                                                <div clas="d-flex">
-                                                    <!--begin::Price-->
-                                                    <div class="text-end pb-3">
-                                                        <span class="text-gray-900 fw-bold fs-5">$65.45</span>
-                                                        <span class="text-muted fs-7">/hr</span>
-                                                    </div>
-                                                    <!--end::Price-->
-                                                </div>
-                                                <!--end::Stats-->
+
                                             </div>
                                             <!--end::Info-->
                                             <!--begin::Wrapper-->
@@ -217,18 +410,34 @@
                                                 <!--begin::Section-->
                                                 <div class="d-flex flex-column">
                                                     <!--begin::Text-->
-                                                    <p class="text-gray-700 fw-semibold fs-6 mb-4">Outlines keep you honest. They stop you from indulging.</p>
+                                                    <p class="text-gray-700 fw-semibold fs-6 mb-4">Kit includes LvL 200
+                                                        Petra, and <button class="btn btn-link btn-color-success btn-active-color-primary me-5 mb-2 " type="button"
+                                                                           data-bs-toggle="modal"
+                                                                            data-bs-target="#imageModal"
+                                                                           onclick="document.getElementById('modalImage').src='https://aeg-development.nyc3.cdn.digitaloceanspaces.com/images/kits/ArkAscended_startkit.png'">theses pictured items</button> </p>
                                                     <!--end::Text-->
                                                     <!--begin::Tags-->
                                                     <div class="d-flex text-gray-700 fw-semibold fs-7">
                                                         <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">HTML</span>
+                                                        <span class="border border-2 rounded me-3 p-1 px-2">Metal Armor
+                                                        </span>
                                                         <!--end::Tag-->
                                                         <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">Javascript</span>
+                                                        <span class="border border-2 rounded me-3 p-1 px-2">Metal
+                                                            Craft gear
+                                                        </span>
                                                         <!--end::Tag-->
                                                         <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">Python</span>
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Saddle</span>
+                                                        <!--end::Tag-->
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Spyglass</span>
+                                                        <!--begin::Tag-->
+                                                        <span class="border border-2 rounded me-3 p-1
+                                                        px-2">Sword</span>
+                                                        <!--end::Tag-->
                                                         <!--end::Tag-->
                                                     </div>
                                                     <!--end::Tags-->
@@ -242,200 +451,20 @@
                                                     <!--begin::Action-->
                                                     <div class="d-flex flex-stack">
                                                         <!--begin::Progress-->
-                                                        <div class="d-flex flex-column mw-200px">
-                                                            <div class="d-flex align-items-center mb-2">
-                                                                <span class="text-gray-700 fs-6 fw-semibold me-2">58%</span>
-                                                                <span class="text-muted fs-8">Job Success</span>
-                                                            </div>
-                                                            <div class="progress h-6px w-200px">
-                                                                <div class="progress-bar bg-success" role="progressbar" style="width: 58%" aria-valuenow="58" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
+                                                        <div class="d-flex flex-column mw-250px">
+                                                            <ul>
+                                                                <li>Self claimed</li>
+                                                                <li>Limit one per person</li>
+                                                                <li>Further info in discord message</li>
+                                                            </ul>
                                                         </div>
                                                         <!--end::Progress-->
                                                         <!--begin::Button-->
-                                                        <a href="#" class="btn btn-sm btn-primary">Select</a>
-                                                        <!--end::Button-->
-                                                    </div>
-                                                    <!--end::Action-->
-                                                </div>
-                                                <!--end::Footer-->
-                                            </div>
-                                            <!--end::Wrapper-->
-                                        </div>
-                                        <!--end::User-->
-                                        <!--begin::User-->
-                                        <div class="border border-hover-primary p-7 rounded mb-7">
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-stack pb-3">
-                                                <!--begin::Info-->
-                                                <div class="d-flex">
-                                                    <!--begin::Avatar-->
-                                                    <div class="symbol symbol-circle symbol-45px">
-                                                        <img src="assets/media/avatars/300-2.jpg" alt="" />
-                                                    </div>
-                                                    <!--end::Avatar-->
-                                                    <!--begin::Details-->
-                                                    <div class="ms-5">
-                                                        <!--begin::Name-->
-                                                        <div class="d-flex align-items-center">
-                                                            <a href="pages/user-profile/overview.html" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">Lusy Kunic</a>
-                                                            <!--begin::Label-->
-                                                            <span class="m-0"></span>
-                                                            <!--end::Label-->
-                                                        </div>
-                                                        <!--end::Name-->
-                                                        <!--begin::Desc-->
-                                                        <span class="text-muted fw-semibold mb-3">DevOPs</span>
-                                                        <!--end::Desc-->
-                                                    </div>
-                                                    <!--end::Details-->
-                                                </div>
-                                                <!--end::Info-->
-                                                <!--begin::Stats-->
-                                                <div clas="d-flex">
-                                                    <!--begin::Price-->
-                                                    <div class="text-end pb-3">
-                                                        <span class="text-gray-900 fw-bold fs-5">$60,45</span>
-                                                        <span class="text-muted fs-7">/hr</span>
-                                                    </div>
-                                                    <!--end::Price-->
-                                                </div>
-                                                <!--end::Stats-->
-                                            </div>
-                                            <!--end::Info-->
-                                            <!--begin::Wrapper-->
-                                            <div class="p-0">
-                                                <!--begin::Section-->
-                                                <div class="d-flex flex-column">
-                                                    <!--begin::Text-->
-                                                    <p class="text-gray-700 fw-semibold fs-6 mb-4">Long before you sit down to put digital pen to paper you need make sure you have to sit down and write.</p>
-                                                    <!--end::Text-->
-                                                    <!--begin::Tags-->
-                                                    <div class="d-flex text-gray-700 fw-semibold fs-7">
-                                                        <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">Figma</span>
-                                                        <!--end::Tag-->
-                                                        <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">SASS</span>
-                                                        <!--end::Tag-->
-                                                        <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">CSS</span>
-                                                        <!--end::Tag-->
-                                                    </div>
-                                                    <!--end::Tags-->
-                                                </div>
-                                                <!--end::Section-->
-                                                <!--begin::Footer-->
-                                                <div class="d-flex flex-column">
-                                                    <!--begin::Separator-->
-                                                    <div class="separator separator-dashed border-muted my-5"></div>
-                                                    <!--end::Separator-->
-                                                    <!--begin::Action-->
-                                                    <div class="d-flex flex-stack">
-                                                        <!--begin::Progress-->
-                                                        <div class="d-flex flex-column mw-200px">
-                                                            <div class="d-flex align-items-center mb-2">
-                                                                <span class="text-gray-700 fs-6 fw-semibold me-2">86%</span>
-                                                                <span class="text-muted fs-8">Job Success</span>
-                                                            </div>
-                                                            <div class="progress h-6px w-200px">
-                                                                <div class="progress-bar bg-warning" role="progressbar" style="width: 86%" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Progress-->
-                                                        <!--begin::Button-->
-                                                        <a href="#" class="btn btn-sm btn-primary">Select</a>
-                                                        <!--end::Button-->
-                                                    </div>
-                                                    <!--end::Action-->
-                                                </div>
-                                                <!--end::Footer-->
-                                            </div>
-                                            <!--end::Wrapper-->
-                                        </div>
-                                        <!--end::User-->
-                                        <!--begin::User-->
-                                        <div class="border border-hover-primary p-7 rounded">
-                                            <!--begin::Info-->
-                                            <div class="d-flex flex-stack pb-3">
-                                                <!--begin::Info-->
-                                                <div class="d-flex">
-                                                    <!--begin::Avatar-->
-                                                    <div class="symbol symbol-circle symbol-45px">
-                                                        <img src="assets/media/avatars/300-5.jpg" alt="" />
-                                                    </div>
-                                                    <!--end::Avatar-->
-                                                    <!--begin::Details-->
-                                                    <div class="ms-5">
-                                                        <!--begin::Name-->
-                                                        <div class="d-flex align-items-center">
-                                                            <a href="pages/user-profile/overview.html" class="text-gray-900 fw-bold text-hover-primary fs-5 me-4">Mat Dillon</a>
-                                                            <!--begin::Label-->
-                                                            <span class="m-0"></span>
-                                                            <!--end::Label-->
-                                                        </div>
-                                                        <!--end::Name-->
-                                                        <!--begin::Desc-->
-                                                        <span class="text-muted fw-semibold mb-3">QA Managers</span>
-                                                        <!--end::Desc-->
-                                                    </div>
-                                                    <!--end::Details-->
-                                                </div>
-                                                <!--end::Info-->
-                                                <!--begin::Stats-->
-                                                <div clas="d-flex">
-                                                    <!--begin::Price-->
-                                                    <div class="text-end pb-3">
-                                                        <span class="text-gray-900 fw-bold fs-5">$70,30</span>
-                                                        <span class="text-muted fs-7">/hr</span>
-                                                    </div>
-                                                    <!--end::Price-->
-                                                </div>
-                                                <!--end::Stats-->
-                                            </div>
-                                            <!--end::Info-->
-                                            <!--begin::Wrapper-->
-                                            <div class="p-0">
-                                                <!--begin::Section-->
-                                                <div class="d-flex flex-column">
-                                                    <!--begin::Text-->
-                                                    <p class="text-gray-700 fw-semibold fs-6 mb-4">First, a disclaimer - the entire process writing a blog post often takes more than couple of hours.</p>
-                                                    <!--end::Text-->
-                                                    <!--begin::Tags-->
-                                                    <div class="d-flex text-gray-700 fw-semibold fs-7">
-                                                        <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">Figma</span>
-                                                        <!--end::Tag-->
-                                                        <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">SASS</span>
-                                                        <!--end::Tag-->
-                                                        <!--begin::Tag-->
-                                                        <span class="border border-2 rounded me-3 p-1 px-2">CSS</span>
-                                                        <!--end::Tag-->
-                                                    </div>
-                                                    <!--end::Tags-->
-                                                </div>
-                                                <!--end::Section-->
-                                                <!--begin::Footer-->
-                                                <div class="d-flex flex-column">
-                                                    <!--begin::Separator-->
-                                                    <div class="separator separator-dashed border-muted my-5"></div>
-                                                    <!--end::Separator-->
-                                                    <!--begin::Action-->
-                                                    <div class="d-flex flex-stack">
-                                                        <!--begin::Progress-->
-                                                        <div class="d-flex flex-column mw-200px">
-                                                            <div class="d-flex align-items-center mb-2">
-                                                                <span class="text-gray-700 fs-6 fw-semibold me-2">70%</span>
-                                                                <span class="text-muted fs-8">Job Success</span>
-                                                            </div>
-                                                            <div class="progress h-6px w-200px">
-                                                                <div class="progress-bar bg-danger" role="progressbar" style="width: 70%" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100"></div>
-                                                            </div>
-                                                        </div>
-                                                        <!--end::Progress-->
-                                                        <!--begin::Button-->
-                                                        <a href="#" class="btn btn-sm btn-primary">Select</a>
+                                                        <form action="" method="">
+                                                            @csrf
+                                                            <input type="hidden" name="game" value="asapve">
+                                                            <button type="submit" class="btn btn-sm btn-primary">Select</button>
+                                                        </form>
                                                         <!--end::Button-->
                                                     </div>
                                                     <!--end::Action-->
@@ -454,6 +483,18 @@
                         </div>
                         <!--end::Modal dialog-->
                     </div>
+                    <div class="modal fade" id="imageModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" class="img-fluid" alt="" />
+            </div>
+        </div>
+    </div>
+</div>
                     <!-- Main Content -->
                 </div>
             </div>
@@ -471,6 +512,10 @@
 <script src="{{ asset('assets/js/scripts.bundle.js') }}"></script>
 @stack('after-scripts')
 @include('dashboard.partials._scripts')
-
+<script>
+   $('#imageModal').on('hidden.bs.modal', function (event) {
+    $('#kt_modal_select_users').modal('show');
+});
+</script>
 </body>
 </html>

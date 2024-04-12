@@ -28,6 +28,7 @@ Route::get('/discord', [DiscordController::class, 'index']);
 Route::get('/discord/register', [SocialiteController::class, 'authenticate'])->name('discord.register');
 Route::get('/discord/callback', [SocialiteController::class, 'processUserAuthRequest'])->middleware('discord.user');
 Route::get('/dashboard/registration/play-options', [DashboardController::class, 'playOptions'])->name('dashboard.play-options');
+Route::get('/register/process', [SocialiteController::class, 'processUserRegistration'])->name('register.process');
 Route::post('/discord/receive-info', [DiscordController::class, 'receiveInfo']);
 Route::get('/interactions', [DiscordController::class, 'fromDiscord']);
 Route::get('/nitrado/servers', [ServersController::class, 'getServers']);

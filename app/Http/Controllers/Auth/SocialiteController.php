@@ -12,7 +12,6 @@ use Laravel\Socialite\Facades\Socialite;
 class SocialiteController extends Controller
 {
     protected $discordService;
-
     protected $userService;
 
     public function __construct(DiscordService $discordService, UserService $userService)
@@ -28,29 +27,32 @@ class SocialiteController extends Controller
 
     public function processUserAuthRequest(Request $request)
     {
-        //middleware this stuff since its used on all login/register request
         $socialiteUser = $request->session()->get('socialiteUser');
         $accessToken = $request->session()->get('accessToken');
         $roles = $request->session()->get('roles');
         $clientIp = $request->session()->get('clientIp');
 
-
-        //Next we need to check if the user is a member or not
-        //if a user we will need to sync info to the database
-        //if not a user we will need to redirect to the option modal
-
-//        $user = $this->userService->findOrCreateUser($socialiteUser, $accessToken, $roles, $clientIp);
-        $user = $this->userService->userIsMember($socialiteUser);
-
-
+        $user = $this->userService->userIsMember($socialiteUser, $roles);
 
         if ($user) {
             $this->userService->updateUser($user, $socialiteUser, $clientIp, $accessToken, $roles);
             Auth::login($user, true);
             return redirect(route('dashboard.index'));
-        } else {
-            return redirect()->to('/dashboard/registration/play-options');
         }
+
+        return redirect(route('dashboard.play-options'));
+    }
+
+    public function processUserRegistration(Request $request)
+    {
+        $socialiteUser = $request->session()->get('socialiteUser');
+        $accessToken = $request->session()->get('accessToken');
+        $roles = $request->session()->get('roles');
+        $clientIp = $request->session()->get('clientIp');
+
+        $user = $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
+        Auth::login($user, true);
+        return redirect(route('dashboard.index'));
     }
 
     public function logout(Request $request)
@@ -59,4 +61,5 @@ class SocialiteController extends Controller
 
         return redirect('/');
     }
+
 }
