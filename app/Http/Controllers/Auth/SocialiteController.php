@@ -27,17 +27,13 @@ class SocialiteController extends Controller
 
     public function processUserAuthRequest(Request $request)
     {
-        $socialiteUser = $request->session()->get('socialiteUser');
-        $accessToken = $request->session()->get('accessToken');
-        $roles = $request->session()->get('roles');
-        $clientIp = $request->session()->get('clientIp');
+        list($socialiteUser, $accessToken, $roles, $clientIp) = $this->getSessionData($request);
 
         $user = $this->userService->userIsMember($socialiteUser, $roles);
 
         if ($user) {
             $this->userService->updateUser($user, $socialiteUser, $clientIp, $accessToken, $roles);
-            Auth::login($user, true);
-            return redirect(route('dashboard.index'));
+            return $this->loginAndRedirect($user, 'dashboard.index');
         }
 
         return redirect(route('dashboard.play-options'));
@@ -45,14 +41,10 @@ class SocialiteController extends Controller
 
     public function processUserRegistration(Request $request)
     {
-        $socialiteUser = $request->session()->get('socialiteUser');
-        $accessToken = $request->session()->get('accessToken');
-        $roles = $request->session()->get('roles');
-        $clientIp = $request->session()->get('clientIp');
+        list($socialiteUser, $accessToken, $roles, $clientIp) = $this->getSessionData($request);
 
         $user = $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
-        Auth::login($user, true);
-        return redirect(route('dashboard.index'));
+        return $this->loginAndRedirect($user, 'dashboard.index');
     }
 
     public function logout(Request $request)
@@ -62,4 +54,19 @@ class SocialiteController extends Controller
         return redirect('/');
     }
 
+    private function getSessionData(Request $request)
+    {
+        $socialiteUser = $request->session()->get('socialiteUser');
+        $accessToken = $request->session()->get('accessToken');
+        $roles = $request->session()->get('roles');
+        $clientIp = $request->session()->get('clientIp');
+
+        return [$socialiteUser, $accessToken, $roles, $clientIp];
+    }
+
+    private function loginAndRedirect($user, $route)
+    {
+        Auth::login($user, true);
+        return redirect(route($route));
+    }
 }

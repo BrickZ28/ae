@@ -16,32 +16,38 @@ class UserService
         $this->discordService = $discordService;
     }
 
-   public function userIsMember($socialiteUser, $roles)
-{
-    $user = User::whereEmail($socialiteUser->email)->first();
+    public function userIsMember($socialiteUser, $roles)
+    {
+        $user = User::whereEmail($socialiteUser->email)->first();
 
-    if ($user) {
-        // Get the 'Member' role ID from the roles table
-        $memberRoleId = Role::where('role_name', 'Member')->first()->role_id;
+        if ($user) {
+            $memberRoleId = Role::where('role_name', 'Member')->first()->role_id;
 
-
-        // Check if any of the user's roles match the 'Member' role ID
-        foreach ($roles as $role) {
-            if ($role === $memberRoleId) {
-                return $user;
+            foreach ($roles as $role) {
+                if ($role === $memberRoleId) {
+                    return $user;
+                }
             }
         }
+
+        return false;
     }
 
-    return false;
-}
-
     public function updateUser($user, $socialiteUser, $clientIp, $accessToken, $roles)
+    {
+        $user = $this->updateUserAuthentication($user, $socialiteUser, $clientIp, $accessToken);
+        $this->updateUserProfile($user, $socialiteUser);
+        $this->syncUserRoles($user, $socialiteUser, $roles);
+
+        return $user;
+    }
+
+    private function updateUserAuthentication($user, $socialiteUser, $clientIp, $accessToken)
     {
         if (!$user) {
             $user = new User;
         }
-        // Update or set user authentication-related attributes
+
         $user->fill([
             'discord_id' => $socialiteUser->id,
             'username' => $socialiteUser->user['username'],
@@ -52,12 +58,16 @@ class UserService
             'last_login_at' => Carbon::now(),
             'last_login_ip' => $clientIp,
             'discord_access_token' => $accessToken,
-            'ae_credits' => $user->exists ? $user->ae_credits : 500, // Preserve credits if user exists, else set default
+            'ae_credits' => $user->exists ? $user->ae_credits : 500,
         ])->save();
 
-        // Now, handle the UserProfile data
+        return $user;
+    }
+
+    private function updateUserProfile($user, $socialiteUser)
+    {
         UserProfile::updateOrCreate(
-            ['user_id' => $user->id], // Unique identifier for the profile
+            ['user_id' => $user->id],
             [
                 'global_name' => $socialiteUser->user['global_name'],
                 'profile_photo_path' => $socialiteUser->avatar,
@@ -67,16 +77,14 @@ class UserService
                 'accent_color' => $socialiteUser->user['accent_color'],
                 'locale' => $socialiteUser->user['locale'],
                 'public_flags' => $socialiteUser->user['public_flags'],
-                // Any other public profile-related fields
             ]
         );
+    }
 
-        // Sync roles for the user
+    private function syncUserRoles($user, $socialiteUser, $roles)
+    {
         $roleId = Role::where('role_name', 'Member')->first()->role_id;
         $this->discordService->assignDiscordRole($socialiteUser->id, $roleId);
         $this->discordService->syncUserRoles($socialiteUser->id, $roles);
-
-        return $user;
     }
-
 }

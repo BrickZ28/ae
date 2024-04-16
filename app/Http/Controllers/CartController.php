@@ -143,8 +143,6 @@ class CartController extends Controller
     {
         $cart = Cart::where('user_id', auth()->id())->with('items')->first();
 
-        $cart = Cart::where('user_id', auth()->id())->with('items')->first();
-
         if (!$cart) {
             return back()->with('error', 'No items in cart.');
         }
@@ -163,7 +161,7 @@ class CartController extends Controller
 
         // Check if the user has enough AEC credits
         if ($user->ae_credits < $totalAEC) {
-            return back()->with('error', 'Not enough AEC credits.');
+            return back()->with('error', 'Not enough AEG credits.');
         }
 
         // Deduct the total AEC from the user's AEC credits

@@ -7,6 +7,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DiscordController;
 use App\Http\Controllers\GamesController;
+use App\Http\Controllers\GateController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PackageController;
@@ -65,6 +66,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Games
     Route::resource('/games', GamesController::class, ['names' => 'games']);
+
+    //Gates
+    Route::resource('/gates', GateController::class, ['names' => 'gates']);
 
     //Item
     Route::resource('/items', ItemController::class, ['names' => 'items']);

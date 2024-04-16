@@ -55,6 +55,8 @@ class SideMenu extends Component
                 'View Items' => route('items.index')],
             'packages' => ['Create Package' => route('packages.create'),
                 'View Packages' => route('packages.index')],
+            'gates' => ['Create Gate' => route('gates.create'),
+                'View Gates' => route('gates.index')],
         ];
     }
 
