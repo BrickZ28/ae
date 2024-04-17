@@ -13,4 +13,9 @@ class Game extends Model
     {
         return $this->hasMany(Server::class);
     }
+
+    public function playstyles()
+    {
+        return $this->hasMany(Playstyle::class);
+    }
 }

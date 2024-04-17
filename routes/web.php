@@ -76,6 +76,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Logout
     Route::get('/logout', [SocialiteController::class, 'logout'])->name('logout');
 
+    //menu
+    Route::get('/items/{game}/{playstyle}/{category}', [ItemController::class, 'indexByGamePlaystyleCategory'])
+        ->name('items.index.gpc');
+
     //Package
     Route::resource('/packages', PackageController::class, ['names' => 'packages']);
 

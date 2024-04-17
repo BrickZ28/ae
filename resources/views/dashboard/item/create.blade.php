@@ -22,6 +22,20 @@
                     @endforeach
                 </x-form-select>
 
+                <x-form-select label="Game" name="game_id" required="required" >
+                    <option value="">Select One</option>
+                    @foreach($games as $game)
+                        <option value="{{ $game->id }}">{{ $game->display_name }}</option>
+                    @endforeach
+                </x-form-select>
+
+                <x-form-select label="Play Style" name="playstyle" required="required" >
+                    <option value="">Select One</option>
+                    @foreach($playstyles as $playstyle)
+                        <option value="{{ $playstyle->id }}">{{ $playstyle->name }}</option>
+                    @endforeach
+                </x-form-select>
+
                 <x-form-input label="Price" name="price"
                               value="{{ old('price') }}"
                               placeholder="Insert Price"

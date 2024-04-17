@@ -28,4 +28,14 @@ class Item extends Model
 {
     return $this->belongsToMany(Cart::class, 'cart_items')->withPivot('quantity');
 }
+
+    public function game()
+    {
+        return $this->belongsTo(Game::class);
+    }
+
+    public function playstyle()
+    {
+        return $this->belongsTo(Playstyle::class);
+    }
 }

@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Category;
+use App\Models\Game;
 use App\Models\Item;
+use App\Models\Playstyle;
 use App\Traits\FileTrait;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -38,7 +40,9 @@ class ItemService
     public function create()
     {
         $categories = Category::all();
-        return view('dashboard.item.create', compact('categories'));
+        $games = Game::all();
+        $playstyles = Playstyle::all();
+        return view('dashboard.item.create', compact('categories', 'games', 'playstyles'));
     }
 
     public function store(Request $request)

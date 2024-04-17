@@ -3,6 +3,8 @@
 namespace App\View\Components;
 
 use App\Models\Category;
+use App\Models\Game;
+use App\Models\Playstyle;
 use Auth;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -18,10 +20,14 @@ class SideMenu extends Component
 
     public $user_submenu;
 
+    public $store_menu;
+
+    public $store_submenu;
+
     public $header;
 
     public function __construct($admin_menu = 'Admin', $admin_submenu = [], $user_menu = 'User', $user_submenu = [],
-        $header = [], $roles = [])
+         $roles = [], $store_menu = 'Store', $store_submenu = [])
     {
 
         $this->admin_menu = $admin_menu;
@@ -29,6 +35,8 @@ class SideMenu extends Component
         $this->user_menu = $user_menu;
         $this->user_submenu = $user_submenu;
         $this->roles = $roles;
+        $this->store_menu = $store_menu;
+        $this->store_submenu = $store_submenu;
     }
 
     private function createAdminSubmenu()
@@ -81,6 +89,25 @@ class SideMenu extends Component
         ];
     }
 
+   private function createStoreSubmenu()
+{
+    $playstyles = Playstyle::all(); // Retrieve all playstyles
+    $games = Game::all(); // Retrieve all games
+    $categories = Category::all(); // Retrieve all categories
+
+    $storeSubmenu = [];
+
+    foreach ($games as $game) {
+        foreach ($playstyles as $playstyle) {
+            foreach ($categories as $category) {
+                $storeSubmenu[$game->display_name . ' ' . $playstyle->name][$category->name] = route('items.index.gpc', ['game' => $game->display_name, 'playstyle' => $playstyle->name, 'category' => $category->id]);
+            }
+        }
+    }
+
+    return $this->store_submenu = $storeSubmenu;
+}
+
     private function buildMenu()
     {
 
@@ -91,6 +118,7 @@ class SideMenu extends Component
         }
 
         $this->header['User'] = $this->createUserSubmenu();
+        $this->header['Store'] = $this->createStoreSubmenu();
 
     }
 
