@@ -9,6 +9,7 @@ use App\Models\Item;
 use App\Models\Playstyle;
 use App\Services\ItemService;
 use Illuminate\Http\Request;
+use Log;
 
 class ItemController extends Controller
 {
@@ -62,13 +63,14 @@ class ItemController extends Controller
 
     public function indexByGamePlaystyleCategory($game, $playstyle, $category)
     {
-        $gameId = Game::where('display_name', $game)->first()->id;
-        $playstyleId = Playstyle::where('name', $playstyle)->first()->id;
 
-        $items = Item::where('game_id', $gameId)
-                     ->where('playstyle_id', $playstyleId)
-                     ->where('category_id', $category)
-                     ->get();$filters = $this->getFilters();
+
+        $items = Item::where('game_id', $game)
+                     ->where('playstyle_id', $playstyle)
+                     ->where('category_id', $category)->get();
+
+
+        $filters = $this->getFilters();
 
         if(auth()->user()->hasAnyRole([ 'Owners', 'Head Admin', 'In the Shadows'])){
             return view('dashboard.item.index', compact('items', 'filters'));

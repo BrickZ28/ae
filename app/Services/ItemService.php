@@ -45,22 +45,26 @@ class ItemService
         return view('dashboard.item.create', compact('categories', 'games', 'playstyles'));
     }
 
-    public function store(Request $request)
-    {
-        $validatedData = $this->validateItem($request);
+   public function store(Request $request)
+{
+    $validatedData = $this->validateItem($request);
 
-        $itemCreated = Item::create($validatedData);
+    // Add playstyle and game to the validated data
+    $validatedData['playstyle_id'] = $request->playstyle_id;
+    $validatedData['game_id'] = $request->game_id;
 
-        if ($request->hasFile('image')) {
-            $this->uploadFile('do','images/items', $request->image, 'public');
-        }
+    $itemCreated = Item::create($validatedData);
 
-        if ($itemCreated) {
-            return redirect()->route('items.create')->with('success', 'New item created successfully');
-        } else {
-            return back()->with('error', 'Failed to create a new item. Please try again.')->withInput();
-        }
+    if ($request->hasFile('image')) {
+        $this->uploadFile('do','images/items', $request->image, 'public');
     }
+
+    if ($itemCreated) {
+        return redirect()->route('items.create')->with('success', 'New item created successfully');
+    } else {
+        return back()->with('error', 'Failed to create a new item. Please try again.')->withInput();
+    }
+}
 
     public function edit(Item $item)
     {
@@ -92,18 +96,20 @@ class ItemService
         return back()->with('success', 'Item deleted successfully.');
     }
 
-    private function validateItem(Request $request)
-    {
-        return $request->validate([
-            'name' => 'required',
-            'description' => 'nullable',
-            'category_id' => 'required',
-            'currency_type' => 'required',
-            'price' => 'integer|required',
-            'image' => 'image|nullable',
-            'active' => 'boolean|nullable',
-        ]);
-    }
+  private function validateItem(Request $request)
+{
+    return $request->validate([
+        'name' => 'required',
+        'description' => 'nullable',
+        'category_id' => 'required',
+        'currency_type' => 'required',
+        'price' => 'integer|required',
+        'image' => 'image|nullable',
+        'active' => 'boolean|nullable',
+        'playstyle_id' => 'required|exists:playstyles,id', // add this line
+        'game_id' => 'required|exists:games,id', // add this line
+    ]);
+}
 
 
 }

@@ -29,7 +29,7 @@
                     @endforeach
                 </x-form-select>
 
-                <x-form-select label="Play Style" name="playstyle" required="required" >
+                <x-form-select label="Play Style" name="playstyle_id" required="required" >
                     <option value="">Select One</option>
                     @foreach($playstyles as $playstyle)
                         <option value="{{ $playstyle->id }}">{{ $playstyle->name }}</option>
