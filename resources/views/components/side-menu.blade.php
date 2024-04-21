@@ -7,7 +7,7 @@
             <!--begin::Menu-->
             <div class="menu menu-column menu-rounded menu-sub-indention fw-semibold fs-6" id="#kt_app_sidebar_menu" data-kt-menu="true" data-kt-menu-expand="false">
 
-                @checkRole(['Head Admin', 'In the Shadows'])
+                @checkRole(['Head Admin', 'In the Shadows', 'Owner'])
                     <!--Begin ADMIN MENU-->
                     <div class="menu-item pt-5">
                         <!--begin:Menu content-->

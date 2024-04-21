@@ -50,26 +50,34 @@ class DiscordService
     }
 
     public function syncDiscordRoles()
-    {
-        $endpoint = "{$this->apiBase}guilds/{$this->guildId}/roles";
-        $response = $this->makeRequest($endpoint);
+{
+    $endpoint = "{$this->apiBase}guilds/{$this->guildId}/roles";
+    $response = $this->makeRequest($endpoint);
 
-        if ($response->successful()) {
-            $roles = $response->json();
-            foreach ($roles as $role) {
-                Role::updateOrCreate(['role_id' => $role['id']], ['role_name' => $role['name']]);
-            }
-        } elseif ($response->failed()) {
-            // Handle any failed request (not in the 200-299 range)
-            $error = $response->json();
-            $statusCode = $response->status();
+    if ($response->successful()) {
+        $roles = $response->json();
+        foreach ($roles as $role) {
+            // Store the original role name
+            $discord_name = $role['name'];
 
-            return redirect()->route('dashboard.index')->with('error', "Request failed with status $statusCode: ", $error);
+            // Remove special characters from the role name
+            $sanitizedRoleName = preg_replace('/[^A-Za-z0-9 ]/', '', $role['name']);
 
+            Role::updateOrCreate(
+                ['role_id' => $role['id']],
+                ['role_name' => $sanitizedRoleName, 'discord_name' => $discord_name]
+            );
         }
+    } elseif ($response->failed()) {
+        // Handle any failed request (not in the 200-299 range)
+        $error = $response->json();
+        $statusCode = $response->status();
 
-        return redirect()->route('dashboard.index')->with('success', 'Roles added successfully');
+        return redirect()->route('dashboard.index')->with('error', "Request failed with status $statusCode: ", $error);
     }
+
+    return redirect()->route('dashboard.index')->with('success', 'Roles added successfully');
+}
 
     protected function makeRequest($endpoint)
     {
