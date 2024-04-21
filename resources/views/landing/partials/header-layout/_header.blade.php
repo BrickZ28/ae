@@ -21,10 +21,10 @@
                 <!--begin::Action-->
                 <br/>
                 @auth()
-                    <a href="https://discord.gg/g7XZ4AV2Gu" class="btn btn-maroon">Dashboard</a>
+                    <a href="https://discord.gg/cFYbWJyGPM" class="btn btn-maroon">Dashboard</a>
                 @endauth
                 @guest
-                    <a href="https://discord.gg/g7XZ4AV2Gu" class="btn btn-maroon">Join Discord</a>
+                    <a href="https://discord.gg/cFYbWJyGPM" class="btn btn-maroon">Join Discord</a>
                 @endguest
                 <!--end::Action-->
             </div>

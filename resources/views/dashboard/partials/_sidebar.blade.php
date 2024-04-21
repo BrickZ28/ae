@@ -3,7 +3,7 @@
     <!--begin::Logo-->
     <div class="app-sidebar-logo px-6" id="kt_app_sidebar_logo">
         <!--begin::Logo image-->
-        <a href="index.html">
+        <a href="/">
             <img alt="Logo" src="{{asset('assets/media/logos/rocky.gif')}}" class="h-75px app-sidebar-logo-default" />
             <img alt="Logo" src="{{asset('assets/media/logos/AEG_Icon_lighting.gif')}}" class="h-20px
             app-sidebar-logo-minimize" />
