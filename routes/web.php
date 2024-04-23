@@ -49,7 +49,7 @@ Route::get('/nitradotest', function () {
 
 
     try {
-        $api = new Nitrapi("MVnkFTF64RH8Lim25j3JeIjN-Ydxx65W9XjrDmp2EJ1k9JclygbPNL3PEPNesSa7sKhNS8toXtzk9rBmTOppgcyrOvBgIg34qLPz");
+        $api = new Nitrapi("");
         // Create a new instance of the Location class
 $locationArray = (array) new Location(['3']);
 
