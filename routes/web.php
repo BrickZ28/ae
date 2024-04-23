@@ -22,11 +22,7 @@ use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
-use Nitrapi\GameInfo\GameInfoInterface;
-use Nitrapi\Order\Pricing\Location;
-use Nitrapi\Services\Gameservers\Gameserver;
-use Nitrapi\Services\Service;
-use Nitrapi\Nitrapi;
+
 
 
 // Public Routes
@@ -44,31 +40,7 @@ Route::get('/under-construction', function () {
     return view('under-construction');
 });
 
-//nitrado test
-Route::get('/nitradotest', function () {
 
-
-    try {
-        $api = new Nitrapi("");
-        // Create a new instance of the Location class
-$locationArray = (array) new Location(['3']);
-
-// Create a new instance of the Gameserver class
-$gameserver = new Gameserver($api, $locationArray);
-
-// Set game
-        $gameserver->setGame("arkse");
-
-
-
-// Get price
-        $price = $gameserver->getPrice("your_rental_time");
-        dd($price);
-
-    } catch(\Exception $e) {
-        var_dump("API Error: " . $e->getMessage());
-    }
-});
 
 // Error Route
 Route::get('/error', function () {
