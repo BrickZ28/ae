@@ -85,4 +85,5 @@ class DiscordService
 
         return Http::withHeaders($headers)->get($endpoint);
     }
+
 }

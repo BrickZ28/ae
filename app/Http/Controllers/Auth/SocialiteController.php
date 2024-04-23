@@ -30,7 +30,7 @@ class SocialiteController extends Controller
         list($socialiteUser, $accessToken, $roles, $clientIp) = $this->getSessionData($request);
 
         $user = $this->userService->userIsMember($socialiteUser, $roles);
-
+        //if user is a member, update user and redirect to dashboard
         if ($user) {
             $this->userService->updateUser($user, $socialiteUser, $clientIp, $accessToken, $roles);
             return $this->loginAndRedirect($user, 'dashboard.index');
@@ -41,11 +41,12 @@ class SocialiteController extends Controller
 
     public function processUserRegistration(Request $request)
     {
-        list($socialiteUser, $accessToken, $roles, $clientIp) = $this->getSessionData($request);
+        [$socialiteUser, $accessToken, $roles, $clientIp] = $this->getSessionData($request);
 
         $user = $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
         return $this->loginAndRedirect($user, 'dashboard.index');
     }
+
 
     public function logout(Request $request)
     {

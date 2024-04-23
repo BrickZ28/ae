@@ -4,6 +4,24 @@
     "description": "The skeleton application for the Laravel framework.",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/BrickZ28/NitrAPI-PHP.git"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "brickz28/nitrapi-php-lib",
+                "version": "dev-master",
+                "source": {
+                    "url": "https://github.com/BrickZ28/NitrAPI-PHP.git",
+                    "type": "git",
+                    "reference": "master"
+                }
+            }
+        }
+    ],
     "require": {
         "php": "^8.2",
         "laravel/framework": "^11.0",
@@ -11,7 +29,8 @@
         "laravel/tinker": "^2.9",
         "martinbean/socialite-discord-provider": "1.2",
         "realrashid/sweet-alert": "*",
-        "socialiteproviders/manager": "*"
+        "socialiteproviders/manager": "*",
+        "brickz28/nitrapi-php-lib": "dev-master"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -26,10 +45,10 @@
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
-            "Database\\Seeders\\": "database/seeders/"
+            "Database\\Seeders\\": "database/seeders/",
+            "Nitrapi\\": "vendor/brickz28/nitrapi-php-lib/lib/Nitrapi/"
         },
         "files": [
-
             "app/Helpers/landingHelpers.php"
         ]
     },
