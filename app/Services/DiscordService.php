@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\Role;
 use App\Models\User;
+use Exception;
 use Illuminate\Support\Facades\Http;
 
 class DiscordService
@@ -26,7 +27,6 @@ class DiscordService
 
         $endpoint = "{$this->apiBase}guilds/{$this->guildId}/members/{$userId}/roles/{$roleId}";
         $response = Http::withHeaders(['Authorization' => 'Bot '.$this->botToken])->put($endpoint);
-
         return $response->successful();
     }
 
@@ -85,5 +85,74 @@ class DiscordService
 
         return Http::withHeaders($headers)->get($endpoint);
     }
+
+   public function newUserDiscordSetup($request, $user)
+{
+
+    //determine game and style
+    $role  = $this->determineGameAndStyle($request->game);
+
+    //set discord role based on selection
+    $this->assignDiscordRole($user->id, $role->role_id);
+
+    // send welcome message in DM
+    $this->sendMessage($user->id, "Welcome to our Discord server!");
+}
+
+
+
+    public function determineGameAndStyle($game)
+    {
+        // Define a mapping from game codes to role names
+        $gameToRoleName = [
+            'asapvp' => 'Ark Ascended PvP',
+            'asapve' => 'Ark Ascended PvE',
+            'asepvp' => 'Ark Evolved PvP',
+            'asepve' => 'Ark Evolved PvE',
+        ];
+
+        // Check if the game code exists in the mapping
+        if (!array_key_exists($game, $gameToRoleName)) {
+            throw new Exception("Invalid game code: $game");
+        }
+
+        // Get the role name from the mapping
+        $roleName = $gameToRoleName[$game];
+
+        // Query the roles table for the role with the given name
+        $role = Role::where('role_name', $roleName)->first();
+
+        // If the role doesn't exist, throw an exception or handle the error as needed
+        if (!$role) {
+            throw new Exception("Role not found: $roleName");
+        }
+
+        // Return the role
+        return $role;
+    }
+
+    public function sendMessage($userId, $message)
+    {
+        // Create a DM channel with the user
+        $endpoint = "{$this->apiBase}users/@me/channels";
+        $response = Http::withHeaders(['Authorization' => 'Bot '.$this->botToken])
+            ->post($endpoint, ['recipient_id' => $userId]);
+
+        if (!$response->successful()) {
+            throw new Exception("Failed to create DM channel: " . $response->body());
+        }
+
+        $dmChannel = $response->json();
+
+        // Send a message to the DM channel
+        $endpoint = "{$this->apiBase}channels/{$dmChannel['id']}/messages";
+        $response = Http::withHeaders(['Authorization' => 'Bot '.$this->botToken])
+            ->post($endpoint, ['content' => $message]);
+
+        if (!$response->successful()) {
+            throw new Exception("Failed to send message: " . $response->body());
+        }
+    }
+
 
 }

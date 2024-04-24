@@ -31,7 +31,7 @@
                 <!--end::Heading-->
                 <!--begin::Illustration-->
                 <div class="text-center pb-15 px-5">
-                    <img src="assets/media/illustrations/sketchy-1/20.png" alt="" class="mw-100 h-200px h-sm-325px" />
+                    <img src="{{asset('assets/media/illustrations/sketchy-1/20.png')}}" alt="" class="mw-100 h-200px h-sm-325px" />
                 </div>
                 <!--end::Illustration-->
             </div>
@@ -263,7 +263,8 @@
                                                         </div>
                                                         <!--end::Progress-->
                                                         <!--begin::Button-->
-                                                        <form action="" method="">
+
+                                                        <form action="{{route('register.process')}}" method="GET">
                                                             @csrf
                                                             <input type="hidden" name="game" value="asapvp">
                                                             <button type="submit" class="btn btn-sm
@@ -298,7 +299,7 @@
                                                         </div>
                                                         <!--end::Name-->
                                                         <!--begin::Desc-->
-                                                        <span class="text-muted fw-semibold mb-3">ASA</span>
+                                                        <span class="text-muted fw-semibold mb-3">ASE</span>
                                                         <!--end::Desc-->
                                                     </div>
                                                     <!--end::Details-->
@@ -362,9 +363,9 @@
                                                         </div>
                                                         <!--end::Progress-->
                                                         <!--begin::Button-->
-                                                        <form action="" method="">
+                                                        <form action="{{route('register.process')}}" method="GET">
                                                             @csrf
-                                                            <input type="hidden" name="game" value="asapve">
+                                                            <input type="hidden" name="game" value="asepve">
                                                             <button type="submit" class="btn btn-sm btn-primary">Select</button>
                                                         </form>
                                                         <!--end::Button-->
@@ -396,7 +397,7 @@
                                                         </div>
                                                         <!--end::Name-->
                                                         <!--begin::Desc-->
-                                                        <span class="text-muted fw-semibold mb-3">ASA</span>
+                                                        <span class="text-muted fw-semibold mb-3">ASE</span>
                                                         <!--end::Desc-->
                                                     </div>
                                                     <!--end::Details-->
@@ -460,9 +461,9 @@
                                                         </div>
                                                         <!--end::Progress-->
                                                         <!--begin::Button-->
-                                                        <form action="" method="">
+                                                        <form action="{{route('register.process')}}" method="GET">
                                                             @csrf
-                                                            <input type="hidden" name="game" value="asapve">
+                                                            <input type="hidden" name="game" value="asepve">
                                                             <button type="submit" class="btn btn-sm btn-primary">Select</button>
                                                         </form>
                                                         <!--end::Button-->

@@ -43,7 +43,11 @@ class SocialiteController extends Controller
     {
         [$socialiteUser, $accessToken, $roles, $clientIp] = $this->getSessionData($request);
 
+        //do discord welcom and roles here
+        $this->discordService->newUserDiscordSetup($request, $socialiteUser);
+        //will need to gate stuff around this point
         $user = $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
+
         return $this->loginAndRedirect($user, 'dashboard.index');
     }
 
