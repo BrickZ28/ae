@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Order;
 use App\Models\Playstyle;
 use App\Models\User;
+use App\Services\GateService;
 use Auth;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
@@ -20,6 +21,13 @@ use RealRashid\SweetAlert\Facades\Alert;
 
 class GateController extends Controller
 {
+
+    protected $gateService;
+
+    public function __construct(GateService $gateService)
+    {
+        $this->gateService = $gateService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -55,31 +63,7 @@ class GateController extends Controller
 
 public function store(Request $request)
 {
-    $this->validate($request, [
-        'gate_id' => 'required',
-        'pin' => 'nullable|numeric',
-        'playstyle' => 'required:playstyles,id',
-        'game' => 'required:games,id',
-    ]);
-
-    try {
-        if (Gate::create([
-            'gate_id' => $request->gate_id,
-            'pin' => $request->pin,
-            'playstyle_id' => $request->playstyle,
-            'game_id' => $request->game,
-        ])) {
-            Alert::success('Rule Created', 'New rule created successfully');
-        }
-    } catch (QueryException $e) {
-        if ($e->getCode() == 23000) {
-            // Handle duplicate entry error
-            Alert::error('Duplicate Entry', 'A gate with the same ID and playstyle already exists.');
-        } else {
-            // Handle other SQL errors
-            Alert::error('Database Error', 'An error occurred while creating the gate.');
-        }
-    }
+    $this->gateService->storeGate($request);
 
     return redirect()->route('gates.index');
 }

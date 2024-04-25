@@ -78,9 +78,12 @@ class SocialiteController extends Controller
                 dd('No gates available or user not found');
             }
         }
+//        TODO logic to catch no gate
 
         $user = $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
         return $this->loginAndRedirect($user, 'dashboard.index');
+
+        //TODO: have to fix requireing log out and back in to show all roles
     }
 
 
