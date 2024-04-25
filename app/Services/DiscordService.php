@@ -105,18 +105,28 @@ class DiscordService
 
     private function welcomeMessage($user, $role, $request)
     {
-        $ase = '';
-        if ($request->game === 'asepve' || $request->game === 'asapvp') {
-            $ase = "You should have gotten another message with your starter pack details.\n\n"
-                . "If you have not, please let us know in by submitting a ticket.\n\n";
+
+        if ($request->game === 'asepve' || $request->game === 'asepvp') {
+            $kit_msg = "If you haven't received your starter pack details yet, please don't hesitate to let us know by "
+            ."submitting a ticket, and we'll ensure you get everything you need to kickstart your adventure. "
+            . "Should you wish to try another ASE playstyle, simply head over to your website dashboard and select "
+            ."the playstyle you're interested in. Once you've made your choice, you'll receive a message with all the details of your starter pack\n\n";
+        } else {
+            $kit_msg = "As an ASA player, your starter pack will be automatically provided by the game server.  "
+            ."If you do have issues when logging in for the first time with your starter kit, please don't hesitate to "
+            . "let us know by submitting a ticket, and we'll ensure you get everything you need to kickstart your adventure.";
         }
 
-        return "Welcome $user->name! We are excited to have you a part of AfterEarth Gaming Community.\n\n"
-            . "Based on your selection, you have been assigned the role of {$role->discord_name}. Please feel free to select other roles as well.\n\n"
-            . "Should you decide to play on our servers you are free to do so as well and will be entitled to a starter pack for each.\n\n"
-            . "$ase"
-            . "For ASA you will be granted one automatically by the game server. For ASE, just head over to your website dashboard and select the playstyle you wish to play on. Once you have done so you will get a message with the details of your starter pack.\n\n"
-            . "If you have any questions, please feel free to ask in the general chat. Enjoy your time with us!";
+        return  "Welcome to the AfterEarth Gaming Community, {$user->name}! We're thrilled to have you on board as a member. "
+        . "Based on your preference, you have been designated the {$role->discord_name} player – an exciting choice! "
+        . "If you haven't received your starter pack details yet, please don't hesitate to let us know by submitting a ticket, "
+            ."and we'll ensure you get everything you need to kickstart your adventure.\n\n "
+        . "Remember, you're not limited to just one server or playstyle. Feel free to explore our other servers as well. "
+        . "Whether it's the ASA server or ASE, you'll find something to enjoy. "
+            . $kit_msg
+
+        . "Got any questions? Don't hesitate to ask in the general chat – we're here to help! "
+        . "Enjoy your time with us, and may your gaming experiences be filled with excitement and fun!";
     }
 
 

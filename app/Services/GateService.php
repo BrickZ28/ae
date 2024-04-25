@@ -75,7 +75,8 @@ class GateService
 
     public function updateGate($request, $gate)
     {
-        // Get the original values
+        //TODO mark gate as picked up
+
         $originalPlayer = $gate->player;
 
         // Define the validation rules
@@ -86,11 +87,11 @@ class GateService
 
 //    TODO fix it with the correct validation rules for chaning users and pin
         // Check if the 'contents' or 'player' fields are being changed
-        if ($request->player !== $originalPlayer) {
-            // Add a rule to check if the 'pin' is the same as the old one
-            $rules['pin'][] = Rule::notIn([$gate->pin]);
-            $rules['pin'][] = 'required';
-        }
+//        if ($request->player !== $originalPlayer) {
+//            // Add a rule to check if the 'pin' is the same as the old one
+//            $rules['pin'][] = Rule::notIn([$gate->pin]);
+//            $rules['pin'][] = 'required';
+//        }
 
         // Validate the request
         $validatedData = $request->validate($rules);
