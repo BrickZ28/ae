@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Gate;
+use App\Models\Item;
+use App\Models\User;
 use App\Services\DiscordService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
@@ -43,11 +46,40 @@ class SocialiteController extends Controller
     {
         [$socialiteUser, $accessToken, $roles, $clientIp] = $this->getSessionData($request);
 
-        //do discord welcom and roles here
         $this->discordService->newUserDiscordSetup($request, $socialiteUser);
-        //will need to gate stuff around this point
-        $user = $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
+        $this->discordService->syncDiscordRoles($request, $socialiteUser);
 
+        if ($request->game === 'asepve' || $request->game === 'asapvp') {
+
+            // Get the ID of the starter kit
+            $starterKitId = Item::where('name', 'Starter Kit')->first()->id;
+
+// Query the gates table for gates that have a starter kit
+            $gatesWithStarterKit = Gate::whereHas('items', function ($query) use ($starterKitId) {
+                $query->where('item_id', $starterKitId);
+            })->get();
+
+// From the list of gates with a starter kit, find the first gate that isn't assigned
+            $gate = $gatesWithStarterKit->first(function ($gate) {
+                return $gate->player == null;
+            });
+            $discordId = $socialiteUser->id; // Get the Discord ID
+
+// Find the user in your users table that matches the Discord ID
+            $user = User::where('discord_id', $discordId)->first();
+
+            if ($user && $gate) {
+                // If the user exists and the gate is available and has a starter kit
+                $gate->update(['player_id' => $user->id]);
+
+                $message = "Your gate ID is {$gate->gate_id} and the pin is {$gate->pin}.";
+                $this->discordService->sendMessage($discordId, $message);
+            } else {
+                dd('No gates available or user not found');
+            }
+        }
+
+        $user = $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
         return $this->loginAndRedirect($user, 'dashboard.index');
     }
 

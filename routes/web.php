@@ -73,6 +73,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //Gates
     Route::resource('/gates', GateController::class, ['names' => 'gates']);
+    Route::get('/gates/create/{game}/{style}', [GateController::class, 'getGates'])->name('gates.search');
 
     //Item
     Route::resource('/items', ItemController::class, ['names' => 'items']);

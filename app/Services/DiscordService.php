@@ -87,17 +87,34 @@ class DiscordService
     }
 
    public function newUserDiscordSetup($request, $user)
-{
+    {
 
-    //determine game and style
-    $role  = $this->determineGameAndStyle($request->game);
 
-    //set discord role based on selection
-    $this->assignDiscordRole($user->id, $role->role_id);
+        //determine game and style
+        $role  = $this->determineGameAndStyle($request->game);
 
-    // send welcome message in DM
-    $this->sendMessage($user->id, "Welcome to our Discord server!");
-}
+
+        //set discord role based on selection
+        $this->assignDiscordRole($user->id, $role->role_id);
+
+        // send welcome message in DM
+        $this->sendMessage($user->id, $this->welcomeMessage($user, $role));
+
+        return $role;
+    }
+
+    private function welcomeMessage($user, $role)
+    {
+        return "Welcome {$user->username}!  We are excited to have you a part of AfterEarth Gaming Community.
+        Based on your selection, you have been assigned the role of {$role->discord_name}.  Please feel free to select
+        other roles as well.
+
+        Should you decided to play on our servers you are free to do so as well and will be entitled to a starter pack for each.
+        For ASA you will be granted one automatically by the game server.  For ASE, just head over to your website dashboard
+        and select the playstyle you wish to play on.  Once you have done so you will get a message with the details of your starter pack.
+
+        If you have any questions, please feel free to ask in the general chat.  Enjoy your time with us!";
+    }
 
 
 
