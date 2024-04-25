@@ -366,7 +366,8 @@
                                                         <form action="{{route('register.process')}}" method="GET">
                                                             @csrf
                                                             <input type="hidden" name="game" value="asepve">
-                                                            <button type="submit" class="btn btn-sm btn-primary">Select</button>
+                                                            <button type="submit" class="btn btn-sm
+                                                            btn-success">Select</button>
                                                         </form>
                                                         <!--end::Button-->
                                                     </div>
@@ -389,10 +390,11 @@
                                                     <div>
                                                         <!--begin::Name-->
                                                         <div class="d-flex align-items-center">
-                                                            Ark Survival Ascended
+                                                            Ark Survival Evolved
                                                             <!--begin::Label-->
-                                                            <span class="badge badge-light-success d-flex align-items-center fs-8 fw-semibold">
-												<i class="ki-duotone ki-star fs-8 text-success me-1"></i>PVE</span>
+                                                            <span class="badge badge-light-danger d-flex
+                                                            align-items-center fs-8 fw-semibold">
+												<i class="ki-duotone ki-star fs-8 text-danger me-1"></i>PVE</span>
                                                             <!--end::Label-->
                                                         </div>
                                                         <!--end::Name-->
@@ -412,7 +414,8 @@
                                                 <div class="d-flex flex-column">
                                                     <!--begin::Text-->
                                                     <p class="text-gray-700 fw-semibold fs-6 mb-4">Kit includes LvL 200
-                                                        Petra, and <button class="btn btn-link btn-color-success btn-active-color-primary me-5 mb-2 " type="button"
+                                                        Petra, and <button class="btn btn-link btn-color-danger
+                                                        btn-active-color-primary me-5 mb-2 " type="button"
                                                                            data-bs-toggle="modal"
                                                                             data-bs-target="#imageModal"
                                                                            onclick="document.getElementById('modalImage').src='https://aeg-development.nyc3.cdn.digitaloceanspaces.com/images/kits/ArkAscended_startkit.png'">theses pictured items</button> </p>
@@ -463,8 +466,9 @@
                                                         <!--begin::Button-->
                                                         <form action="{{route('register.process')}}" method="GET">
                                                             @csrf
-                                                            <input type="hidden" name="game" value="asepve">
-                                                            <button type="submit" class="btn btn-sm btn-primary">Select</button>
+                                                            <input type="hidden" name="game" value="asepvp">
+                                                            <button type="submit" class="btn btn-sm
+                                                            btn-danger">Select</button>
                                                         </form>
                                                         <!--end::Button-->
                                                     </div>

@@ -83,6 +83,7 @@ class UserService
 
     private function syncUserRoles($user, $socialiteUser, $roles)
     {
+
         $roleId = Role::where('role_name', 'Member')->first()->role_id;
         $this->discordService->assignDiscordRole($socialiteUser->id, $roleId);
         $this->discordService->syncUserRoles($socialiteUser->id, $roles);

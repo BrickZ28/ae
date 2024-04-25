@@ -36,7 +36,6 @@ class GateController extends Controller
     public function index()
     {
         $gates = Gate::with(['player', 'admin', 'playstyle'])->get();
-
         $filters = ['id', 'pin', 'assigned to', 'playstyle', 'last fed', 'edited by', 'edit'];
         return view('dashboard.gates.index', compact('gates', 'filters'));
     }
@@ -65,7 +64,7 @@ public function store(Request $request)
 {
     $this->gateService->storeGate($request);
 
-    return redirect()->route('gates.index');
+    return redirect()->route('gates.index')->with('success', 'Gate created successfully');
 }
 
     /**
@@ -103,46 +102,7 @@ public function store(Request $request)
 
 public function update(Request $request, Gate $gate)
 {
-    // Get the original values
-    $originalPlayer = $gate->player;
-
-    // Define the validation rules
-    $rules = [
-        'gate_id' => 'required',
-        'pin' => ['nullable', 'digits:4'],
-    ];
-
-//    TODO fix it with the correct validation rules for chaning users and pin
-    // Check if the 'contents' or 'player' fields are being changed
-    if ($request->player !== $originalPlayer) {
-        // Add a rule to check if the 'pin' is the same as the old one
-        $rules['pin'][] = Rule::notIn([$gate->pin]);
-        $rules['pin'][] = 'required';
-    }
-
-    // Validate the request
-    $validatedData = $request->validate($rules);
-
-    // Update the gate
-    $validatedData['admin_id'] = Auth::id(); // Get the ID of the authenticated user
-
-    $gate->update($validatedData);
-
-    if ($request->contents) {
-        // Check if contents is a JSON string
-        if (is_string($request->contents) && is_array(json_decode($request->contents, true)) && (json_last_error() == JSON_ERROR_NONE)) {
-            // Decode the JSON string into an array
-            $contents = json_decode($request->contents, true);
-
-            // Iterate over the array and attach each item to the gate
-            foreach ($contents as $itemId) {
-                $gate->items()->attach($itemId);
-            }
-        } else {
-            // Attach the single item to the gate
-            $gate->items()->attach($request->contents);
-        }
-    }
+    $this->gateService->updateGate($request, $gate);
 
     return redirect(route('dashboard.index'))->with('success', 'Gate updated successfully');
 }
@@ -161,12 +121,7 @@ public function update(Request $request, Gate $gate)
 
     public function getGates($game, $style)
     {
-        $game_id = Game::where('display_name', $game)->first()->id;
-        $style_id = Playstyle::where('name', $style)->first()->id;
-        $gates = Gate::with(['player', 'admin', 'playstyle'])
-            ->where('game_id', $game_id)
-            ->where('playstyle_id', $style_id)
-            ->get();
+        $gates = $this->gateService->getGatesByGameAndStyle($game, $style);
 
         $filters = ['id', 'pin', 'assigned to', 'playstyle', 'last fed', 'edited by', 'edit'];
         return view('dashboard.gates.index', compact('gates', 'filters'));

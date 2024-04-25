@@ -8,7 +8,7 @@ use Exception;
 use Illuminate\Support\Facades\Http;
 
 class DiscordService
-{
+{  //TODO create a method or class to handle messages to discord
     protected $botToken;
 
     protected $guildId;
@@ -26,7 +26,7 @@ class DiscordService
     {
 
         $endpoint = "{$this->apiBase}guilds/{$this->guildId}/members/{$userId}/roles/{$roleId}";
-        $response = Http::withHeaders(['Authorization' => 'Bot '.$this->botToken])->put($endpoint);
+        $response = Http::withHeaders(['Authorization' => 'Bot ' . $this->botToken])->put($endpoint);
         return $response->successful();
     }
 
@@ -41,81 +41,83 @@ class DiscordService
     public function syncUserRoles($userId, $roles)
     {
         $user = User::where('discord_id', $userId)->first();
-        if (! $user) {
+        if (!$user) {
             return; // Consider logging this situation or throwing an exception
         }
 
         $existingRoles = Role::whereIn('role_id', $roles)->get();
         $user->roles()->sync($existingRoles->pluck('id')->toArray());
+
     }
 
     public function syncDiscordRoles()
-{
-    $endpoint = "{$this->apiBase}guilds/{$this->guildId}/roles";
-    $response = $this->makeRequest($endpoint);
+    {
+        $endpoint = "{$this->apiBase}guilds/{$this->guildId}/roles";
+        $response = $this->makeRequest($endpoint);
 
-    if ($response->successful()) {
-        $roles = $response->json();
-        foreach ($roles as $role) {
-            // Store the original role name
-            $discord_name = $role['name'];
+        if ($response->successful()) {
+            $roles = $response->json();
+            foreach ($roles as $role) {
+                // Store the original role name
+                $discord_name = $role['name'];
 
-            // Remove special characters from the role name
-            $sanitizedRoleName = preg_replace('/[^A-Za-z0-9 ]/', '', $role['name']);
+                // Remove special characters from the role name
+                $sanitizedRoleName = preg_replace('/[^A-Za-z0-9 ]/', '', $role['name']);
 
-            Role::updateOrCreate(
-                ['role_id' => $role['id']],
-                ['role_name' => $sanitizedRoleName, 'discord_name' => $discord_name]
-            );
+                Role::updateOrCreate(
+                    ['role_id' => $role['id']],
+                    ['role_name' => $sanitizedRoleName, 'discord_name' => $discord_name]
+                );
+            }
+        } elseif ($response->failed()) {
+            // Handle any failed request (not in the 200-299 range)
+            $error = $response->json();
+            $statusCode = $response->status();
+
+            return redirect()->route('dashboard.index')->with('error', "Request failed with status $statusCode: ", $error);
         }
-    } elseif ($response->failed()) {
-        // Handle any failed request (not in the 200-299 range)
-        $error = $response->json();
-        $statusCode = $response->status();
 
-        return redirect()->route('dashboard.index')->with('error', "Request failed with status $statusCode: ", $error);
+        return redirect()->route('dashboard.index')->with('success', 'Roles added successfully');
     }
-
-    return redirect()->route('dashboard.index')->with('success', 'Roles added successfully');
-}
 
     protected function makeRequest($endpoint)
     {
-        $headers = ['Authorization' => 'Bot '.$this->botToken];
+        $headers = ['Authorization' => 'Bot ' . $this->botToken];
 
         return Http::withHeaders($headers)->get($endpoint);
     }
 
-   public function newUserDiscordSetup($request, $user)
+    public function newUserDiscordSetup($request, $user)
     {
 
-
         //determine game and style
-        $role  = $this->determineGameAndStyle($request->game);
+        $role = $this->determineGameAndStyle($request->game);
 
 
         //set discord role based on selection
         $this->assignDiscordRole($user->id, $role->role_id);
 
         // send welcome message in DM
-        $this->sendMessage($user->id, $this->welcomeMessage($user, $role));
+        $this->sendMessage($user->id, $this->welcomeMessage($user, $role, $request));
 
         return $role;
     }
 
-    private function welcomeMessage($user, $role)
+    private function welcomeMessage($user, $role, $request)
     {
-        return "Welcome {$user->username}!  We are excited to have you a part of AfterEarth Gaming Community.
-        Based on your selection, you have been assigned the role of {$role->discord_name}.  Please feel free to select
-        other roles as well.
+        $ase = '';
+        if ($request->game === 'asepve' || $request->game === 'asapvp') {
+            $ase = "You should have gotten another message with your starter pack details.\n\n"
+                . "If you have not, please let us know in by submitting a ticket.\n\n";
+        }
 
-        Should you decided to play on our servers you are free to do so as well and will be entitled to a starter pack for each.
-        For ASA you will be granted one automatically by the game server.  For ASE, just head over to your website dashboard
-        and select the playstyle you wish to play on.  Once you have done so you will get a message with the details of your starter pack.
-
-        If you have any questions, please feel free to ask in the general chat.  Enjoy your time with us!";
+        return "Welcome $user->name! We are excited to have you a part of AfterEarth Gaming Community.\n\n"
+            . "Based on your selection, you have been assigned the role of {$role->discord_name}. Please feel free to select other roles as well.\n\n"
+            . "Should you decide to play on our servers you are free to do so as well and will be entitled to a starter pack for each.\n\n"
+            . "$ase"
+            . "For ASA you will be granted one automatically by the game server. For ASE, just head over to your website dashboard and select the playstyle you wish to play on. Once you have done so you will get a message with the details of your starter pack.\n\n"
+            . "If you have any questions, please feel free to ask in the general chat. Enjoy your time with us!";
     }
-
 
 
     public function determineGameAndStyle($game)
@@ -152,7 +154,7 @@ class DiscordService
     {
         // Create a DM channel with the user
         $endpoint = "{$this->apiBase}users/@me/channels";
-        $response = Http::withHeaders(['Authorization' => 'Bot '.$this->botToken])
+        $response = Http::withHeaders(['Authorization' => 'Bot ' . $this->botToken])
             ->post($endpoint, ['recipient_id' => $userId]);
 
         if (!$response->successful()) {
@@ -163,7 +165,7 @@ class DiscordService
 
         // Send a message to the DM channel
         $endpoint = "{$this->apiBase}channels/{$dmChannel['id']}/messages";
-        $response = Http::withHeaders(['Authorization' => 'Bot '.$this->botToken])
+        $response = Http::withHeaders(['Authorization' => 'Bot ' . $this->botToken])
             ->post($endpoint, ['content' => $message]);
 
         if (!$response->successful()) {

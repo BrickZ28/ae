@@ -28,8 +28,8 @@
 
             <x-form-select label="Gate Game" name="game" required="required">
                 <option value="">Select One</option>
-                @foreach($games as $$game)
-                    <option value="{{$game->id}}">{{$game->name}}</option>
+                @foreach($games as $game)
+                    <option value="{{$game->id}}">{{$game->display_name}}</option>
                 @endforeach
             </x-form-select>
 
