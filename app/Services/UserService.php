@@ -88,4 +88,16 @@ class UserService
         $this->discordService->assignDiscordRole($socialiteUser->id, $roleId);
         $this->discordService->syncUserRoles($socialiteUser->id, $roles);
     }
+
+    public function updateStartKit($user, $game){
+        if ($game === 'asepve'){
+            $user->update(['asepve_start_kit' => true]);
+        } elseif ($game === 'asepvp'){
+            $user->update(['asepvp_start_kit' => true]);
+        } elseif ($game === 'asapvp'){
+            $user->update(['asapvp_start_kit' => true]);
+        } elseif ($game === 'asapve'){
+            $user->update(['asapve_start_kit' => true]);
+        }
+    }
 }

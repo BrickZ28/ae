@@ -18,10 +18,12 @@ use Request;
 class GateService
 {
     protected $discordService;
+    protected $userService;
 
-    public function __construct(DiscordService $discordService)
+    public function __construct(DiscordService $discordService, UserService $userService)
     {
         $this->discordService = $discordService;
+        $this->userService = $userService;
     }
 
     public function validate($data)
@@ -143,23 +145,22 @@ class GateService
             ->get();
     }
 
-    public function issueGate($contents, $user)
+    public function issueGate($contents, $socialiteUser, $game)
     {
-
-        if ($contents === 'starter') {
-            $gate = $this->getStarterGate($user);
-        }
-
-        $discordId = $user->id; // Get the Discord ID
+        $discordId = $socialiteUser->id; // Get the Discord ID
         $user = User::where('discord_id', $discordId)->first();
 
-
+        if ($contents === 'starter') {
+            $gate = $this->getStarterGate($socialiteUser);
+        }
+//TODO logic for order content
         if ($user && $gate) {
             // If the user exists and the gate is available and has a starter kit
             $gate->update(['player_id' => $user->id]);
+            $this->userService->updateStartKit($user, $game);
 
             $message = "You have been assigned a new gate from AfterEarth Gaming\n\n"
-            ."Here is your gate and pin information:\n\n"
+                . "Here is your gate and pin information:\n\n"
                 . "```css\n" // Start of code block with CSS syntax highlighting
                 . "Gate ID: " . $gate->gate_id . "\n" // Gate ID will be displayed in color
                 . "Pin: " . $gate->pin . "\n" // Pin will be displayed in color
@@ -167,8 +168,10 @@ class GateService
                 . "You will find the gate and pin at the community center."; // New paragraph
             $this->discordService->sendMessage($discordId, $message);
         } else {
-            dd('No gates available or user not found');
-            //        TODO logic to catch no gate
+            $message = "OH No it looks like all the gates are full or empty at this time.\n\n"
+                . "A message has been sent to the admin to fix this.  Once they have you will be notified will your gate details\n\n"; // New paragraph
+            $this->discordService->sendMessage($discordId, $message);
+            //TODO will need to update once i know where to send admin message gate is empty
         }
     }
 

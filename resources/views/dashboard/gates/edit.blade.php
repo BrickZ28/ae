@@ -18,6 +18,7 @@
                     @endforeach
                 </x-form-select>
 {{--                TODO populate with Orders cant be edited within 1 week with of addeing if not starter
+{{--TODO IF user is waiting for starter logic--}}
                     add function that notiifes when user picked up--}}
                 <x-form-select label="Add Contents" name="contents" required="" >
                     <option value=''>Add Order or Starter Kit</option>

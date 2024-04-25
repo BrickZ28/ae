@@ -52,19 +52,12 @@ class SocialiteController extends Controller
         $this->discordService->newUserDiscordSetup($request, $socialiteUser);
         $this->discordService->syncDiscordRoles($request, $socialiteUser);
 
-        if ($request->game === 'asepve' || $request->game === 'asapvp') {
-            $this->gateService->issueGate('starter', $socialiteUser);
+        if ($request->game === 'asepve' || $request->game === 'asepvp') {
+            $this->gateService->issueGate('starter', $socialiteUser, $request->game);
         }
 
         $user = $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
-        // Re-authenticate the user to refresh the user's session data
-        Auth::login($user, true);
 
-        // Reload the user's roles from the database
-        $user->load('roles');
-
-        // Update the session with the new roles
-        $request->session()->put('roles', $user->roles->pluck('role_name')->toArray());
 
         return redirect()->route('logout', ['fromRegistration' => true]);
 
