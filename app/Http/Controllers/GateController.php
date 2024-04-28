@@ -89,7 +89,12 @@ public function store(Request $request)
         $starter = Item::where('name', 'Starter Kit')->first();
         $users = User::all();
         $orders = Order::all();
-        return view('dashboard.gates.edit', compact('starter','gate', 'users', 'orders'));
+        $no_kit_users = User::where('asepve_start_kit', false)
+            ->orWhere('asepvp_start_kit', false)
+            ->orWhere('asapvp_start_kit', false)
+            ->orWhere('asapve_start_kit', false)
+            ->get();
+        return view('dashboard.gates.edit', compact('starter','gate', 'users', 'orders', 'no_kit_users'));
     }
 
     /**

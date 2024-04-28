@@ -7,6 +7,7 @@ use App\Models\Gate;
 use App\Models\Item;
 use App\Models\Playstyle;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -75,6 +76,7 @@ class GateService
 
     public function updateGate($request, $gate)
     {
+
         //TODO mark gate as picked up
 
         $originalPlayer = $gate->player;
@@ -95,6 +97,11 @@ class GateService
 
         // Validate the request
         $validatedData = $request->validate($rules);
+
+        // Check if 'feed' is 1 or if the contents have changed
+        if ($request->feed === '1' || $request->contents !== $gate->contents) {
+            $validatedData['last_fed'] = Carbon::now();
+        }
 
         // Update the gate
         $validatedData['admin_id'] = \Auth::id(); // Get the ID of the authenticated user
@@ -151,6 +158,7 @@ class GateService
         $discordId = $socialiteUser->id; // Get the Discord ID
         $user = User::where('discord_id', $discordId)->first();
 
+
         if ($contents === 'starter') {
             $gate = $this->getStarterGate($socialiteUser);
         }
@@ -166,13 +174,14 @@ class GateService
                 . "Gate ID: " . $gate->gate_id . "\n" // Gate ID will be displayed in color
                 . "Pin: " . $gate->pin . "\n" // Pin will be displayed in color
                 . "```\n\n" // End of code block
-                . "You will find the gate and pin at the community center."; // New paragraph
+                . "You will find the gate and pin at the community center located at lat: 89.4  long: 40.8."; // New paragraph
             $this->discordService->sendMessage($discordId, $message);
         } else {
             $message = "OH No it looks like all the gates are full or empty at this time.\n\n"
                 . "A message has been sent to the admin to fix this.  Once they have you will be notified will your gate details\n\n"; // New paragraph
             $this->discordService->sendMessage($discordId, $message);
-            //TODO will need to update once i know where to send admin message gate is empty
+            $this->discordService->sendMessage(138792121564921856, "A new user has joined the server and needs a gate assigned to them as none were available");
+
         }
     }
 
@@ -190,6 +199,12 @@ class GateService
 
         return $gate;
 
+    }
+
+    public function getGatesNotFedInSevenDays()
+    {
+        $sevenDaysAgo = Carbon::now()->subDays(7);
+        return Gate::with('game', 'playstyle')->where('last_fed', '<=', $sevenDaysAgo)->get();
     }
 
 

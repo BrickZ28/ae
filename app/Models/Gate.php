@@ -32,4 +32,10 @@ class Gate extends Model
 {
     return $this->belongsTo(Playstyle::class, 'playstyle_id');
 }
+
+    public function game()
+    {
+        return $this->belongsTo(Game::class, 'game_id');
+    }
+
 }
