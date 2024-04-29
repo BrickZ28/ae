@@ -76,10 +76,10 @@ class GateService
 
     public function updateGate($request, $gate)
     {
+        $starter = Item::where('name', 'Starter Kit')->first()->id;
 
         //TODO mark gate as picked up
 
-        $originalPlayer = $gate->player;
 
         // Define the validation rules
         $rules = [
@@ -103,10 +103,18 @@ class GateService
             $validatedData['last_fed'] = Carbon::now();
         }
 
+        //If its a starter kit and is being assigned we need to update the user starter kit based on their initail role
+        if (($request->contents == $starter) && $request->player) {
+            $user = User::find($request->player);
+            //convert game to asapve type of format
+            $this->userService->updateStartKit($user, $gate->game);
+        }
+
         // Update the gate
         $validatedData['admin_id'] = \Auth::id(); // Get the ID of the authenticated user
 
         $gate->update($validatedData);
+
 
         if ($request->contents) {
             // Check if contents is a JSON string
@@ -158,6 +166,16 @@ class GateService
         $discordId = $socialiteUser->id; // Get the Discord ID
         $user = User::where('discord_id', $discordId)->first();
 
+        $game = strtoupper($game);
+
+        // Insert a space before each uppercase letter except the first one
+        $part1 = substr($game, 0, 3); // 'ase'
+        $part2 = substr($game, 3, 3); // 'pve'
+
+// Convert each part to uppercase and join them with a space
+        $game = strtoupper($part1) . ' ' . strtoupper($part2);
+
+
 
         if ($contents === 'starter') {
             $gate = $this->getStarterGate($socialiteUser);
@@ -180,7 +198,8 @@ class GateService
             $message = "OH No it looks like all the gates are full or empty at this time.\n\n"
                 . "A message has been sent to the admin to fix this.  Once they have you will be notified will your gate details\n\n"; // New paragraph
             $this->discordService->sendMessage($discordId, $message);
-            $this->discordService->sendMessage(138792121564921856, "A new user has joined the server and needs a gate assigned to them as none were available");
+            $this->discordService->sendMessage(190198403420913674, "A new user has joined the server "
+                . "and needs an $game gate assigned to them as none were available");
 
         }
     }

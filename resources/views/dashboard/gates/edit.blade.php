@@ -49,7 +49,7 @@
                 {{--                    TODO add function that notiifes when user picked up--}}
                 <x-form-select id="contents-field" label="Add Contents" name="contents" required="">
                     <option value=''>Add Order or Starter Kit</option>
-                    <option value='{{$starter->id ?? ''}}'>{{$starter->name ?? ''}}</option>
+                    <option value={{$starter->id ?? ''}}>{{$starter->name ?? ''}}</option>
                     @foreach($orders as $order)
                         <option value={{$order->id}}>{{$order->id}}</option>
                     @endforeach

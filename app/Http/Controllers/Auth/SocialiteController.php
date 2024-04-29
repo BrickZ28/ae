@@ -56,7 +56,7 @@ class SocialiteController extends Controller
             $this->gateService->issueGate('starter', $socialiteUser, $request->game);
         }
 
-        $user = $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
+        $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);
 
 
         return redirect()->route('logout', ['fromRegistration' => true]);

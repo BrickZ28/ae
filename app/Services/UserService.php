@@ -37,7 +37,7 @@ class UserService
     {
         $user = $this->updateUserAuthentication($user, $socialiteUser, $clientIp, $accessToken);
         $this->updateUserProfile($user, $socialiteUser);
-        $this->syncUserRoles($user, $socialiteUser, $roles);
+        $this->syncUserRoles($socialiteUser, $roles);
 
         return $user;
     }
@@ -81,7 +81,7 @@ class UserService
         );
     }
 
-    private function syncUserRoles($user, $socialiteUser, $roles)
+    private function syncUserRoles( $socialiteUser, $roles)
     {
 
         $roleId = Role::where('role_name', 'Member')->first()->role_id;
