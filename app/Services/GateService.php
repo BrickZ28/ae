@@ -106,8 +106,9 @@ class GateService
         //If its a starter kit and is being assigned we need to update the user starter kit based on their initail role
         if (($request->contents == $starter) && $request->player) {
             $user = User::find($request->player);
-            //convert game to asapve type of format
-            $this->userService->updateStartKit($user, $gate->game);
+            $gate_converted = $this->convertGateToPlaystyleGame($gate);
+
+            $this->userService->updateStartKit($user, $gate_converted);
         }
 
         // Update the gate
@@ -198,7 +199,7 @@ class GateService
             $message = "OH No it looks like all the gates are full or empty at this time.\n\n"
                 . "A message has been sent to the admin to fix this.  Once they have you will be notified will your gate details\n\n"; // New paragraph
             $this->discordService->sendMessage($discordId, $message);
-            $this->discordService->sendMessage(190198403420913674, "A new user has joined the server "
+            $this->discordService->sendMessage(190198403420913674, "$user->username has joined the server "
                 . "and needs an $game gate assigned to them as none were available");
 
         }
@@ -225,6 +226,28 @@ class GateService
         $sevenDaysAgo = Carbon::now()->subDays(7);
         return Gate::with('game', 'playstyle')->where('last_fed', '<=', $sevenDaysAgo)->get();
     }
+
+   private function convertGateToPlaystyleGame($gate)
+{
+    // Convert api_name and playstyle to lowercase
+    $api_name = strtolower($gate->game->api_name);
+    $playstyle = strtolower($gate->playstyle->name);
+
+
+    // Check if the game's api_name contains 'evolved' or 'ascended' and check the playstyle
+    if (str_contains($api_name, 'evolved') && $playstyle === 'pve') {
+        return 'asepve';
+    } elseif (str_contains($api_name, 'evolved') && $playstyle === 'pvp') {
+        return 'asepvp';
+    } elseif (str_contains($api_name, 'ascended') && $playstyle === 'pve') {
+        return 'asapve';
+    } elseif (str_contains($api_name, 'ascended') && $playstyle === 'pvp') {
+        return 'asapvp';
+    }
+
+    // Return null if no match found
+    return null;
+}
 
 
 }
