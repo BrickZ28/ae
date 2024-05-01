@@ -34,6 +34,7 @@ class GateService
             'pin' => 'nullable|numeric',
             'playstyle' => 'required:playstyles,id',
             'game' => 'required:games,id',
+            'player_id' => 'nullable|exists:users,id',
         ]);
 
         if ($validator->fails()) {
@@ -81,22 +82,33 @@ class GateService
         //TODO mark gate as picked up
 
 
+        $data = $request->all();
+
+        // Check if 'player' is set to 'remove'
+        if ($request->player_id === 'remove') {
+            $data['player_id'] = null; // Unassign the gate
+        } else if ($request->player_id) {
+            $data['player_id'] = $request->player_id; // Assign the gate to the new player
+        }
+
         // Define the validation rules
         $rules = [
             'gate_id' => 'required',
             'pin' => ['nullable', 'digits:4'],
+            'player_id' => ['nullable', Rule::exists('users', 'id')],
         ];
 
-//    TODO fix it with the correct validation rules for chaning users and pin
-        // Check if the 'contents' or 'player' fields are being changed
-//        if ($request->player !== $originalPlayer) {
-//            // Add a rule to check if the 'pin' is the same as the old one
-//            $rules['pin'][] = Rule::notIn([$gate->pin]);
-//            $rules['pin'][] = 'required';
-//        }
+        // Create a validator instance
+        $validator = Validator::make($data, $rules);
+
+        // Conditionally add the 'exists' rule for 'player_id'
+        $validator->sometimes('player_id', 'exists:users,id', function ($input) {
+            return $input->player_id !== 'remove';
+        });
 
         // Validate the request
-        $validatedData = $request->validate($rules);
+        $validatedData = $validator->validate();
+
 
         // Check if 'feed' is 1 or if the contents have changed
         if ($request->feed === '1' || $request->contents !== $gate->contents) {
@@ -104,10 +116,12 @@ class GateService
         }
 
         //If its a starter kit and is being assigned we need to update the user starter kit based on their initail role
-        if (($request->contents == $starter) && $request->player) {
-            $user = User::find($request->player);
-            //convert game to asapve type of format
-            $this->userService->updateStartKit($user, $gate->game);
+        if ((int)$request->contents === $starter && $request->player_id) {
+
+            $user = User::find($request->player_id);
+            $gate_converted = $this->convertGateToPlaystyleGame($gate);
+            $this->userService->updateStartKit($user, $gate_converted);
+            $this->issueGate('starter', $user->discord_id, $gate_converted);
         }
 
         // Update the gate
@@ -115,21 +129,15 @@ class GateService
 
         $gate->update($validatedData);
 
-
         if ($request->contents) {
-            // Check if contents is a JSON string
             if (is_string($request->contents) && is_array(json_decode($request->contents, true)) && (json_last_error() == JSON_ERROR_NONE)) {
-                // Decode the JSON string into an array
                 $contents = json_decode($request->contents, true);
-
-                // Iterate over the array and attach each item to the gate
-                foreach ($contents as $itemId) {
-                    $gate->items()->attach($itemId);
-                }
+                $gate->items()->sync($contents);
             } else {
-                // Attach the single item to the gate
-                $gate->items()->attach($request->contents);
+                $gate->items()->sync([$request->contents]);
             }
+        } else {
+            $gate->items()->detach();
         }
         return $gate;
     }
@@ -163,8 +171,8 @@ class GateService
 
     public function issueGate($contents, $socialiteUser, $game)
     {
-        $discordId = $socialiteUser->id; // Get the Discord ID
-        $user = User::where('discord_id', $discordId)->first();
+
+        $user = User::where('discord_id', $socialiteUser)->first();
 
         $game = strtoupper($game);
 
@@ -178,7 +186,7 @@ class GateService
 
 
         if ($contents === 'starter') {
-            $gate = $this->getStarterGate($socialiteUser);
+            $gate = $this->getStarterGate();
         }
 //TODO logic for order content
         if ($user && $gate) {
@@ -193,12 +201,12 @@ class GateService
                 . "Pin: " . $gate->pin . "\n" // Pin will be displayed in color
                 . "```\n\n" // End of code block
                 . "You will find the gate and pin at the community center located at lat: 89.4  long: 40.8."; // New paragraph
-            $this->discordService->sendMessage($discordId, $message);
+            $this->discordService->sendMessage($socialiteUser, $message);
         } else {
             $message = "OH No it looks like all the gates are full or empty at this time.\n\n"
                 . "A message has been sent to the admin to fix this.  Once they have you will be notified will your gate details\n\n"; // New paragraph
-            $this->discordService->sendMessage($discordId, $message);
-            $this->discordService->sendMessage(190198403420913674, "A new user has joined the server "
+            $this->discordService->sendMessage($socialiteUser, $message);
+            $this->discordService->sendMessage(190198403420913674, "$user->username has joined the server "
                 . "and needs an $game gate assigned to them as none were available");
 
         }
@@ -225,6 +233,28 @@ class GateService
         $sevenDaysAgo = Carbon::now()->subDays(7);
         return Gate::with('game', 'playstyle')->where('last_fed', '<=', $sevenDaysAgo)->get();
     }
+
+   private function convertGateToPlaystyleGame($gate)
+{
+    // Convert api_name and playstyle to lowercase
+    $api_name = strtolower($gate->game->api_name);
+    $playstyle = strtolower($gate->playstyle->name);
+
+
+    // Check if the game's api_name contains 'evolved' or 'ascended' and check the playstyle
+    if (str_contains($api_name, 'evolved') && $playstyle === 'pve') {
+        return 'asepve';
+    } elseif (str_contains($api_name, 'evolved') && $playstyle === 'pvp') {
+        return 'asepvp';
+    } elseif (str_contains($api_name, 'ascended') && $playstyle === 'pve') {
+        return 'asapve';
+    } elseif (str_contains($api_name, 'ascended') && $playstyle === 'pvp') {
+        return 'asapvp';
+    }
+
+    // Return null if no match found
+    return null;
+}
 
 
 }

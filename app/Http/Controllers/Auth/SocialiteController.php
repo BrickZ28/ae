@@ -53,7 +53,7 @@ class SocialiteController extends Controller
         $this->discordService->syncDiscordRoles($request, $socialiteUser);
 
         if ($request->game === 'asepve' || $request->game === 'asepvp') {
-            $this->gateService->issueGate('starter', $socialiteUser, $request->game);
+            $this->gateService->issueGate('starter', $socialiteUser->id, $request->game);
         }
 
         $this->userService->updateUser(null, $socialiteUser, $clientIp, $accessToken, $roles);

@@ -38,8 +38,14 @@
                 <x-form-input id="pin-field" label="Pin" value="{{$gate->pin}}" name="pin" placeholder=""
                               required=""/>
 
-                <x-form-select id="player-field" label="Player" name="player" required="">
-                    <option value={{$gate->player->id ?? ''}}>{{$gate->player->username ?? 'Select User'}}</option>
+                <x-form-select id="player-field" label="Player" name="player_id" required="">
+                    @if($gate->player)
+                        <option value={{$gate->player->id}}>{{$gate->player->username}}</option>
+                        <option value="remove">Remove User</option>
+                    @else
+                        <option value="">Select User</option>
+                    @endif
+
                     @foreach($users as $user)
                         <option value={{$user->id}}>{{$user->username}}</option>
                     @endforeach
@@ -67,41 +73,41 @@
         </div>
     </x-form>
 
-    <script>
-        // Store initial values
-        let initialPlayer = document.getElementById('player-field').value;
-        let initialContents = document.getElementById('contents-field').value;
-        let initialPin = document.getElementById('pin-field').value;
+   <script>
+    // Store initial values
+    let initialPlayer = document.getElementById('player-field').value;
+    let initialContents = document.getElementById('contents-field').value;
+    let initialPin = document.getElementById('pin-field').value;
 
-        // Add event listeners
-        document.getElementById('player-field').addEventListener('change', checkForChanges);
-        document.getElementById('contents-field').addEventListener('change', checkForChanges);
+    // Get the form element
+    let form = document.querySelector('form');
 
-        function checkForChanges() {
-            // Get current values
-            let currentPlayer = document.getElementById('player-field').value;
-            let currentContents = document.getElementById('contents-field').value;
-            let currentPin = document.getElementById('pin-field').value;
+    // Add event listener to the form's submit event
+    form.addEventListener('submit', function(event) {
+        // Get current values
+        let currentPlayer = document.getElementById('player-field').value;
+        let currentContents = document.getElementById('contents-field').value;
+        let currentPin = document.getElementById('pin-field').value;
 
-            // Check if player or contents have changed and pin has not
-            if ((currentPlayer !== initialPlayer || currentContents !== initialContents) && currentPin === initialPin) {
-                // Prevent form submission and show SweetAlert
-                event.preventDefault();
-                Swal.fire({
-                    title: 'Confirm?',
-                    text: "The player or contents have changed, but the pin has not. Do you want to proceed?",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, do it!'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        // User clicked 'Yes', submit the form
-                        document.getElementById('denyForm').submit();
-                    }
-                });
-            }
+        // Check if a user is selected and if player or contents have changed and pin has not
+        if (currentPlayer && (currentPlayer !== initialPlayer || currentContents !== initialContents) && currentPin === initialPin) {
+            // Prevent form submission and show SweetAlert
+            event.preventDefault();
+            Swal.fire({
+                title: 'Confirm?',
+                text: "The player or contents have changed, but the pin has not. Update pin to escape this message or click OK to proceed with the info.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'OK'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // User clicked 'OK', submit the form
+                    form.submit();
+                }
+            });
         }
-    </script>
+    });
+</script>
 </x-dashboard.layout>
