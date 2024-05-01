@@ -45,30 +45,33 @@
                                     </tr>
                                     </thead>
                                     <tbody class="fw-semibold text-gray-600">
-                                   @foreach($cart->items as $item)
-    <tr>
-        <td>
-            <div class="d-flex align-items-center">
-                <a href="apps/ecommerce/catalog/edit-product.html" class="symbol symbol-50px">
-                    <span class="symbol-label" style="background-image:url({{$item->image}});"></span>
-                </a>
-                <div class="ms-5">
-                    <a href="apps/ecommerce/catalog/edit-product.html" class="text-gray-800 text-hover-primary fs-5 fw-bold">{{$item->name}}</a>
-                    <div class="fw-semibold fs-7">Price:
-                        @if($item->currency_type == 'USD')
-                            ${{ $item->price }}
-                        @else
-                            {{ $item->price }} AEC
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </td>
-        <td class="text-end pe-5" data-order="39">
-            <span class="fw-bold ms-3">{{$item->pivot->quantity}}</span>
-        </td>
-    </tr>
-@endforeach
+                                    @foreach($cart->items as $item)
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <a href="apps/ecommerce/catalog/edit-product.html"
+                                                       class="symbol symbol-50px">
+                                                        <span class="symbol-label"
+                                                              style="background-image:url({{$item->image}});"></span>
+                                                    </a>
+                                                    <div class="ms-5">
+                                                        <a href="apps/ecommerce/catalog/edit-product.html"
+                                                           class="text-gray-800 text-hover-primary fs-5 fw-bold">{{$item->name}}</a>
+                                                        <div class="fw-semibold fs-7">Price:
+                                                            @if($item->currency_type === 'USD')
+                                                                ${{ $item->price }}
+                                                            @else
+                                                                {{ $item->price }} AEC
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="text-end pe-5" data-order="39">
+                                                <span class="fw-bold ms-3">{{$item->pivot->quantity}}</span>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                     </tbody>
                                 </table>
                                 <!--end::Table-->
@@ -89,18 +92,20 @@
                         <!--begin::Card body-->
                         <div class="card-body pt-0">
                             <!--begin::Billing address-->
-                          <!-- Order Totals Section -->
-<div class="order-totals">
-    <h2>Order Totals</h2>
-    <div class="total">
-        <h3>Total (USD):</h3>
-        <p id="usd-total" style="font-size: 2em; color: green; font-weight: bold;">${{$totalUSD}}</p>
-    </div>
-    <div class="total">
-        <h3>Total (AEC):</h3>
-        <p id="aec-total" style="font-size: 2em; color: green; font-weight: bold;">{{$totalAEC}} </p>
-    </div>
-</div>
+                            <!-- Order Totals Section -->
+                            <div class="order-totals">
+                                <h2>Order Totals</h2>
+                                <div class="total">
+                                    <h3>Total (USD):</h3>
+                                    <p id="usd-total" style="font-size: 2em; color: green; font-weight: bold;">
+                                        ${{$totalUSD}}</p>
+                                </div>
+                                <div class="total">
+                                    <h3>Total (AEC):</h3>
+                                    <p id="aec-total"
+                                       style="font-size: 2em; color: green; font-weight: bold;">{{$totalAEC}} </p>
+                                </div>
+                            </div>
                             <!--end::Billing address-->
                         </div>
                         <!--end::Card body-->
@@ -108,16 +113,19 @@
                     <!--end::Order details-->
                     <div class="d-flex justify-content-end">
                         <!--begin::Button-->
-                        <a href="apps/ecommerce/catalog/products.html" id="kt_ecommerce_edit_order_cancel"
+                        <a href="{{route('cancel-checkout')}}" id="kt_ecommerce_edit_order_cancel"
                            class="btn btn-light me-5">Cancel</a>
                         <!--end::Button-->
                         <!--begin::Button-->
-                        <button type="submit" id="kt_ecommerce_edit_order_submit" class="btn btn-primary">
-                            <span class="indicator-label">Save Changes</span>
-                            <span class="indicator-progress">Please wait...
+                        <form action="{{route('process-payment')}}" method="post">
+                            @csrf
+                            <button type="submit" id="kt_ecommerce_edit_order_submit" class="btn btn-primary">
+                                <span class="indicator-label">Pay</span>
+                                <span class="indicator-progress">Please wait...
 													<span
                                                         class="spinner-border spinner-border-sm align-middle ms-2"></span></span>
-                        </button>
+                            </button>
+                        </form>
                         <!--end::Button-->
                     </div>
                 </div>

@@ -141,6 +141,7 @@ class CartController extends Controller
 
     public function processPayment()
     {
+
         $cart = Cart::where('user_id', auth()->id())->with('items')->first();
 
         if (!$cart) {
@@ -159,6 +160,8 @@ class CartController extends Controller
         // Retrieve the user
         $user = auth()->user();
 
+        //process Stripe payment
+
         // Check if the user has enough AEC credits
         if ($user->ae_credits < $totalAEC) {
             return back()->with('error', 'Not enough AEG credits.');
@@ -171,5 +174,10 @@ class CartController extends Controller
         $user->save();
 
         return back()->with('success', 'AEC credits deducted successfully.');
+    }
+
+    public function cancelCheckout()
+    {
+        return redirect()->route('dashboard.index')->with('error', 'Checkout cancelled.');
     }
 }

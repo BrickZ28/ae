@@ -56,6 +56,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/carts', CartController::class, ['names' => 'carts']);
     Route::patch('/carts/updateQuantity/{id}', [CartController::class, 'updateQuantity'])->name('carts.updateQuantity');
     Route::post('process-payment', [CartController::class, 'processPayment'])->name('process-payment');
+    Route::get('/cancel-checkout', [CartController::class, 'cancelCheckout'])->name('cancel-checkout');
 
     //Categories
     Route::resource('/categories', CategoryController::class, ['names' => 'categories']);
@@ -112,6 +113,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Specials
     Route::resource('/specials', SpecialsController::class, ['names' => 'specials']);
+
+    //Stripe
+    Route::post('https://api.stripe.com//v1/products', );
 
     //Transactions
     Route::resource('/transactions', TransactionsController::class, ['names' => 'transactions']);

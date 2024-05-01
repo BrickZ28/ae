@@ -17,6 +17,14 @@
                         <img src="{{ $item->image}}" alt="Name Not Found"
                              class="w-100"/>
                         <p class="mt-3">{{$item->description}}</p>
+
+                        <!-- Add to cart form -->
+                        <form class="add-to-cart-form" action="{{ route('carts.store', $item->id) }}" method="post">
+                            @csrf
+                            <input type="hidden" name="quantity" value="1">
+                            <input type="hidden" name="id" value="{{$item->id}}">
+                            <button type="submit" class="btn btn-info add-to-cart-button">Add to Cart</button>
+                        </form>
                     </x-dashboard-draggable-modal>
                 </td>
                 <td>
