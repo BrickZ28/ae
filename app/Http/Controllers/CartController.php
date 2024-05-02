@@ -161,6 +161,8 @@ class CartController extends Controller
         $user = auth()->user();
 
         //process Stripe payment
+        $payment = $user->pay('100');
+
 
         // Check if the user has enough AEC credits
         if ($user->ae_credits < $totalAEC) {
@@ -180,4 +182,6 @@ class CartController extends Controller
     {
         return redirect()->route('dashboard.index')->with('error', 'Checkout cancelled.');
     }
+
+
 }
