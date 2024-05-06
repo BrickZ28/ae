@@ -15,4 +15,9 @@ return [
         'redirect' => env('DISCORD_CALLBACK'),
     ],
 
+    'stripe' => [
+        'key' => env('STRIPE_KEY'),
+        'secret' => env('STRIPE_SECRET'),
+    ],
+
 ];

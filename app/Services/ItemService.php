@@ -7,16 +7,29 @@ use App\Models\Game;
 use App\Models\Item;
 use App\Models\Playstyle;
 use App\Traits\FileTrait;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ItemService
 {
     use FileTrait;
 
+    public function index()
+    {
+        $items = Item::where('active', 1)->with('category')->get();
+        $filters = $this->getFilters();
+
+        if (auth()->user()->hasAnyRole(['Owners', 'Head Admin'])) {
+            return view('dashboard.item.index', compact('items', 'filters'));
+        } else {
+            return view('buyer.item.index', compact('items', 'filters',));
+        }
+
+    }
+
     private function getFilters()
     {
-        if(auth()->user()->hasAnyRole(['Owners', 'Head Admin'])){
+        if (auth()->user()->hasAnyRole(['Owners', 'Head Admin'])) {
             $filters = ['name', 'category', 'price', 'Updated on', 'view', 'edit', 'delete'];
         } else {
             $filters = ['image', 'name', 'price', 'Last update', 'View', 'add to cart', 'view cart'];
@@ -24,17 +37,41 @@ class ItemService
 
         return $filters;
     }
-    public function index()
-    {
-        $items = Item::where('active', 1)->with('category')->get();
-        $filters = $this->getFilters();
 
-        if(auth()->user()->hasAnyRole([ 'Owners', 'Head Admin'])){
-            return view('dashboard.item.index', compact('items', 'filters'));
-        } else {
-            return view('buyer.item.index', compact('items', 'filters', ));
+    public function store(Request $request)
+    {
+        $validatedData = $this->validateItem($request);
+
+        // Add playstyle and game to the validated data
+        $validatedData['playstyle_id'] = $request->playstyle_id;
+        $validatedData['game_id'] = $request->game_id;
+
+        $itemCreated = Item::create($validatedData);
+
+        if ($request->hasFile('image')) {
+            $this->uploadFile('do', 'images/items', $request->image, 'public');
         }
 
+        if ($itemCreated) {
+            return redirect()->route('items.create')->with('success', 'New item created successfully');
+        } else {
+            return back()->with('error', 'Failed to create a new item. Please try again.')->withInput();
+        }
+    }
+
+    private function validateItem(Request $request)
+    {
+        return $request->validate([
+            'name' => 'required',
+            'description' => 'nullable',
+            'category_id' => 'required',
+            'currency_type' => 'required',
+            'price' => 'integer|required',
+            'image' => 'image|nullable',
+            'active' => 'boolean|nullable',
+            'playstyle_id' => 'required|exists:playstyles,id', // add this line
+            'game_id' => 'required|exists:games,id', // add this line
+        ]);
     }
 
     public function create()
@@ -44,27 +81,6 @@ class ItemService
         $playstyles = Playstyle::all();
         return view('dashboard.item.create', compact('categories', 'games', 'playstyles'));
     }
-
-   public function store(Request $request)
-{
-    $validatedData = $this->validateItem($request);
-
-    // Add playstyle and game to the validated data
-    $validatedData['playstyle_id'] = $request->playstyle_id;
-    $validatedData['game_id'] = $request->game_id;
-
-    $itemCreated = Item::create($validatedData);
-
-    if ($request->hasFile('image')) {
-        $this->uploadFile('do','images/items', $request->image, 'public');
-    }
-
-    if ($itemCreated) {
-        return redirect()->route('items.create')->with('success', 'New item created successfully');
-    } else {
-        return back()->with('error', 'Failed to create a new item. Please try again.')->withInput();
-    }
-}
 
     public function edit(Item $item)
     {
@@ -79,7 +95,7 @@ class ItemService
         $item->update($validatedData);
 
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
-            $this->uploadFile('do','images/items', $request->image, 'public');
+            $this->uploadFile('do', 'images/items', $request->image, 'public');
         }
 
         return redirect()->route('dashboard.index')->with('success', 'Item updated successfully');
@@ -95,21 +111,6 @@ class ItemService
 
         return back()->with('success', 'Item deleted successfully.');
     }
-
-  private function validateItem(Request $request)
-{
-    return $request->validate([
-        'name' => 'required',
-        'description' => 'nullable',
-        'category_id' => 'required',
-        'currency_type' => 'required',
-        'price' => 'integer|required',
-        'image' => 'image|nullable',
-        'active' => 'boolean|nullable',
-        'playstyle_id' => 'required|exists:playstyles,id', // add this line
-        'game_id' => 'required|exists:games,id', // add this line
-    ]);
-}
 
 
 }

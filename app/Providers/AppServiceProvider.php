@@ -25,13 +25,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->singleton(DiscordService::class, function ($app) {
+        $this->app->singleton(DiscordService::class, function () {
             return new DiscordService();
         });
 
-        $this->app->singleton(UserService::class, function ($app) {
+        $this->app->singleton(UserService::class, function () {
             // Inject DiscordService into UserService
-            return new UserService($app->make(DiscordService::class));
+            return new UserService(app(DiscordService::class));
+        });
+
+        $this->app->bind('App\\Services\\Stripe\\*', function ($parameters) {
+            $class = $parameters['class'];
+            return new $class(config('services.stripe.secret'));
         });
     }
 

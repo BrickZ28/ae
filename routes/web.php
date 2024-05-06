@@ -24,7 +24,6 @@ use App\Http\Controllers\UsersController;
 use Illuminate\Support\Facades\Route;
 
 
-
 // Public Routes
 Route::get('/', [LandingController::class, 'index'])->name('landing.index');
 Route::get('/discord', [DiscordController::class, 'index']);
@@ -39,7 +38,6 @@ Route::get('/auth/redirect/{provider}', [SocialiteController::class, 'redirect']
 Route::get('/under-construction', function () {
     return view('under-construction');
 });
-
 
 
 // Error Route
@@ -115,8 +113,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('/specials', SpecialsController::class, ['names' => 'specials']);
 
     //Stripe
-    Route::post('https://api.stripe.com//v1/products', );
-
+    Route::get('/stripe/product/sync', [ItemController::class, 'uploadToStripe'])->name('sync-product');
     //Transactions
     Route::resource('/transactions', TransactionsController::class, ['names' => 'transactions']);
 

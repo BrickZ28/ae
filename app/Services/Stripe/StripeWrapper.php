@@ -2,7 +2,7 @@
 
 namespace App\Services\Stripe;
 
-use Stripe\Stripe;
+use App\Services\Stripe\Product\StripeProductService;
 use Stripe\StripeClient;
 
 class StripeWrapper
@@ -10,24 +10,29 @@ class StripeWrapper
     private $stripe;
 
     public function __construct()
-{
-    $apiKey = config('stripe.secret');
-    Stripe::setApiKey($apiKey);
-    $this->stripe = new StripeClient($apiKey);
-}
-
-    public function createCharge($amount, $currency, $source, $description)
     {
-        return $this->stripe->charges->create([
-            'amount' => $amount,
-            'currency' => $currency,
-            'source' => $source,
-            'description' => $description,
-        ]);
+        $this->stripe = new StripeClient(config('services.stripe.secret'));
     }
 
-    public function listCharges()
-{
-    return $this->stripe->charges->all();
-}
+    public function createProduct(array $params)
+    {
+        return $this->stripe->products->create($params);
+    }
+
+    public function listProducts($params = [])
+    {
+        return $this->stripe->products->all($params);
+    }
+
+    public function productService()
+    {
+        return new StripeProductService($this);
+    }
+
+    public function createPrice(array $params)
+    {
+        return $this->stripe->prices->create($params);
+    }
+
+    // Add other methods as needed...
 }
