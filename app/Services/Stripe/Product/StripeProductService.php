@@ -14,7 +14,7 @@ class StripeProductService
         $this->stripeWrapper = $stripeWrapper;
     }
 
-    public function uploadToStripe()
+    public function syncStripeProductsToDatabase()
     {
         $items = Item::where('currency_type', 'USD')->get();
         $results = [];
@@ -36,7 +36,8 @@ class StripeProductService
             }
 
             // Check if the product exists on Stripe
-            $products = $this->listProducts(['active' => true]);
+
+            $products = $this->stripeWrapper->listProducts(['active' => true]);
             $existingProduct = null;
 
             foreach ($products->data as $product) {
@@ -58,7 +59,7 @@ class StripeProductService
                 $product = $existingProduct;
             } else {
                 // If the product does not exist, create a new one
-                $product = $this->createProduct($params);
+                $product = $this->stripeWrapper->createProduct($params);
             }
 
             // Create a price and associate it with the product
@@ -73,19 +74,6 @@ class StripeProductService
             $results[] = ['product' => $product, 'price' => $price];
         }
 
-        return $results;
+        return redirect()->route('items.index')->with('success', 'Items uploaded to Stripe successfully');
     }
-
-
-    public function listProducts($params = [])
-    {
-        return $this->stripeWrapper->listProducts($params);
-    }
-
-    public function createProduct(array $params)
-    {
-        return $this->stripeWrapper->createProduct($params);
-    }
-
-
 }

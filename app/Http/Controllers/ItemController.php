@@ -50,9 +50,7 @@ class ItemController extends Controller
 
     public function uploadToStripe(StripeProductService $stripeProductService)
     {
-        $result = $stripeProductService->uploadToStripe();
-
-        return redirect()->route('items.index')->with('success', 'Items uploaded to Stripe successfully');
+        return $stripeProductService->syncStripeProductsToDatabase();
     }
 
     public function indexByGamePlaystyleCategory($game, $playstyle, $category)
