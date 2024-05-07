@@ -2,6 +2,7 @@
 
 namespace App\Services\Stripe;
 
+use App\Services\Stripe\Checkout\StripeCheckoutService;
 use App\Services\Stripe\Product\StripeProductService;
 use Stripe\StripeClient;
 
@@ -24,14 +25,24 @@ class StripeWrapper
         return $this->stripe->products->all($params);
     }
 
-    public function productService()
+    public function checkout()
     {
-        return new StripeProductService($this);
+        return $this->stripe->checkout;
     }
 
     public function createPrice(array $params)
     {
         return $this->stripe->prices->create($params);
+    }
+
+    public function productService()
+    {
+        return new StripeProductService($this);
+    }
+
+    public function checkoutService()
+    {
+        return new StripeCheckoutService($this);
     }
 
     // Add other methods as needed...

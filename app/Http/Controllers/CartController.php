@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Item;
+use App\Services\Stripe\StripeWrapper;
 use Illuminate\Http\Request;
 
 class CartController extends Controller
@@ -136,47 +137,59 @@ class CartController extends Controller
         }, 0);
 
 
-        return view('buyer.cart.checkout', compact('cart', 'totalUSD', 'totalAEC'));
+        $stripe = app(StripeWrapper::class);
+        $checkoutUrl = $stripe->checkoutService()->createCheckoutSession($cart);
+
+
+        return view('buyer.cart.checkout', compact('cart', 'totalUSD', 'totalAEC', 'checkoutUrl'));
     }
 
     public function processPayment()
-    {
+{
+    $cart = Cart::where('user_id', auth()->id())->with('items')->first();
 
-        $cart = Cart::where('user_id', auth()->id())->with('items')->first();
-
-        if (!$cart) {
-            return back()->with('error', 'No items in cart.');
-        }
-
-        $totalUSD = $cart->items->where('currency_type', 'USD')->reduce(function ($carry, $item) {
-            return $carry + ($item->price * $item->pivot->quantity);
-        }, 0);
-
-        $totalAEC = $cart->items->where('currency_type', 'AEC')->reduce(function ($carry, $item) {
-            return $carry + ($item->price * $item->pivot->quantity);
-        }, 0);
-
-
-        // Retrieve the user
-        $user = auth()->user();
-
-        //process Stripe payment
-        $payment = $user->pay('100');
-
-
-        // Check if the user has enough AEC credits
-        if ($user->ae_credits < $totalAEC) {
-            return back()->with('error', 'Not enough AEG credits.');
-        }
-
-        // Deduct the total AEC from the user's AEC credits
-        $user->ae_credits -= $totalAEC;
-
-        // Update the user's AEC credits in the database
-        $user->save();
-
-        return back()->with('success', 'AEC credits deducted successfully.');
+    if (!$cart) {
+        return back()->with('error', 'No items in cart.');
     }
+
+    $totalUSD = $cart->items->where('currency_type', 'USD')->reduce(function ($carry, $item) {
+        return $carry + ($item->price * $item->pivot->quantity);
+    }, 0);
+
+    $totalAEC = $cart->items->where('currency_type', 'AEC')->reduce(function ($carry, $item) {
+        return $carry + ($item->price * $item->pivot->quantity);
+    }, 0);
+
+    // Retrieve the user
+    $user = auth()->user();
+
+    // Create a Stripe client
+    $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+
+    // Create a payment intent
+    try {
+        $paymentIntent = $stripe->paymentIntents->create([
+            'amount' => $totalUSD * 100, // Stripe requires the amount in cents
+            'currency' => 'usd',
+            'payment_method_types' => ['card'],
+        ]);
+    } catch (\Exception $e) {
+        return back()->with('error', 'Payment failed: ' . $e->getMessage());
+    }
+
+    // Check if the user has enough AEC credits
+    if ($user->ae_credits < $totalAEC) {
+        return back()->with('error', 'Not enough AEG credits.');
+    }
+
+    // Deduct the total AEC from the user's AEC credits
+    $user->ae_credits -= $totalAEC;
+
+    // Update the user's AEC credits in the database
+    $user->save();
+
+    return back()->with('success', 'Payment successful. AEC credits deducted successfully.');
+}
 
     public function cancelCheckout()
     {

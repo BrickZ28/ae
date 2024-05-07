@@ -117,7 +117,7 @@
                            class="btn btn-light me-5">Cancel</a>
                         <!--end::Button-->
                         <!--begin::Button-->
-                        <form action="{{route('process-payment')}}" method="post">
+                        <form action="{{$checkoutUrl}}" method="post">
                             @csrf
                             <button type="submit" id="kt_ecommerce_edit_order_submit" class="btn btn-primary">
                                 <span class="indicator-label">Pay</span>
