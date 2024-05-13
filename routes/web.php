@@ -116,6 +116,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/stripe/product/sync', [ItemController::class, 'uploadToStripe'])->name('sync-product');
     //Transactions
     Route::resource('/transactions', TransactionsController::class, ['names' => 'transactions']);
+    Route::get('stripe/success', [App\Http\Controllers\CartController::class, 'handleSuccess'])->name('payment.success');
+    Route::get('stripe/cancel', [App\Http\Controllers\CartController::class, 'handleCancel'])->name('payment.cancel');
 
     // User
     Route::resource('/users', UsersController::class, ['names' => 'users']);

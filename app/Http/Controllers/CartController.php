@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Cart;
 use App\Models\Item;
+use App\Models\Order;
 use App\Services\Stripe\StripeWrapper;
+use Exception;
 use Illuminate\Http\Request;
+use Stripe\StripeClient;
 
 class CartController extends Controller
 {
@@ -151,7 +154,7 @@ class CartController extends Controller
         $itemsUSD = $cart->items->where('currency_type', 'USD');
 
         // Create a Stripe client
-        $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+        $stripe = new StripeClient(config('services.stripe.secret'));
 
         // Create a payment intent
         try {
@@ -172,15 +175,95 @@ class CartController extends Controller
             $checkout_session = $stripe->checkout->sessions->create([
                 'line_items' => $lineItems,
                 'mode' => 'payment',
-                'success_url' => url('/success'), //TODO
-                'cancel_url' => url('/cancel'), //TODO
+                'success_url' => url('stripe/success'), // Replace with your success route
+                'cancel_url' => url('stripe/cancel'), // Replace with your cancel route
             ]);
 
             return redirect($checkout_session->url);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return back()->with('error', 'Payment failed: ' . $e->getMessage());
         }
     }
+
+    public function handleSuccess(Request $request)
+{
+    // Retrieve the cart
+    $cart = Cart::where('user_id', auth()->id())->with('items')->first();
+    if (!$cart) {
+        return back()->with('error', 'No items in cart.');
+    }
+
+    $totalAEC = $cart->items->where('currency_type', 'AEC')->reduce(function ($carry, $item) {
+        return $carry + ($item->price * $item->pivot->quantity);
+    }, 0);
+
+    // Retrieve the user
+    $user = auth()->user();
+
+    // Check if the user has enough AEC credits
+    if ($user->ae_credits < $totalAEC) {
+        return back()->with('error', 'Not enough AEG credits.');
+    }
+
+    // Deduct the total AEC from the user's AEC credits
+    $user->ae_credits -= $totalAEC;
+
+    // Update the user's AEC credits in the database
+    $user->save();
+
+    // Store the transaction in the orders table
+    Order::create([
+        'user_id' => auth()->id(),
+        'order_contents' => $cart->items->toJson(),
+    ]);
+
+    // Remove all items from the user's cart
+    $cart->items()->detach();
+
+    // Display a success message on an invoice page
+    return view('invoice', ['message' => 'Payment successful. AEC credits deducted successfully.']); //TODO
+}
+
+public function handleCancel(Request $request)
+{
+    // Retrieve the cart
+    $cart = Cart::where('user_id', auth()->id())->with('items')->first();
+    if (!$cart) {
+        return back()->with('error', 'No items in cart.');
+    }
+
+    $aecItems = $cart->items->where('currency_type', 'AEC');
+    $totalAEC = $aecItems->reduce(function ($carry, $item) {
+        return $carry + ($item->price * $item->pivot->quantity);
+    }, 0);
+
+    // Retrieve the user
+    $user = auth()->user();
+
+    // Check if the user has enough AEC credits
+    if ($user->ae_credits < $totalAEC) {
+        return back()->with('error', 'Not enough AEG credits.');
+    }
+
+    // Deduct the total AEC from the user's AEC credits
+    $user->ae_credits -= $totalAEC;
+
+    // Update the user's AEC credits in the database
+    $user->save();
+
+    // Store the AEC items in the orders table
+    Order::create([
+        'user_id' => auth()->id(),
+        'items' => $aecItems->toJson(),
+        'total' => $aecItems->sum('price'),
+    ]);
+
+    // Remove the AEC items from the user's cart
+    $cart->items()->whereIn('id', $aecItems->pluck('id'))->detach();
+
+    // Display a cancellation message on an invoice page
+    return view('invoice', ['message' => 'Payment cancelled. AEC credits deducted successfully.']);
+}
 
     public function create()
     {

@@ -107,7 +107,14 @@
                                 </div>
                             </div>
                             <!--end::Billing address-->
+                            @if($totalUSD > 0)
+                                <p class="text-info">By clicking "Pay", your AEG credits will be deducted and you will be redirected to a trusted
+                                    third-party site, Stripe, to finalize your payment.</p>
+                            @else
+                                <p class="text-info">By clicking "Pay", your AEG credits will be deducted.</p>
+                            @endif
                         </div>
+
                         <!--end::Card body-->
                     </div>
                     <!--end::Order details-->
