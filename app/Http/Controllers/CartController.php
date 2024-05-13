@@ -14,10 +14,6 @@ class CartController extends Controller
 
     }
 
-    public function create()
-    {
-    }
-
     public function store(Request $request)
     {
 
@@ -145,51 +141,50 @@ class CartController extends Controller
     }
 
     public function processPayment()
-{
-    $cart = Cart::where('user_id', auth()->id())->with('items')->first();
+    {
+        $cart = Cart::where('user_id', auth()->id())->with('items')->first();
 
-    if (!$cart) {
-        return back()->with('error', 'No items in cart.');
+        if (!$cart) {
+            return back()->with('error', 'No items in cart.');
+        }
+
+        $itemsUSD = $cart->items->where('currency_type', 'USD');
+
+        // Create a Stripe client
+        $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
+
+        // Create a payment intent
+        try {
+            // Prepare line items for each item in the cart
+            $lineItems = $itemsUSD->map(function ($item) {
+                return [
+                    'price_data' => [
+                        'currency' => 'usd',
+                        'product_data' => [
+                            'name' => $item->name,
+                        ],
+                        'unit_amount' => $item->price * 100, // Stripe requires the amount in cents
+                    ],
+                    'quantity' => $item->pivot->quantity,
+                ];
+            })->values()->toArray(); // Reset the keys to be sequential starting from 0
+
+            $checkout_session = $stripe->checkout->sessions->create([
+                'line_items' => $lineItems,
+                'mode' => 'payment',
+                'success_url' => url('/success'), //TODO
+                'cancel_url' => url('/cancel'), //TODO
+            ]);
+
+            return redirect($checkout_session->url);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Payment failed: ' . $e->getMessage());
+        }
     }
 
-    $totalUSD = $cart->items->where('currency_type', 'USD')->reduce(function ($carry, $item) {
-        return $carry + ($item->price * $item->pivot->quantity);
-    }, 0);
-
-    $totalAEC = $cart->items->where('currency_type', 'AEC')->reduce(function ($carry, $item) {
-        return $carry + ($item->price * $item->pivot->quantity);
-    }, 0);
-
-    // Retrieve the user
-    $user = auth()->user();
-
-    // Create a Stripe client
-    $stripe = new \Stripe\StripeClient(config('services.stripe.secret'));
-
-    // Create a payment intent
-    try {
-        $paymentIntent = $stripe->paymentIntents->create([
-            'amount' => $totalUSD * 100, // Stripe requires the amount in cents
-            'currency' => 'usd',
-            'payment_method_types' => ['card'],
-        ]);
-    } catch (\Exception $e) {
-        return back()->with('error', 'Payment failed: ' . $e->getMessage());
+    public function create()
+    {
     }
-
-    // Check if the user has enough AEC credits
-    if ($user->ae_credits < $totalAEC) {
-        return back()->with('error', 'Not enough AEG credits.');
-    }
-
-    // Deduct the total AEC from the user's AEC credits
-    $user->ae_credits -= $totalAEC;
-
-    // Update the user's AEC credits in the database
-    $user->save();
-
-    return back()->with('success', 'Payment successful. AEC credits deducted successfully.');
-}
 
     public function cancelCheckout()
     {
