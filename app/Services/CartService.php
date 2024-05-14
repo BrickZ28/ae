@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Services;
+
+
+use App\Models\Cart;
+use App\Models\Item;
+
+class CartService
+{
+
+    public function cartServiceStore($request)
+    {
+        $item = Item::find($request->input('id')); // Get the item from the request data
+
+        if (!$item) {
+            return ['status' => 'error', 'message' => 'Item not found'];
+        }
+
+        $quantity = $request->input('quantity'); // Get the quantity from the request data
+
+        $cart = $this->getUsersCart(); // Get the cart of the user
+        $cart->items()->attach($item->id, ['quantity' => $quantity]);
+
+        return ['status' => 'success', 'message' => 'Item added to cart successfully'];
+    }
+
+    private function getUsersCart(array $relations = [])
+    {
+        $cart = Cart::where('user_id', auth()->id())->with($relations)->first();
+        if (!$cart) {
+            return back()->with('error', 'No items in cart.');
+        }
+        return $cart;
+    }
+
+    public function cartServiceShow()
+    {
+        $cart = $this->getUsersCart(['items']);
+
+        $itemsUSD = $cart->items->where('currency_type', 'USD');
+        $totalUSD = $this->calculateTotal($itemsUSD);
+
+        $itemsAEC = $cart->items->where('currency_type', 'AEC');
+        $totalAEC = $this->calculateTotal($itemsAEC);
+
+        return view('buyer.cart.show', compact('itemsUSD', 'totalUSD', 'itemsAEC', 'totalAEC'));
+    }
+
+    private function calculateTotal($items)
+    {
+        $total = 0;
+        foreach ($items as $item) {
+            $total += $item->price * $item->pivot->quantity;
+        }
+        return $total;
+    }
+
+    public function cartDestroyService($id)
+    {
+        $cart = $this->getUsersCart();
+
+        // Retrieve the item
+        $item = Item::find($id);
+
+        // Check if the item exists
+        if (!$item) {
+            return redirect()->route('dashboard.index')->with('error', 'No Item found.');
+        }
+
+        // Detach the item from the cart
+        $cart->items()->detach($item->id);
+
+        // Check if the cart is empty
+        if ($cart->items->isEmpty()) {
+            // Delete the cart if it's empty
+            $cart->delete();
+        }
+
+        if (!Cart::where('user_id', auth()->id())->first()) {
+            return redirect()->route('dashboard.index')->with('success', 'Item removed from cart and cart is empty.');
+        } else {
+            return back()->with('success', 'Item removed from cart successfully.');
+        }
+    }
+
+}

@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 use RealRashid\SweetAlert\Facades\Alert;
-use Request;
 
 class GateService
 {
@@ -26,22 +25,6 @@ class GateService
         $this->discordService = $discordService;
         $this->userService = $userService;
     }
-
-    public function validate($data)
-    {
-        $validator = Validator::make($data, [
-            'gate_id' => 'required',
-            'pin' => 'nullable|numeric',
-            'playstyle' => 'required:playstyles,id',
-            'game' => 'required:games,id',
-            'player_id' => 'nullable|exists:users,id',
-        ]);
-
-        if ($validator->fails()) {
-            throw new ValidationException($validator);
-        }
-    }
-
 
     public function createGate($data)
     {
@@ -72,6 +55,21 @@ class GateService
                 // Handle other SQL errors
                 Alert::error('Database Error', 'An error occurred while creating the gate.');
             }
+        }
+    }
+
+    public function validate($data)
+    {
+        $validator = Validator::make($data, [
+            'gate_id' => 'required',
+            'pin' => 'nullable|numeric',
+            'playstyle' => 'required:playstyles,id',
+            'game' => 'required:games,id',
+            'player_id' => 'nullable|exists:users,id',
+        ]);
+
+        if ($validator->fails()) {
+            throw new ValidationException($validator);
         }
     }
 
@@ -142,6 +140,87 @@ class GateService
         return $gate;
     }
 
+    private function convertGateToPlaystyleGame($gate)
+    {
+        // Convert api_name and playstyle to lowercase
+        $api_name = strtolower($gate->game->api_name);
+        $playstyle = strtolower($gate->playstyle->name);
+
+
+        // Check if the game's api_name contains 'evolved' or 'ascended' and check the playstyle
+        if (str_contains($api_name, 'evolved') && $playstyle === 'pve') {
+            return 'asepve';
+        } elseif (str_contains($api_name, 'evolved') && $playstyle === 'pvp') {
+            return 'asepvp';
+        } elseif (str_contains($api_name, 'ascended') && $playstyle === 'pve') {
+            return 'asapve';
+        } elseif (str_contains($api_name, 'ascended') && $playstyle === 'pvp') {
+            return 'asapvp';
+        }
+
+        // Return null if no match found
+        return null;
+    }
+
+    public function issueGate($contents, $socialiteUser, $game)
+    {
+
+        $user = User::where('discord_id', $socialiteUser)->first();
+
+        $game = strtoupper($game);
+
+        // Insert a space before each uppercase letter except the first one
+        $part1 = substr($game, 0, 3); // 'ase'
+        $part2 = substr($game, 3, 3); // 'pve'
+
+// Convert each part to uppercase and join them with a space
+        $game = strtoupper($part1) . ' ' . strtoupper($part2);
+
+
+        if ($contents === 'starter') {
+            $gate = $this->getStarterGate();
+        }
+//TODO logic for order content
+        if ($user && $gate) {
+            // If the user exists and the gate is available and has a starter kit
+            $gate->update(['player_id' => $user->id]);
+            $this->userService->updateStartKit($user, $game);
+
+            $message = "You have been assigned a new gate from AfterEarth Gaming\n\n"
+                . "Here is your gate and pin information:\n\n"
+                . "```css\n" // Start of code block with CSS syntax highlighting
+                . "Gate ID: " . $gate->gate_id . "\n" // Gate ID will be displayed in color
+                . "Pin: " . $gate->pin . "\n" // Pin will be displayed in color
+                . "```\n\n" // End of code block
+                . "You will find the gate and pin at the community center located at lat: 89.4  long: 40.8."; // New paragraph
+            $this->discordService->sendMessage($socialiteUser, $message);
+        } else {
+            $message = "OH No it looks like all the gates are full or empty at this time.\n\n"
+                . "A message has been sent to the admin to fix this.  Once they have you will be notified will your gate details\n\n"; // New paragraph
+            $this->discordService->sendMessage($socialiteUser, $message);
+            $this->discordService->sendMessage(190198403420913674, "$user->username has joined the server " //TODO
+                // change this to K
+                . "and needs an $game gate assigned to them as none were available");
+
+        }
+    }
+
+    private function getStarterGate()
+    {
+        $starterKitId = Item::where('name', 'Starter Kit')->first()->id;
+
+        $gatesWithStarterKit = Gate::whereHas('items', function ($query) use ($starterKitId) {
+            $query->where('item_id', $starterKitId);
+        })->get();
+
+        $gate = $gatesWithStarterKit->first(function ($gate) {
+            return $gate->player == null;
+        });
+
+        return $gate;
+
+    }
+
     public function attachItemsToGate(Gate $gate, $contents)
     { //TODO get orders all working and check this method
         // Logic for attaching items to a gate
@@ -169,92 +248,11 @@ class GateService
             ->get();
     }
 
-    public function issueGate($contents, $socialiteUser, $game)
-    {
-
-        $user = User::where('discord_id', $socialiteUser)->first();
-
-        $game = strtoupper($game);
-
-        // Insert a space before each uppercase letter except the first one
-        $part1 = substr($game, 0, 3); // 'ase'
-        $part2 = substr($game, 3, 3); // 'pve'
-
-// Convert each part to uppercase and join them with a space
-        $game = strtoupper($part1) . ' ' . strtoupper($part2);
-
-
-
-        if ($contents === 'starter') {
-            $gate = $this->getStarterGate();
-        }
-//TODO logic for order content
-        if ($user && $gate) {
-            // If the user exists and the gate is available and has a starter kit
-            $gate->update(['player_id' => $user->id]);
-            $this->userService->updateStartKit($user, $game);
-
-            $message = "You have been assigned a new gate from AfterEarth Gaming\n\n"
-                . "Here is your gate and pin information:\n\n"
-                . "```css\n" // Start of code block with CSS syntax highlighting
-                . "Gate ID: " . $gate->gate_id . "\n" // Gate ID will be displayed in color
-                . "Pin: " . $gate->pin . "\n" // Pin will be displayed in color
-                . "```\n\n" // End of code block
-                . "You will find the gate and pin at the community center located at lat: 89.4  long: 40.8."; // New paragraph
-            $this->discordService->sendMessage($socialiteUser, $message);
-        } else {
-            $message = "OH No it looks like all the gates are full or empty at this time.\n\n"
-                . "A message has been sent to the admin to fix this.  Once they have you will be notified will your gate details\n\n"; // New paragraph
-            $this->discordService->sendMessage($socialiteUser, $message);
-            $this->discordService->sendMessage(190198403420913674, "$user->username has joined the server "
-                . "and needs an $game gate assigned to them as none were available");
-
-        }
-    }
-
-    private function getStarterGate()
-    {
-        $starterKitId = Item::where('name', 'Starter Kit')->first()->id;
-
-        $gatesWithStarterKit = Gate::whereHas('items', function ($query) use ($starterKitId) {
-            $query->where('item_id', $starterKitId);
-        })->get();
-
-        $gate = $gatesWithStarterKit->first(function ($gate) {
-            return $gate->player == null;
-        });
-
-        return $gate;
-
-    }
-
     public function getGatesNotFedInSevenDays()
     {
         $sevenDaysAgo = Carbon::now()->subDays(7);
         return Gate::with('game', 'playstyle')->where('last_fed', '<=', $sevenDaysAgo)->get();
     }
-
-   private function convertGateToPlaystyleGame($gate)
-{
-    // Convert api_name and playstyle to lowercase
-    $api_name = strtolower($gate->game->api_name);
-    $playstyle = strtolower($gate->playstyle->name);
-
-
-    // Check if the game's api_name contains 'evolved' or 'ascended' and check the playstyle
-    if (str_contains($api_name, 'evolved') && $playstyle === 'pve') {
-        return 'asepve';
-    } elseif (str_contains($api_name, 'evolved') && $playstyle === 'pvp') {
-        return 'asepvp';
-    } elseif (str_contains($api_name, 'ascended') && $playstyle === 'pve') {
-        return 'asapve';
-    } elseif (str_contains($api_name, 'ascended') && $playstyle === 'pvp') {
-        return 'asapvp';
-    }
-
-    // Return null if no match found
-    return null;
-}
 
 
 }
