@@ -22,7 +22,7 @@ class CartService
         $cart = $this->getUsersCart(); // Get the cart of the user
         $cart->items()->attach($item->id, ['quantity' => $quantity]);
 
-        return ['status' => 'success', 'message' => 'Item added to cart successfully'];
+        return ['status' => 'success', 'message' => 'Item added to cart successfully', 'redirectTo' => 'dashboard'];
     }
 
     private function getUsersCart(array $relations = [])
@@ -65,7 +65,7 @@ class CartService
 
         // Check if the item exists
         if (!$item) {
-            return redirect()->route('dashboard.index')->with('error', 'No Item found.');
+            return ['status' => 'error', 'message' => 'Item not found', 'redirectTo' => 'dashboard'];
         }
 
         // Detach the item from the cart
@@ -78,10 +78,10 @@ class CartService
         }
 
         if (!Cart::where('user_id', auth()->id())->first()) {
-            return redirect()->route('dashboard.index')->with('success', 'Item removed from cart and cart is empty.');
-        } else {
-            return back()->with('success', 'Item removed from cart successfully.');
+            return ['status' => 'success', 'message' => 'Item removed from cart. Cart is now empty', 'redirectTo' => 'dashboard'];
         }
+
+        return ['status' => 'success', 'message' => 'Item removed from cart', 'redirectTo' => 'back'];
     }
 
 }

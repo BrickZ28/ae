@@ -15,20 +15,22 @@ class RedirectController extends Controller
     }
 
     protected function handleServiceResult($result)
-    {
-        if ($result['status'] === 'success') {
-            return $this->toDashboardWithSuccess($result['message']);
-        } else {
-            return $this->toDashboardWithError($result['message']);
-        }
+{
+    $method = $result['redirectTo'] . 'With' . ucfirst($result['status']);
+
+    if (method_exists($this, $method)) {
+        return $this->$method($result['message']);
     }
 
-    protected function toDashboardWithSuccess($message)
+// Handle the case where the method does not exist
+        return back()->with('error', 'An error occurred while processing your request.');
+    }
+    protected function dashboardWithSuccess($message)
     {
         return redirect()->route('dashboard.index')->with('success', $message);
     }
 
-    protected function toDashboardWithError($message)
+    protected function dashboardWithError($message)
     {
         return redirect()->route('dashboard.index')->with('error', $message);
     }
