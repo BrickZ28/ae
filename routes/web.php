@@ -11,6 +11,7 @@ use App\Http\Controllers\GateController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LandingController;
 use App\Http\Controllers\PackageController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlaystyleController;
 use App\Http\Controllers\QuestionAttemptController;
 use App\Http\Controllers\QuestionController;
@@ -53,8 +54,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //Cart
     Route::resource('/carts', CartController::class, ['names' => 'carts']);
     Route::patch('/carts/updateQuantity/{id}', [CartController::class, 'updateQuantity'])->name('carts.updateQuantity');
-    Route::post('process-payment', [CartController::class, 'processPayment'])->name('process-payment');
-    Route::get('/cancel-checkout', [CartController::class, 'cancelCheckout'])->name('cancel-checkout');
+    Route::post('process-payment', [PaymentController::class, 'processPayment'])->name('process-payment');
+    Route::get('/cancel-checkout', [PaymentController::class, 'cancelCheckout'])->name('cancel-checkout');
 
     //Categories
     Route::resource('/categories', CategoryController::class, ['names' => 'categories']);
@@ -116,8 +117,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/stripe/product/sync', [ItemController::class, 'uploadToStripe'])->name('sync-product');
     //Transactions
     Route::resource('/transactions', TransactionsController::class, ['names' => 'transactions']);
-    Route::get('stripe/success', [App\Http\Controllers\CartController::class, 'stripePaymentSuccess'])->name('payment.success');
-    Route::get('stripe/cancel', [App\Http\Controllers\CartController::class, 'stripePaymentCancel'])->name('payment.cancel');
+    Route::get('stripe/success', [PaymentController::class, 'stripePaymentSuccess'])->name('payment.success');
+    Route::get('stripe/cancel', [PaymentController::class, 'stripePaymentCancel'])->name('payment.cancel');
 
     // User
     Route::resource('/users', UsersController::class, ['names' => 'users']);

@@ -5,6 +5,7 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\Item;
+use App\Services\Stripe\StripeWrapper;
 
 class CartService
 {
@@ -82,6 +83,54 @@ class CartService
         }
 
         return ['status' => 'success', 'message' => 'Item removed from cart', 'redirectTo' => 'back'];
+    }
+
+    public function updateCartQuantityService($id, $request)
+    {
+        // Retrieve the cart
+        $cart = Cart::where('user_id', auth()->id())->first();
+
+        // Check if the cart exists
+        if (!$cart) {
+            return ['status' => 'error', 'message' => 'No cart found', 'redirectTo' => 'back'];
+        }
+
+        // Retrieve the item
+        $item = Item::find($id);
+
+        // Check if the item exists
+        if (!$item) {
+            return ['status' => 'error', 'message' => 'No item found', 'redirectTo' => 'back'];
+        }
+
+        // Update the quantity of the item in the cart
+        $cart->items()->updateExistingPivot($item->id, ['quantity' => $request->quantity]);
+
+        return ['status' => 'success', 'message' => 'Quantity updated', 'redirectTo' => 'back'];
+    }
+
+    public function cartCheckoutService()
+    {
+        $cart = Cart::where('user_id', auth()->id())->with('items')->first();
+
+        if (!$cart) {
+            return ['status' => 'error', 'message' => 'No cart found', 'redirectTo' => 'back'];
+        }
+
+        $totalUSD = $cart->items->where('currency_type', 'USD')->reduce(function ($carry, $item) {
+            return $carry + ($item->price * $item->pivot->quantity);
+        }, 0);
+
+        $totalAEC = $cart->items->where('currency_type', 'AEC')->reduce(function ($carry, $item) {
+            return $carry + ($item->price * $item->pivot->quantity);
+        }, 0);
+
+
+        $stripe = app(StripeWrapper::class);
+        $checkoutUrl = $stripe->checkoutService()->createCheckoutSession($cart);
+
+
+        return view('buyer.cart.checkout', compact('cart', 'totalUSD', 'totalAEC', 'checkoutUrl'));
     }
 
 }
