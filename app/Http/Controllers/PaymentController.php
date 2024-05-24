@@ -21,7 +21,6 @@ class PaymentController extends Controller
 
     public function stripePaymentSuccess(Request $request)
     {
-        dd($request->all());
         return $this->paymentService->stripePaymentSuccess($request);
     }
 

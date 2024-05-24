@@ -126,11 +126,11 @@ class CartService
         }, 0);
 
 
-        $stripe = app(StripeWrapper::class);
-        $checkoutUrl = $stripe->checkoutService()->createCheckoutSession($cart);
-
-
-        return view('buyer.cart.checkout', compact('cart', 'totalUSD', 'totalAEC', 'checkoutUrl'));
+        return [
+            'cart' => $cart,
+            'totalUSD' => $totalUSD,
+            'totalAEC' => $totalAEC,
+        ];
     }
 
 }

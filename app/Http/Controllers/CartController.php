@@ -5,17 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Services\CartService;
 use App\Services\DiscordService;
+use App\Services\PaymentService;
 use Illuminate\Http\Request;
 
 class CartController extends RedirectController
 {
-    private $discordService;
-    private $cartService;
 
-    public function __construct(DiscordService $discordService, CartService $cartService)
+    private $cartService;
+    private $paymentService;
+
+    public function __construct(PaymentService $paymentservice, CartService $cartService)
     {
-        $this->discordService = $discordService;
+
         $this->cartService = $cartService;
+        $this->paymentService = $paymentservice;
     }
 
 
@@ -54,7 +57,9 @@ class CartController extends RedirectController
 
     public function checkout()
     {
-        return $this->cartService->cartCheckoutService();
+        $checkoutData = $this->cartService->cartCheckoutService();
+
+        return $this->paymentService->processPayment($checkoutData['cart'], $checkoutData['totalUSD'], $checkoutData['totalAEC']);
     }
 
 
