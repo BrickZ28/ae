@@ -10,6 +10,7 @@ use App\Http\Controllers\GamesController;
 use App\Http\Controllers\GateController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\LandingController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PackageController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PlaystyleController;
@@ -84,6 +85,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     //menu
     Route::get('/items/{game}/{playstyle}/{category}', [ItemController::class, 'indexByGamePlaystyleCategory'])
         ->name('items.index.gpc');
+
+    //orders
+    Route::resource('/orders', OrderController::class, ['names' => 'orders']);
 
     //Package
     Route::resource('/packages', PackageController::class, ['names' => 'packages']);

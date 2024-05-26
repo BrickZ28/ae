@@ -122,9 +122,14 @@
                         <tr>
 
                             <td colspan="2" class="border-0 text-right pt-10">
-                                <a href="{{route('checkout')}}" class="btn btn-success font-weight-bolder px-8">Proceed
-                                    to
-                                    Checkout</a>
+                                <a href="{{route('checkout')}}" class="btn btn-success font-weight-bolder px-8">
+                                    @if($totalUSD === 0 && $totalAEC > 0)
+                                        Purchase Now
+                                    @else
+                                        Proceed to Checkout
+                                    @endif
+
+                                </a>
                             </td>
                         </tr>
                         <!--end::Cart Footer-->

@@ -28,8 +28,9 @@ class CartService
     private function getUsersCart(array $relations = [])
     {
         $cart = Cart::where('user_id', auth()->id())->with($relations)->first();
+
         if (!$cart) {
-            return back()->with('error', 'No items in cart.');
+            $cart = Cart::create(['user_id' => auth()->id()]);
         }
         return $cart;
     }

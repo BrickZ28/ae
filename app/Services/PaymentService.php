@@ -11,21 +11,21 @@ class PaymentService
 {
 
 
-    public function processPayment($cart, $totalUsd, $totalAec)
-    {
-        if ($totalUsd > 0) {
-            return $this->processStripePayment($cart);
-        }
 
-        if ($totalAec > 0) {
-            $aecResult = $this->processAecPayment($totalAec);
-            if ($aecResult['status'] === 'error') {
-                return $aecResult;
-            }
-        }
-
-        return ['status' => 'success', 'message' => 'Payment processed successfully'];
+   public function processPayment($cart, $totalUsd, $totalAec)
+{
+    if ($totalUsd > 0) {
+        return $this->processStripePayment($cart);
     }
+
+
+    if ($totalUsd === 0 && $totalAec > 0) {
+
+        return redirect(route('dashboard.index'))->with('success', 'AE Credits Deducted');
+    }
+
+    return ['status' => 'error', 'message' => 'Transaction Not completed', 'redirectTo' => 'dashboard'];
+}
 
     private function processStripePayment($cart)
     {
@@ -106,16 +106,18 @@ class PaymentService
         }
 
         $order = new Order;
-        $order->addCartItems($cart, $totalUSD);
+        $order->addCartItems($cart, $totalUSD, $totalAEC);
 
         $cart->items()->detach();
         $cart->delete();
+
+        // TODO add to transaction both the USD and AECredits payments
 
         return ['status' => 'success', 'message' => $msg, 'redirectTo' => 'dashboard'];
 
     }
 
-    // In your Order model
+
 
 
 }
