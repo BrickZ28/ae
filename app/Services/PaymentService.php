@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Order;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Stripe\StripeClient;
@@ -103,10 +104,18 @@ class PaymentService
             $this->processAecPayment($totalAEC);
             $msg .= ' AE Credits Deducted';
         }
+
+        $order = new Order;
+        $order->addCartItems($cart, $totalUSD);
+
+        $cart->items()->detach();
+        $cart->delete();
+
         return ['status' => 'success', 'message' => $msg, 'redirectTo' => 'dashboard'];
 
-
     }
+
+    // In your Order model
 
 
 }
