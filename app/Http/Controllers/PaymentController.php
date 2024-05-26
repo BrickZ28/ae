@@ -29,14 +29,31 @@ class PaymentController extends RedirectController
         return $this->paymentService->cancelCheckout();
     }
 
-    public function handleStripeResponse()
+    public function handleStripeSuccessResponse()
     {
+        $cart = session('cart');
+        $totalUSD = session('totalUSD');
+        $totalAEC = session('totalAEC');
+
         // Process the payment
-        $paymentResult = $this->paymentService->handleStripeResponseService();
+        $paymentResult = $this->paymentService->handleStripeResponseService($totalAEC, $totalUSD, $cart);
 
         // Handle the result of the payment
         return $this->handleServiceResult($paymentResult);
     }
+
+    public function handleStripeCanxResponse()
+    {
+        $cart = session('cart');
+        $totalUSD = null;
+        $totalAEC = session('totalAEC');
+        // Process the payment
+        $paymentResult = $this->paymentService->handleStripeResponseService($totalAEC, $totalUSD, $cart);
+
+        // Handle the result of the payment
+        return $this->handleServiceResult($paymentResult);
+    }
+
 
     public function processPayment()
     {

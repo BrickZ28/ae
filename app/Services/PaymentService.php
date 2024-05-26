@@ -10,11 +10,6 @@ class PaymentService
 {
 
 
-    public function __construct()
-    {
-
-    }
-
     public function processPayment($cart, $totalUsd, $totalAec)
     {
         if ($totalUsd > 0) {
@@ -97,16 +92,18 @@ class PaymentService
         return false;
     }
 
-    public function handleStripeResponseService()
+    public function handleStripeResponseService($totalAEC, $totalUSD, $cart)
     {
-        $cart = session('cart');
-        $totalUSD = session('totalUSD');
-        $totalAEC = session('totalAEC');
+        $msg = 'Payment processed successfully!! ';
+        if (!$totalUSD) {
+            $msg = ' Stripe Payment Cancelled. ';
+        }
 
         if ($totalAEC > 0) {
             $this->processAecPayment($totalAEC);
+            $msg .= ' AE Credits Deducted';
         }
-        return ['status' => 'success', 'message' => 'Payment processed successfully', 'redirectTo' => 'dashboard'];
+        return ['status' => 'success', 'message' => $msg, 'redirectTo' => 'dashboard'];
 
 
     }

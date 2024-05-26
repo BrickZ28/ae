@@ -117,8 +117,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/stripe/product/sync', [ItemController::class, 'uploadToStripe'])->name('sync-product');
     //Transactions
     Route::resource('/transactions', TransactionsController::class, ['names' => 'transactions']);
-    Route::get('stripe/success', [PaymentController::class, 'handleStripeResponse'])->name('payment.success');
-    Route::get('stripe/cancel', [PaymentController::class, 'handleStripeResponse'])->name('payment.cancel');
+    Route::get('stripe/success', [PaymentController::class, 'handleStripeSuccessResponse'])->name('payment.success');
+    Route::get('stripe/cancel', [PaymentController::class, 'handleStripeCanxResponse'])->name('payment.cancel');
 
     // User
     Route::resource('/users', UsersController::class, ['names' => 'users']);
