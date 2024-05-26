@@ -24,7 +24,8 @@ class Order extends Model
             if ($totalUSD > 0) {
                 return $item->currency_type === 'USD';
             } else {
-                return $item->currency_type === 'AEC' && Auth::user()->ae_credits >= $item->price * $item->pivot->quantity;
+                // No need to check for credits here, as it's already been done in the PaymentService
+                return $item->currency_type === 'AEC';
             }
         })->toArray(); // Convert the cart items to an array
 
@@ -34,9 +35,6 @@ class Order extends Model
         $this->save(); // Save the order
     }
 
-    // In your Order model
-
-// In your Order model
 
     public function user()
     {
