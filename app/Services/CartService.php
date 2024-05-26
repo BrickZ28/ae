@@ -5,7 +5,6 @@ namespace App\Services;
 
 use App\Models\Cart;
 use App\Models\Item;
-use App\Services\Stripe\StripeWrapper;
 
 class CartService
 {
@@ -125,6 +124,10 @@ class CartService
             return $carry + ($item->price * $item->pivot->quantity);
         }, 0);
 
+
+        session()->put('cart', $cart);
+        session()->put('totalUSD', $totalUSD);
+        session()->put('totalAEC', $totalAEC);
 
         return [
             'cart' => $cart,
