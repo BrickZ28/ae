@@ -11,21 +11,20 @@ class PaymentService
 {
 
 
+    public function processPayment($cart, $totalUsd, $totalAec)
+    {
+        if ($totalUsd > 0) {
+            return $this->processStripePayment($cart);
+        }
 
-   public function processPayment($cart, $totalUsd, $totalAec)
-{
-    if ($totalUsd > 0) {
-        return $this->processStripePayment($cart);
+
+        if ($totalUsd === 0 && $totalAec > 0) {
+
+            return redirect(route('dashboard.index'))->with('success', 'AE Credits Deducted');
+        }
+
+        return ['status' => 'error', 'message' => 'Transaction Not completed', 'redirectTo' => 'dashboard'];
     }
-
-
-    if ($totalUsd === 0 && $totalAec > 0) {
-
-        return redirect(route('dashboard.index'))->with('success', 'AE Credits Deducted');
-    }
-
-    return ['status' => 'error', 'message' => 'Transaction Not completed', 'redirectTo' => 'dashboard'];
-}
 
     private function processStripePayment($cart)
     {
@@ -61,6 +60,30 @@ class PaymentService
         }
     }
 
+    public function handleStripeResponseService($totalAEC, $totalUSD, $cart)
+    {
+        $msg = 'Payment processed successfully!! ';
+        if (!$totalUSD) {
+            $msg = ' Stripe Payment Cancelled. ';
+        }
+
+        if ($totalAEC > 0) {
+            $this->processAecPayment($totalAEC);
+            $msg .= ' AE Credits Deducted';
+        }
+
+        $order = new Order;
+        $order->addCartItems($cart, $totalUSD, $totalAEC);
+
+//        $cart->items()->detach();
+//        $cart->delete();
+
+        // TODO add to transaction both the USD and AECredits payments
+
+        return ['status' => 'success', 'message' => $msg, 'redirectTo' => 'dashboard'];
+
+    }
+
     private function processAecPayment($totalAec)
     {
         if (!$this->hasEnoughAEC($totalAec)) {
@@ -92,32 +115,6 @@ class PaymentService
 
         return false;
     }
-
-    public function handleStripeResponseService($totalAEC, $totalUSD, $cart)
-    {
-        $msg = 'Payment processed successfully!! ';
-        if (!$totalUSD) {
-            $msg = ' Stripe Payment Cancelled. ';
-        }
-
-        if ($totalAEC > 0) {
-            $this->processAecPayment($totalAEC);
-            $msg .= ' AE Credits Deducted';
-        }
-
-        $order = new Order;
-        $order->addCartItems($cart, $totalUSD, $totalAEC);
-
-        $cart->items()->detach();
-        $cart->delete();
-
-        // TODO add to transaction both the USD and AECredits payments
-
-        return ['status' => 'success', 'message' => $msg, 'redirectTo' => 'dashboard'];
-
-    }
-
-
 
 
 }

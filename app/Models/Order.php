@@ -18,29 +18,24 @@ class Order extends Model
     }
 
     public function addCartItems(Cart $cart, $totalUSD, $totalAEC)
-{
-    // Filter the cart items based on their currency_type
-    $cartItems = $cart->items->filter(function ($item) use ($totalUSD) {
-        if ($totalUSD > 0) {
-            return $item->currency_type === 'USD';
-        } else {
-            // No need to check for credits here, as it's already been done in the PaymentService
-            return $item->currency_type === 'AEC';
-        }
-    })->toArray(); // Convert the cart items to an array
+    {
+        // Filter the cart items based on their currency_type
+        $cartItems = $cart->items->filter(function ($item) {
+            return $item->currency_type === 'USD' || $item->currency_type === 'AEC';
+        })->values()->toArray(); // Reset the keys and convert the cart items to an array
 
-    // Prepare the order contents
-    $orderContents = [
-        'items' => $cartItems,
-        'totalUSD' => $totalUSD,
-        'totalAEC' => $totalAEC,
-    ];
+        // Prepare the order contents
+        $orderContents = [
+            'items' => $cartItems,
+            'totalUSD' => $totalUSD,
+            'totalAEC' => $totalAEC,
+        ];
 
-    $this->order_contents = json_encode($orderContents); // Convert the array to JSON and store it in the order_contents column
-    $this->user_id = Auth::id(); // Set the user_id to the ID of the currently authenticated user
+        $this->order_contents = json_encode($orderContents); // Convert the array to JSON and store it in the order_contents column
+        $this->user_id = Auth::id(); // Set the user_id to the ID of the currently authenticated user
 
-    $this->save(); // Save the order
-}
+        $this->save(); // Save the order
+    }
 
 
     public function user()
