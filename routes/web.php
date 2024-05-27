@@ -20,6 +20,7 @@ use App\Http\Controllers\RulesController;
 use App\Http\Controllers\ScreenshotsController;
 use App\Http\Controllers\ServersController;
 use App\Http\Controllers\SpecialsController;
+use App\Http\Controllers\StatusController;
 use App\Http\Controllers\TransactionsController;
 use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\UsersController;
@@ -116,6 +117,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     // Specials
     Route::resource('/specials', SpecialsController::class, ['names' => 'specials']);
+
+    //Status
+    Route::resource('/statuses', StatusController::class, ['names' => 'statuses']);
 
     //Stripe
     Route::get('/stripe/product/sync', [ItemController::class, 'uploadToStripe'])->name('sync-product');

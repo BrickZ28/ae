@@ -28,4 +28,9 @@ class Transaction extends Model
     {
         return $this->belongsTo(Package::class);
     }
+
+    public function order()
+    {
+        return $this->belongsTo(Order::class);
+    }
 }

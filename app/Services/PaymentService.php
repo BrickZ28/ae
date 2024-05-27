@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\ProcessTransactionJob;
 use App\Models\Order;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,8 @@ class PaymentService
 
 
         if ($totalUsd === 0 && $totalAec > 0) {
-
+            $this->createOrder($cart, $totalUsd, $totalAec);
+            $this->removeCart($cart);
             return redirect(route('dashboard.index'))->with('success', 'AE Credits Deducted');
         }
 
@@ -60,6 +62,28 @@ class PaymentService
         }
     }
 
+    private function createOrder($cart, $totalUSD, $totalAEC)
+    {
+        $order = new Order;
+        $order->addCartItems($cart, $totalUSD, $totalAEC);
+
+        $transactionData = [
+            'order_id' => $order->id,
+            'reason' => 'Order #' . $order->id,
+            'payer_id' => Auth::id(),
+
+        ];
+
+
+        ProcessTransactionJob::dispatch($transactionData);
+    }
+
+    private function removeCart($cart)
+    {
+        $cart->items()->detach();
+        $cart->delete();
+    }
+
     public function handleStripeResponseService($totalAEC, $totalUSD, $cart)
     {
         $msg = 'Payment processed successfully!! ';
@@ -72,13 +96,12 @@ class PaymentService
             $msg .= ' AE Credits Deducted';
         }
 
-        $order = new Order;
-        $order->addCartItems($cart, $totalUSD, $totalAEC);
+        $this->createOrder($cart, $totalUSD, $totalAEC);
 
-//        $cart->items()->detach();
-//        $cart->delete();
+        // $this->removeCart($cart);
 
         // TODO add to transaction both the USD and AECredits payments
+        // TODO notify admin
 
         return ['status' => 'success', 'message' => $msg, 'redirectTo' => 'dashboard'];
 

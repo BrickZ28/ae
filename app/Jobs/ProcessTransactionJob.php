@@ -13,31 +13,30 @@ class ProcessTransactionJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $payerId;
+    protected $transactionData;
 
-    protected $payeeId;
-
-    protected $amount;
-
-    protected $reason;
-
-    public function __construct($payerId, $payeeId, $amount, $reason)
+    public function __construct(array $transactionData = [])
     {
-        $this->payerId = $payerId;
-        $this->payeeId = $payeeId;
-        $this->amount = $amount;
-        $this->reason = $reason;
+        // Default values
+        $defaultValues = [
+            'payer_id' => null,
+            'payer_type' => 'AfterEarth Gaming',
+            'payee_id' => null,
+            'amount' => 0,
+            'reason' => 'System Payment',
+            'order_id' => null,
+            'payee_type' => 'AfterEarth Gaming',
+            'currency_type' => 'USD',
+        ];
+
+        // Merge provided data with default values
+        $this->transactionData = array_merge($defaultValues, $transactionData);
     }
 
     public function handle(): void
     {
-
-        // Create a new transaction
-        Transaction::create([
-            'payer_id' => $this->payerId,
-            'payee_id' => $this->payeeId,
-            'amount' => $this->amount,
-            'reason' => $this->reason,
-        ]);
+       
+        // Use the parameters
+        Transaction::create($this->transactionData);
     }
 }
