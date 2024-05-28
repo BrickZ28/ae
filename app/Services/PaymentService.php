@@ -75,6 +75,7 @@ class PaymentService
         ];
 
 
+        /** @noinspection PhpParamsInspection */
         ProcessTransactionJob::dispatch($transactionData);
     }
 

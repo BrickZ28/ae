@@ -16,10 +16,12 @@ class StatusController extends Controller
     {
         $request->validate([
             'status' => 'required',
+            'color' => 'required',
         ]);
 
         if (Status::create([
             'name' => $request->status,
+            'color' => $request->color,
         ])) {
             return redirect()->route('dashboard.index')->withSuccess('New status created successfully');
         }

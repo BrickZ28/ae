@@ -2,16 +2,23 @@
     <x-datatable_shell breadcrumb-title="Gates" breadcrumb-parent="gate management" breadcrumb-child="gates"
                        :$filters>
 
+
         @foreach($orders as $order)
             <tr>
                 <td>{{$order->id}}</td>
                 <td>{{$order->user->userProfile->global_name}}</td>
-                <td>{{$order->status->name ?? 'Pending'}}</td>
+                <td><span class="badge py-3 px-4 fs-7 badge-light-{{ $order->status->color }}">
+                {{ $order->status->name ?? 'Unknown' }}
+            </span></td>
                 <td>{{$order->processedBy->username ?? ''}}</td>
-                <td><x-display-date-formatted
-                        :date="$order->created_at" format="D M j, Y @ g:i:sa" /></td>
-                <td><x-display-date-formatted
-                        :date="$order->updated_at" format="D M j, Y @ g:i:sa" /></td>
+                <td>
+                    <x-display-date-formatted
+                        :date="$order->created_at" format="D M j, Y @ g:i:sa"/>
+                </td>
+                <td>
+                    <x-display-date-formatted
+                        :date="$order->updated_at" format="D M j, Y @ g:i:sa"/>
+                </td>
 
                 <td class="text-end">
                     <a href="#" class="btn btn-light btn-active-light-primary btn-flex btn-center btn-sm"
@@ -28,7 +35,7 @@
                         <!--end::Menu item-->
                         <!--begin::Menu item-->
                         <div class="menu-item px-3">
-                            <a href="{{route('orders.show', $order->id)}}" class="menu-link px-3" >View
+                            <a href="{{route('orders.show', $order->id)}}" class="menu-link px-3">View
                                 Order</a>
                         </div>
                         <!--end::Menu item-->
