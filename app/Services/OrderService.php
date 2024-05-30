@@ -48,7 +48,32 @@ class OrderService
     public function orderEditService($order)
     {
         $statuses = Status::all();
-        return view('dashboard.order.edit', compact('order', 'statuses'));
+        $orderContents = json_decode($order->order_contents, true);
+        foreach ($orderContents['items'] as &$item) {
+            $item['complete'] = isset($item['complete']) ? $item['complete'] : false; // Provide a default value if the 'complete' key does not exist
+        }
+        unset($item); // Unset the reference to prevent side-effects
+        $orderItems = $orderContents['items'];
+        return view('dashboard.order.edit', compact('order', 'statuses', 'orderItems'));
+    }
+
+    public function orderUpdateService($request, $order)
+    {
+        $order->status_id = $request->status;
+        $order->save();
+
+        $itemStatuses = request('itemStatus');
+        $orderContents = json_decode($order->order_contents, true);
+        foreach ($orderContents['items'] as &$item) {
+            $item['complete'] = isset($itemStatuses[$item['id']]);
+        }
+        unset($item); // Unset the reference to prevent side-effects
+        $order->order_contents = json_encode($orderContents);
+        $order->save();
+
+        //TODO check if completed
+
+        return redirect()->route('orders.show', $order)->withSuccess('Order status updated successfully');
     }
 
 }

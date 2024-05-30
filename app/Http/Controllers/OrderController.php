@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use App\Services\OrderService;
+use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
@@ -31,5 +32,11 @@ class OrderController extends Controller
     {
         return $this->orderService->orderEditService($order);
     }
+
+    public function update(Request $request, Order $order)
+    {
+        return $this->orderService->orderUpdateService($request, $order);
+    }
+
 
 }

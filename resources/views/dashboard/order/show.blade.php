@@ -24,16 +24,22 @@
                         <!--end:::Tab item-->
                     </ul>
                     <!--end:::Tabs-->
-
-                    <!--begin::Button-->
-                    <a href="apps/ecommerce/sales/edit-order.html" class="btn btn-success btn-sm me-lg-n7">Edit
+                    @checkRole(['Owner', 'In the Shadows'])
+                    <a href="{{route('orders.edit', $order->id)}}" class="btn btn-success btn-sm me-lg-n7">Edit
                         Order</a>
-                    {{--                        TODO make this an iquire button, will send message on discord and only show--}}
-                    {{--                        after 24 hours--}}
-
-                    <!--end::Button-->
+                    @endcheckRole
                     <!--begin::Button-->
-                    <a href="apps/ecommerce/sales/add-order.html" class="btn btn-primary btn-sm">Add New Order</a>
+                    @if (Carbon::now()->subHours(24)->greaterThanOrEqualTo($order->updated_at) && $order->processedBy === null)
+                        <a href="apps/ecommerce/sales/edit-order.html" class="btn btn-info btn-sm me-lg-n7">Inquire</a>
+
+                        {{--                        TODO make this an iquire button, will send message on discord and only show--}}
+                        {{--                        after 24 hours--}}
+
+                        <!--end::Button-->
+                        <!--begin::Button-->
+                        <a href="apps/ecommerce/sales/add-order.html" class="btn btn-primary btn-sm"
+                           onclick="showAlert()">Cancel Order</a>
+                    @endif
                     {{--                        <!--end::Button--> //TODO make this a cancel button, only shows after 24 hours and if not--}}
                     {{--                        processed.  Will send message on discord and only for AEC orders--}}
                 </div>
@@ -350,7 +356,7 @@
                                                         </td>
                                                     </tr>
                                                 @endforeach
-                                               
+
                                                 @if (count($usdItems) > 0)
                                                     <tr>
                                                         <td colspan="4" class="fs-3 text-gray-900 text-end">USD Total
@@ -563,5 +569,33 @@
             <!--end::Content container-->
         </div>
 
+    </div>
+    <script>
+        function showAlert(event) {
+            event.preventDefault(); // Prevent the default action of the anchor tag
+            Swal.fire({
+                title: 'This will only work for AEC orders! Are you sure you want to cancel this order?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, cancel it!',
+                allowOutsideClick: false,
+                allowEscapeKey: false
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire(
+                        'Cancelled!',
+                        'Your order has been cancelled.',
+                        'success'
+                    ).then(() => {
+                        window.location.href = 'apps/ecommerce/sales/add-order.html';
+                    });
+                }
+            })
+        }
 
+        go
+    </script>
 </x-dashboard.layout>

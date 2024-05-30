@@ -6,12 +6,24 @@
 
             <div class="col-lg-12">
                 <x-form-select label="Status" name="status" required="">
-                    <option value="{{$order->status ?? ''}}">{{$order->status->name ?? 'Select Status'}}</option>
+                    <option value="{{$order->status_id ?? ''}}">{{$order->status->name ?? 'Select Status'}}</option>
                     @foreach($statuses as $status)
                         <option value="{{$status->id}}">{{$status->name}}</option>
                     @endforeach
                 </x-form-select>
             </div>
+
+            @foreach($orderItems as $item)
+                <div class=" mt-2 form-check form-switch form-check-custom form-check-solid">
+                    <label class="px-5">{{ $item['name'] }}</label>
+                    <input class="form-check-input" type="checkbox" name="itemStatus[{{ $item['id'] }}]"
+                           id="itemStatus{{ $item['id'] }}" value="built" {{ $item['complete'] ? 'checked' : '' }}>
+                    <label class=" px-5 form-check-label" for="itemStatus{{ $item['id'] }}">
+                        Mark as completed
+                    </label>
+                </div>
+
+            @endforeach
 
             <!--end::Col-->
         </div>
