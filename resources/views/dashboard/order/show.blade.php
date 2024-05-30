@@ -37,8 +37,11 @@
 
                         <!--end::Button-->
                         <!--begin::Button-->
-                        <a href="apps/ecommerce/sales/add-order.html" class="btn btn-primary btn-sm"
-                           onclick="showAlert()">Cancel Order</a>
+                        <form id="canxForm" action="{{ route('orders.destroy', $order->id) }}" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" class="btn btn-primary btn-sm">Cancel Order</button>
+                        
                     @endif
                     {{--                        <!--end::Button--> //TODO make this a cancel button, only shows after 24 hours and if not--}}
                     {{--                        processed.  Will send message on discord and only for AEC orders--}}
@@ -571,31 +574,25 @@
 
     </div>
     <script>
-        function showAlert(event) {
-            event.preventDefault(); // Prevent the default action of the anchor tag
+        document.getElementById('canxForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent the form from submitting immediately
+
+            // Use SweetAlert to show a confirmation dialog
             Swal.fire({
-                title: 'This will only work for AEC orders! Are you sure you want to cancel this order?',
-                text: "You won't be able to revert this!",
+                title: 'Confirm?',
+                text: "This will cancel only those items that were paid with AE credits. For stripe payments please " +
+                    "visit stripe.com and refund the payment there.",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, cancel it!',
-                allowOutsideClick: false,
-                allowEscapeKey: false
+                confirmButtonText: 'Yes, do it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Swal.fire(
-                        'Cancelled!',
-                        'Your order has been cancelled.',
-                        'success'
-                    ).then(() => {
-                        window.location.href = 'apps/ecommerce/sales/add-order.html';
-                    });
+                    // User clicked 'Yes', submit the form
+                    event.target.submit();
                 }
-            })
-        }
-
-        go
+            });
+        });
     </script>
 </x-dashboard.layout>
