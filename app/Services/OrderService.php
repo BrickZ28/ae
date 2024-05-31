@@ -76,4 +76,9 @@ class OrderService
         return redirect()->route('orders.show', $order)->withSuccess('Order status updated successfully');
     }
 
+    public function cancelAECOrderService($order)
+    {
+
+    }
+
 }
