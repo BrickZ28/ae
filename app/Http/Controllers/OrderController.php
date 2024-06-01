@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-//TODO: need to add status, ie started, completed, cancelled etc
+
 
     private $orderService;
 
