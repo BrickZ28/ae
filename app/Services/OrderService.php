@@ -3,8 +3,10 @@
 namespace App\Services;
 
 
+use App\Models\CancelledItems;
 use App\Models\Order;
 use App\Models\Status;
+use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
@@ -78,7 +80,36 @@ class OrderService
 
     public function cancelAECOrderService($order)
     {
+        $orderContents = json_decode($order->order_contents, true);
+        $orderContents['items'] = array_values($orderContents['items']);
 
+        foreach ($orderContents['items'] as $item) {
+            $totalPrice = $item['price'] * $item['pivot']['quantity'];
+            if ($item['currency_type'] === 'AEC') {
+                CancelledItems::insert([
+                    'order_id' => $order->id,
+                    'item_id' => $item['id'],
+                    'user_id' => $order->user_id,
+                    'quantity' => $item['pivot']['quantity'],
+                ]);
+            }
+            $totalPrice += $totalPrice;
+        }
+
+        // Remove the AEC items from the order contents
+        $orderContents['items'] = array_filter($orderContents['items'], function ($item) {
+            return $item['currency_type'] !== 'AEC';
+        });
+
+        //refund the aec
+        Auth::user()->ae_credits += $totalPrice;
+        Auth::user()->save();
+
+        // Re-index the array and update the order contents
+        $order->order_contents = json_encode(['items' => array_values($orderContents['items'])]);
+        $order->save();
+
+        return redirect(route('dashboard.index', $order))->withSuccess('AE Credits refunded successfully');
     }
 
 }

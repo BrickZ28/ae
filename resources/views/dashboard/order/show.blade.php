@@ -37,11 +37,10 @@
 
                         <!--end::Button-->
                         <!--begin::Button-->
-                        <form id="canxForm" action="{{ route('orders.destroy', $order->id) }}" method="POST">
-                            @method('DELETE')
+                        <form id="canxForm" action="{{ route('orders.cancel.aec', $order->id) }}" method="POST">
                             @csrf
                             <button type="submit" class="btn btn-primary btn-sm">Cancel Order</button>
-                        
+
                     @endif
                     {{--                        <!--end::Button--> //TODO make this a cancel button, only shows after 24 hours and if not--}}
                     {{--                        processed.  Will send message on discord and only for AEC orders--}}
@@ -152,7 +151,7 @@
                                                 <!--begin::Name-->
                                                 <a href="apps/ecommerce/customers/details.html"
                                                    class="text-gray-600
-                                                   text-hover-primary">{{$orderContents['totalUSD']}}</a>
+                                                   text-hover-primary">{{$orderContents['totalUSD'] ?? '' }}</a>
                                                 <!--end::Name-->
                                             </div>
                                         </td>

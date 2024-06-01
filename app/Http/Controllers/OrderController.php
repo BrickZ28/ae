@@ -38,9 +38,10 @@ class OrderController extends Controller
         return $this->orderService->orderUpdateService($request, $order);
     }
 
-    public function cancelAECOrder(Order $order)
+    public function cancelAECOrder($order)
     {
-        $this->orderService->cancelAECOrderService($order);
+
+        return $this->orderService->cancelAECOrderService(Order::find($order));
     }
 
 

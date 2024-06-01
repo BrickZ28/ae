@@ -89,7 +89,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     //orders
     Route::resource('/orders', OrderController::class, ['names' => 'orders']);
-    Route::get('/orders/cancel/aec/items/{id}', [OrderController::class, 'cancelAECOrder'])->name('orders.cancel.aec');
+    Route::post('/orders/cancel/aec/items/{id}', [OrderController::class, 'cancelAECOrder'])->name('orders.cancel.aec');
 
     //Package
     Route::resource('/packages', PackageController::class, ['names' => 'packages']);
