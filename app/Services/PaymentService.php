@@ -10,7 +10,12 @@ use Stripe\StripeClient;
 
 class PaymentService
 {
+    protected $discordService;
 
+    public function __construct(DiscordService $discordService)
+    {
+        $this->discordService = $discordService;
+    }
 
     public function processPayment($cart, $totalUsd, $totalAec)
     {
@@ -20,8 +25,13 @@ class PaymentService
 
 
         if ($totalUsd === 0 && $totalAec > 0) {
-            $this->createOrder($cart, $totalUsd, $totalAec);
-            $this->removeCart($cart);
+            $order = $this->createOrder($cart, $totalUsd, $totalAec);
+           // $this->removeCart($cart);
+            $this->addToTransaction($totalAec, 'AEC', $order);
+
+            $this->discordService->sendMessage(190198403420913674, //TODO change to K and uncomment removecart
+                Auth::user()->userProfile->global_name . ' has placed a new order. Please check the admin panel for more details.');
+
             return redirect(route('dashboard.index'))->with('success', 'AE Credits Deducted');
         }
 
@@ -67,16 +77,7 @@ class PaymentService
         $order = new Order;
         $order->addCartItems($cart, $totalUSD, $totalAEC);
 
-        $transactionData = [
-            'order_id' => $order->id,
-            'reason' => 'Order #' . $order->id,
-            'payer_id' => Auth::id(),
-
-        ];
-
-
-        /** @noinspection PhpParamsInspection */
-        ProcessTransactionJob::dispatch($transactionData);
+        return $order;
     }
 
     private function removeCart($cart)
@@ -97,12 +98,17 @@ class PaymentService
             $msg .= ' AE Credits Deducted';
         }
 
-        $this->createOrder($cart, $totalUSD, $totalAEC);
+        $order = $this->createOrder($cart, $totalUSD, $totalAEC);
 
         // $this->removeCart($cart);
+        $user = Auth::user();
 
-        // TODO add to transaction both the USD and AECredits payments
-        // TODO notify admin
+
+        $this->addToTransaction($totalUSD, 'USD', $order);
+        $this->addToTransaction($totalAEC, 'AEC', $order);
+        $this->discordService->sendMessage(190198403420913674, //TODO change to K and uncomment removecart
+            Auth::user()->userProfile->global_name . ' has placed a new order. Please check the admin panel for more details.');
+
 
         return ['status' => 'success', 'message' => $msg, 'redirectTo' => 'dashboard'];
 
@@ -138,6 +144,21 @@ class PaymentService
         }
 
         return false;
+    }
+
+    /** @noinspection PhpParamsInspection */
+    private function addToTransaction($total, $currency_type, $order)
+    {
+        return ProcessTransactionJob::dispatch([
+            'order_id' => $order->id,
+            'payer_id' => Auth::id(),
+            'payer_type' => null,
+            'payee_id' => null,
+            'payee_type' => 'AEG',
+            'amount' => $total,
+            'currency_type' => $currency_type,
+            'reason' => 'Order Payment: ' . $order->id,
+            ]);
     }
 
 

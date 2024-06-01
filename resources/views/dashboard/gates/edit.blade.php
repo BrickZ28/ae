@@ -57,7 +57,8 @@
                     <option value=''>Add Order or Starter Kit</option>
                     <option value={{$starter->id ?? ''}}>{{$starter->name ?? ''}}</option>
                     @foreach($orders as $order)
-                        <option value={{$order->id}}>{{$order->id}}</option>
+                        <option value={{$order->id}}>{{$order->id}} -
+                            {{$order->user->userProfile->global_name}}</option>
                     @endforeach
                 </x-form-select>
 

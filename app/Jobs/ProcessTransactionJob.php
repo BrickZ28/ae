@@ -19,14 +19,14 @@ class ProcessTransactionJob implements ShouldQueue
     {
         // Default values
         $defaultValues = [
-            'payer_id' => null,
-            'payer_type' => 'AfterEarth Gaming',
-            'payee_id' => null,
-            'amount' => 0,
-            'reason' => 'System Payment',
             'order_id' => null,
-            'payee_type' => 'AfterEarth Gaming',
-            'currency_type' => 'USD',
+            'payer_id' => null,
+            'payer_type' => 'AEG',
+            'payee_id' => null,
+            'payee_type' => 'AEG',
+            'amount' => 0,
+            'currency_type' => null,
+            'reason' => null,
         ];
 
         // Merge provided data with default values
@@ -35,7 +35,7 @@ class ProcessTransactionJob implements ShouldQueue
 
     public function handle(): void
     {
-       
+
         // Use the parameters
         Transaction::create($this->transactionData);
     }

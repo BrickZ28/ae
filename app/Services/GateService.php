@@ -77,7 +77,7 @@ class GateService
     {
         $starter = Item::where('name', 'Starter Kit')->first()->id;
 
-        //TODO mark gate as picked up
+        //TODO mark gate as picked up Will require bot for discord
 
 
         $data = $request->all();
@@ -180,7 +180,7 @@ class GateService
         if ($contents === 'starter') {
             $gate = $this->getStarterGate();
         }
-//TODO logic for order content
+
         if ($user && $gate) {
             // If the user exists and the gate is available and has a starter kit
             $gate->update(['player_id' => $user->id]);
