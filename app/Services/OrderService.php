@@ -6,10 +6,17 @@ namespace App\Services;
 use App\Models\CancelledItems;
 use App\Models\Order;
 use App\Models\Status;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class OrderService
 {
+    protected $discordService;
+
+    public function __construct(DiscordService $discordService)
+    {
+        $this->discordService = $discordService;
+    }
 
     public function orderIndexService()
     {
@@ -71,11 +78,28 @@ class OrderService
         }
         unset($item); // Unset the reference to prevent side-effects
         $order->order_contents = json_encode($orderContents);
+        // Check if all items are completed
+        if ($this->checkIfAllItemsCompleted($order)) {
+            $order->processed = 1;
+            $this->discordService->sendMessage(190198403420913674, //TODO change to K and uncomment removecart
+                'Order ' . $order->id . ' has been completed. You will receive a notification shortly on how to receive your items.');
+        }
         $order->save();
 
         //TODO check if completed
 
         return redirect()->route('orders.show', $order)->withSuccess('Order status updated successfully');
+    }
+
+    public function checkIfAllItemsCompleted($order)
+    {
+        $orderContents = json_decode($order->order_contents, true);
+        foreach ($orderContents['items'] as $item) {
+            if (!$item['complete']) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public function cancelAECOrderService($order)
@@ -110,6 +134,16 @@ class OrderService
         $order->save();
 
         return redirect(route('dashboard.index', $order))->withSuccess('AE Credits refunded successfully');
+    }
+
+    public function orderInquireService($order)
+    {
+        $this->discordService->sendMessage(190198403420913674, //TODO change to K
+            Auth::user()->userProfile->global_name . ' has inquired about order ' . $order->id . '. Please check the admin panel for more details.');
+
+        $order->updated_at = Carbon::now(); // Update the 'updated_at' timestamp (to indicate that the order has been inquired about
+        $order->save();
+        return $order;
     }
 
 }

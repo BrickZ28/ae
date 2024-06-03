@@ -25,15 +25,17 @@
                     </ul>
                     <!--end:::Tabs-->
                     @checkRole(['Owner', 'In the Shadows'])
-                    <a href="{{route('orders.edit', $order->id)}}" class="btn btn-success btn-sm me-lg-n7">Edit
-                        Order</a>
+                        @if(!$order->processed)
+                            <a href="{{route('orders.edit', $order->id)}}" class="btn btn-success btn-sm me-lg-n7">Edit
+                                Order</a>
+                        @endif
                     @endcheckRole
                     <!--begin::Button-->
                     @if (Carbon::now()->subHours(24)->greaterThanOrEqualTo($order->updated_at) && $order->processedBy === null)
-                        <a href="apps/ecommerce/sales/edit-order.html" class="btn btn-info btn-sm me-lg-n7">Inquire</a>
+                        <a href="{{route('orders.inquiry', $order->id)}}"
+                           class="btn btn-info btn-sm me-lg-n7">Inquire</a>
 
-                        {{--                        TODO make this an iquire button, will send message on discord and only show--}}
-                        {{--                        after 24 hours--}}
+                        {{--                        TODO make this only show to auth user --}}
 
                         <!--end::Button-->
                         <!--begin::Button-->

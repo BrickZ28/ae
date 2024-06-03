@@ -44,5 +44,12 @@ class OrderController extends Controller
         return $this->orderService->cancelAECOrderService(Order::find($order));
     }
 
+    public function orderInquiry($id)
+    {
+        $this->orderService->orderInquireService(Order::find($id));
+
+        return redirect()->route('dashboard.index')->with('success', 'Inquiry Sent');
+    }
+
 
 }

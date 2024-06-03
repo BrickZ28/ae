@@ -7,7 +7,7 @@
             <tr>
                 <td>{{$order->id}}</td>
                 <td>{{$order->user->userProfile->global_name}}</td>
-                <td><span class="badge py-3 px-4 fs-7 badge-light-{{ $order->status->color }}">
+                <td><span class="badge py-3 px-4 fs-7 badge-light-{{ $order->status->color ?? 'primary'}}">
                 {{ $order->status->name ?? 'Unknown' }}
             </span></td>
                 <td>{{$order->processedBy->username ?? ''}}</td>
