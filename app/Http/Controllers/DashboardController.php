@@ -33,6 +33,16 @@ class DashboardController extends Controller
 
         $usd_in = $monthly_transactions->sum('amount');
 
+        $top_donators = Transaction::select('payer_id')
+    ->selectRaw('COUNT(*) as total_transactions, SUM(amount) as total_amount')
+    ->where('currency_type', 'USD')
+    ->groupBy('payer_id')
+    ->with(['payer', 'payer.userProfile']) // Include payer.userProfile relation
+    ->orderBy('total_transactions', 'desc')
+    ->take(5)
+    ->get();
+
+
 
         $goal_left = round((1200 - $usd_in) / (1200 * 100), 2);
         if ($goal_left < 50) {
@@ -46,7 +56,7 @@ class DashboardController extends Controller
         $last_transactions = Transaction::latest()
     ->distinct('payer_id')
     ->where('currency_type', 'USD')
-    ->take(3)
+    ->take(5)
     ->with(['payer', 'payer.userProfile']) // Include payer.userProfile relation
     ->get();
 
@@ -55,7 +65,7 @@ class DashboardController extends Controller
 
         return view('dashboard.index',
             compact('badge', 'usd_in', 'cartIsEmpty', 'users', 'hungry_dinos', 'goal_left',
-                'monthly_transactions', 'last_transactions'));
+                'monthly_transactions', 'last_transactions', 'top_donators'));
     }
 
     public function playOptions()
