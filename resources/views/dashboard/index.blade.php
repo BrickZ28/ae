@@ -436,16 +436,10 @@
                             <div class="mb-10">
                                 <!--begin::Title-->
                                 <div class="fs-2hx fw-bold text-gray-800 text-center mb-13">
-														<span class="me-2">Try our all new Enviroment with
-														<br/>
-														<span class="position-relative d-inline-block text-danger">
-															<a href="pages/user-profile/overview.html"
-                                                               class="text-danger opacity-75-hover">Pro Plan</a>
-                                                            <!--begin::Separator-->
-															<span
-                                                                class="position-absolute opacity-15 bottom-0 start-0 border-4 border-danger border-bottom w-100"></span>
-                                                            <!--end::Separator-->
-														</span></span>for Free
+														<span class="me-2">To keep the Server Going please shop one
+                                                            of our stores
+
+														</span>
                                 </div>
                                 <!--end::Title-->
                                 <!--begin::Action-->
@@ -457,10 +451,11 @@
                             </div>
                             <!--begin::Wrapper-->
                             <!--begin::Illustration-->
-                            <img class="mx-auto h-150px h-lg-200px theme-light-show"
-                                 src="assets/media/illustrations/misc/upgrade.svg" alt=""/>
-                            <img class="mx-auto h-150px h-lg-200px theme-dark-show"
-                                 src="assets/media/illustrations/misc/upgrade-dark.svg" alt=""/>
+                            <div class="card card-bordered">
+                                <div class="card-body">
+                                    <div id="kt_amcharts_3" style="height: 500px;"></div>
+                                </div>
+                            </div>
                             <!--end::Illustration-->
                         </div>
                         <!--end::Body-->
@@ -2755,5 +2750,62 @@
         </div>
         <!--end::Content container-->
     </div>
+
+    <script>
+        am5.ready(function () {
+            // Create root element
+            // https://www.amcharts.com/docs/v5/getting-started/#Root_element
+            var root = am5.Root.new("kt_amcharts_3");
+
+            // Set themes
+            // https://www.amcharts.com/docs/v5/concepts/themes/
+            root.setThemes([
+                am5themes_Animated.new(root)
+            ]);
+
+            var chart = root.container.children.push(am5percent.PieChart.new(root, {
+                layout: root.verticalLayout
+            }));
+
+// Define data
+            var data = [{
+                country: "Income",
+                sales: 100000
+            }, {
+                country: "Goal",
+                sales: 160000
+            }, {
+                country: "United Kingdom",
+                sales: 80000
+            }];
+
+// Create series
+            var series = chart.series.push(
+                am5percent.PieSeries.new(root, {
+                    name: "Series",
+                    valueField: "sales",
+                    categoryField: "country"
+                })
+            );
+
+
+
+
+
+            series.data.setAll(data);
+
+
+
+// Add legend
+            var legend = chart.children.push(am5.Legend.new(root, {
+                centerX: am5.percent(50),
+                x: am5.percent(50),
+                layout: root.horizontalLayout
+            }));
+
+            legend.data.setAll(series.dataItems);
+        });
+    </script>
+
 </x-dashboard.layout>
 
